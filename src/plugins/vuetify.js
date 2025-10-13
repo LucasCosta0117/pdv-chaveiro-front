@@ -5,6 +5,22 @@ import 'vuetify/styles'
 // Vuetify
 import { createVuetify } from 'vuetify'
 
-export default createVuetify(
-  // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
-)
+const vuetify = createVuetify({
+  theme: {
+    defaultTheme: 'myColors',
+    themes: {
+      myColors: {
+        dark: false,
+        colors: {
+          roxo_w1: '#8370FE',
+          roxo_w2: '#BDB5FD',
+          roxo_w3: '#EAEBFF',
+          cinza_w1: '#4e4e4e',
+          cinza_w2: '#afafaf'
+        },
+      },
+    },
+  },
+})
+
+export default vuetify;
