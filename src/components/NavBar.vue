@@ -76,8 +76,8 @@ export default {
       windowWidth: window.innerWidth,
       menuItens: [
         { text: 'Início', to: '/', icon: 'mdi mdi-home-outline'},
-        { text: 'Estoque', to: '/stock', icon: 'mdi mdi-wallet'},
-        { text: 'Relatórios', to: '/reports', icon: 'mdi mdi-chart-bar'},
+        { text: 'Catálogo', to: '/inventory', icon: 'mdi mdi-file-table-box-multiple-outline'},
+        { text: 'Relatórios', to: '/reports', icon: 'mdi mdi-file-table-outline'},
         { text: 'Ajustes', to: '/settings', icon: 'mdi mdi-cog'},
       ],
       currentSection: 'home'
