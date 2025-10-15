@@ -26,6 +26,7 @@
         :key="item.text"
         :to="item.to"
         @click="drawer = false"
+        class="ml-4 rounded-menu-item"
         :class="{ 'highlighted-men-item': $route.path === item.to }"
         link
       >
@@ -51,7 +52,7 @@
         v-for="item in menuItens" 
         :key="item.text"
         :to="item.to"
-        class="ml-4 mt-2"
+        class="ml-4 mt-2 rounded-menu-item"
         :class="{ 'highlighted-men-item': $route.path === item.to }"
         link
       >
@@ -125,7 +126,10 @@ export default {
 .highlighted-men-item {
   background-color: rgb(var(--v-theme-roxo_w2));
 }
-
+.rounded-menu-item {
+  border-bottom-left-radius: 1.2rem !important;
+  border-top-left-radius: 1.2rem !important;
+}
 /**
  * Dispositivos médios/grandes
  * Vuetify 'md' Break Point
