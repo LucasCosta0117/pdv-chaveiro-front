@@ -59,9 +59,6 @@ export default {
       required: true
     }
   },
-  mounted() {
-    console.log(this.product);
-  },
   computed: {
     /**
      * Responsável por obter e também manipular, de forma indireta, o valor da props 'showModal'.
