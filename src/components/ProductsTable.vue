@@ -1,15 +1,30 @@
 <template>
-  <v-data-table 
-    class="products-table-container"
-    :headers="headers"
-    :items="products"
-    :items-per-page="10"
-    :search="search"
-  />
+  <div>
+    <v-data-table
+      striped="odd"
+      hover
+      class="products-table-container"
+      :headers="headers"
+      :items="products"
+      :items-per-page="10"
+      :search="search"
+      @click:row="openDialog"
+    />\
+
+    <ProductDetailsDialog
+      v-model:showModal="dialog"
+      :product="selectedProduct"
+    />
+  </div>
 </template>
 <script>
+import ProductDetailsDialog from './ProductDetailsDialog.vue';
+
 export default {
   name: 'ProductsTable',
+  components: {
+    ProductDetailsDialog
+  },
   props: {
     search: {
       type: String,
@@ -26,7 +41,14 @@ export default {
   },
   data() {
     return {
-      //
+      dialog: false,
+      selectedProduct: null
+    }
+  },
+  methods: {
+    openDialog(_, { item }) {
+      this.dialog = true
+      this.selectedProduct = item
     }
   }
 }
