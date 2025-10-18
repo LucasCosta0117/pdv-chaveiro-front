@@ -78,8 +78,8 @@ export default {
         { text: 'Início', to: '/', icon: 'mdi mdi-home-outline'},
         { text: 'Caixa', to: '/sales', icon: 'mdi mdi-point-of-sale'},
         { text: 'Catálogo', to: '/inventory', icon: 'mdi mdi-file-table-box-multiple-outline'},
-        { text: 'Relatórios', to: '/reports', icon: 'mdi mdi-file-table-outline'},
-        { text: 'Ajustes', to: '/settings', icon: 'mdi mdi-cog'},
+        // { text: 'Relatórios', to: '/reports', icon: 'mdi mdi-file-table-outline'},
+        // { text: 'Ajustes', to: '/settings', icon: 'mdi mdi-cog'},
       ],
       currentSection: 'home'
     }
