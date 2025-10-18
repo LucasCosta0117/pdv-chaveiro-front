@@ -4,11 +4,15 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
+import api from './api/axios'
 
-loadFonts()
+loadFonts();
 
-createApp(App)
-  .use(router)
+const app = createApp(App);
+
+app.config.globalProperties.$api = api;
+
+app.use(router)
   .use(store)
   .use(vuetify)
-  .mount('#app')
+  .mount('#app');
