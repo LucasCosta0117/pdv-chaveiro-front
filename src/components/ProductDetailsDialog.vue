@@ -62,7 +62,8 @@ export default {
      */
     product: {
       type: Object,
-      required: true
+      required: true,
+      default: () => ({})
     }
   },
   computed: {

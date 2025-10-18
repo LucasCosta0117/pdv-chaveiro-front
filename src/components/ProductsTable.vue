@@ -12,6 +12,7 @@
     />
 
     <ProductDetailsDialog
+      v-if="selectedProduct"
       v-model:showModal="dialog"
       :product="selectedProduct"
     />
@@ -35,8 +36,8 @@ export default {
       default: () => ([])
     },
     products: {
-      type: Array,
-      default: () => ([])
+      type: Object,
+      default: () => ({})
     }
   },
   data() {
