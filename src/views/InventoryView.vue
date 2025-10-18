@@ -26,8 +26,8 @@
         <!-- Tabela de registros -->
         <ProductsTable
           :search="search"
-          :headers="headers"
-          :products="products"
+          :headers="productsHeaders"
+          :products="productsItems"
         />
       </v-col>
     </v-row>
@@ -36,6 +36,7 @@
 <script>
 import ProductsTable from '@/components/ProductsTable.vue';
 import TitlePage from '@/components/TitlePage.vue';
+import { mapActions, mapGetters } from 'vuex';
 
 /**
  * Padroniza os textos usados como Título e Subtítulo de uma View.
@@ -50,31 +51,24 @@ export default {
     return {
       title: 'Catálogo de Produtos',
       subtitle: 'Busque pelos itens da sua loja',
-      headers: [],
-      products: [],
-      search: ''
-    }
-  },
-  mounted() {
-    this.fetchData();
-  },
-  methods: {
-    async fetchData(){
-      this.headers = [
+      productsHeaders: [
         { title: 'Produto', key: 'name' },
         { title: 'Marca', key: 'brand' },
         { title: 'Preço', key: 'price' },
         { title: 'Código', key: 'code' },
         { title: 'Estoque', key: 'stock' }
-      ];
-
-      try {
-        const response = await this.$api.get('/product/all')
-        this.products = response.data;
-      } catch (error) {
-        console.error('Erro ao buscar produtos:', error);
-      }
+      ],
+      search: ''
     }
+  },
+  computed: {
+    ...mapGetters('products', { productsItems: 'getItems' })
+  },
+  methods: {
+    ...mapActions('products', ['fetchProducts'])
+  },
+  async created() {
+    await this.fetchProducts();
   }
 }
 </script>
