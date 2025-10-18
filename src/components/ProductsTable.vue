@@ -9,7 +9,7 @@
       :items-per-page="10"
       :search="search"
       @click:row="openDialog"
-    />\
+    />
 
     <ProductDetailsDialog
       v-model:showModal="dialog"

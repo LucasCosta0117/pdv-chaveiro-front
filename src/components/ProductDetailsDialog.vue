@@ -2,25 +2,31 @@
   <v-dialog v-model="isOpen" max-width="600px">
     <v-card>
       <v-card-title class="text-h6 font-weight-bold">
-        {{ product.nome }}
+        {{ product.name }}
       </v-card-title>
 
-      <v-card-subtitle>{{ product.categoria }}</v-card-subtitle>
+      <v-card-subtitle>{{ product.department }}</v-card-subtitle>
 
       <v-card-text>
         <v-row>
           <v-col cols="12" sm="6">
             <v-img
-              :src="product.img_url"
+              :src="product.imgUrl"
               aspect-ratio="1"
               class="rounded-lg elevation-1"
-              cover
+              contain
+              height="180"
             />
           </v-col>
 
           <v-col cols="12" sm="6">
-            <p><strong>Preço:</strong> R$ {{ product.preco }}</p>
-            <p><strong>Estoque:</strong> {{ product.qtd_estoque }} unidades</p>
+            <p><strong>Preço: </strong>R$ {{ product.price }}</p>
+            <p><strong>Marca: </strong>{{ product.brand }}</p>
+            <p><strong>Categoria: </strong>{{ product.category }}</p>
+            <p><strong>Subcategoria: </strong>{{ product.subcategory }}</p>
+            <p><strong>Estoque: </strong>{{ product.stock }} unidades</p>
+            <p><strong>Ativo: </strong>{{ (product.isActive) ? 'Sim' : 'Não' }}</p>
+            <p><strong>À venda: </strong>{{ (product.canSale) ? 'Sim' : 'Não' }}</p>
           </v-col>
         </v-row>
       </v-card-text>
