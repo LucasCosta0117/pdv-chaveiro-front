@@ -69,17 +69,8 @@ export default {
       ];
 
       try {
-        const response = await fetch('http://localhost:8080/api/product/all', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-  
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-        const data = await response.json();
-        this.products = data;
+        const response = await this.$api.get('/product/all')
+        this.products = response.data;
       } catch (error) {
         console.error('Erro ao buscar produtos:', error);
       }
