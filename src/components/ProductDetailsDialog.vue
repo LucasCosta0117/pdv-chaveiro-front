@@ -25,7 +25,7 @@
             <p><strong>Categoria: </strong>{{ product.category }}</p>
             <p><strong>Subcategoria: </strong>{{ product.subcategory }}</p>
             <p><strong>Estoque: </strong>{{ product.stock }} unidades</p>
-            <p><strong>Ativo: </strong>{{ (product.isActive) ? 'Sim' : 'Não' }}</p>
+            <p><strong>Disponível: </strong>{{ (product.isActive) ? 'Sim' : 'Não' }}</p>
             <p><strong>À venda: </strong>{{ (product.canSale) ? 'Sim' : 'Não' }}</p>
           </v-col>
         </v-row>
