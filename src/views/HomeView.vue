@@ -1,5 +1,7 @@
 <template>
-  test
+  <v-container>
+    Página Inicial
+  </v-container>
 </template>
 
 <script>
