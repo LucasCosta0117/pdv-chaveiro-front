@@ -2,17 +2,16 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <h3>Catálogo de Produtos</h3>
-        <p>Consulte todos os itens da sua loja</p>
+        <TitlePage :title="title" :subtitle="subtitle" />
       </v-col>
     </v-row>
 
     <v-row>
       <v-col cols="12">
-        <!-- Input para pesquisa -->
+        <!-- Input para pesquisa na tabela de registros -->
         <v-text-field
           v-model="search"
-          label="Buscar produto"
+          label="Pesquisar"
           hide-details
           density="compact"
           variant="outlined"
@@ -36,14 +35,21 @@
 </template>
 <script>
 import ProductsTable from '@/components/ProductsTable.vue';
+import TitlePage from '@/components/TitlePage.vue';
 
+/**
+ * Padroniza os textos usados como Título e Subtítulo de uma View.
+ */
 export default {
   name: 'InventoryView',
   components: {
-    ProductsTable
+    ProductsTable,
+    TitlePage
   },
   data() {
     return {
+      title: 'Catálogo de Produtos',
+      subtitle: 'Busque pelos itens da sua loja',
       headers: [],
       products: [],
       search: ''
