@@ -6,29 +6,37 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col col="12">
-        <h4>Ações Rápidas</h4>
+      <v-col col="12" class="d-flex">
+        <h4 class="mr-2">Ações Rápidas</h4>
+        <v-icon 
+          :icon="showQuickActions ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+          :title="showQuickActions ? 'Ocultar Ações Rápidas' : 'Exibir Ações Rápidas'"
+          @click="showQuickActions = !showQuickActions"
+        ></v-icon>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="showQuickActions">
       <v-col col="12">
-        <v-card v-for="x in 3" :key="x" height="150" class="elevation-5 mb-2"></v-card>
+        <QuickActionCard ></QuickActionCard>
       </v-col>
     </v-row>
   </v-container>
 </template>
 <script>
 import TitlePage from '@/components/TitlePage.vue';
+import QuickActionCard from '@/components/QuickActionCard.vue';
 
 export default {
   name: 'SaleStation',
   components: {
-    TitlePage
+    TitlePage,
+    QuickActionCard
   },
   data() {
     return {
       title: 'Caixa',
-      subtitle: 'Estação de vendas'
+      subtitle: 'Estação de vendas',
+      showQuickActions: true
     }
   }
 }
