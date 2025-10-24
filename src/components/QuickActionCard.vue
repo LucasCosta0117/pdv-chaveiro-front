@@ -60,7 +60,7 @@ export default {
       productIcon: 'mdi mdi-cart-outline',
       jobIcon: 'mdi mdi-hammer-screwdriver',
       rules: {
-        // required: (value) => !!value || 'Preenchimento obrigatório',
+        required: (value) => !!value || 'Preenchimento obrigatório',
       },
       items: ['Gold-1129', 'Yale-12345'],
       qtd: 1,
