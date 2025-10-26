@@ -47,7 +47,7 @@
  * de modo a apresentar mais detalhes do produto selecionado.
  */
 export default {
-  name: 'ProductDetailsDialog',
+  name: 'DetailsDialog',
   props: {
     /**
      * Flag para controle de exibição do modal/dialog.
