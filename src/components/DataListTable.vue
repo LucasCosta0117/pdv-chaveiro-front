@@ -3,7 +3,7 @@
     <v-data-table
       striped="odd"
       hover
-      class="products-table-container"
+      class="products-table-container border-thin"
       :headers="headers"
       :items="items"
       :items-per-page="10"
@@ -95,7 +95,12 @@ export default {
 </script>
 <style scoped>
 .products-table-container {
-  border: solid 1px rgb(var(--v-theme-cinza_w2), 0.5);
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
+  min-height: 25rem;
+  max-height: 35rem;
+}
+.products-table-container :deep(thead th) {
+  background-color: rgb(var(--v-theme-roxo_w1));
+  color: white;
 }
 </style>
