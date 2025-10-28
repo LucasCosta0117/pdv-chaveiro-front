@@ -15,6 +15,7 @@
           hide-details
           density="compact"
           variant="outlined"
+          color="roxo_w1"
           prepend-inner-icon="mdi-magnify"
           clearable
         />
@@ -28,6 +29,7 @@
           label="Tipo de Item"
           density="compact"
           variant="outlined"
+          color="roxo_w1"
           hide-details
         ></v-select>
       </v-col>
