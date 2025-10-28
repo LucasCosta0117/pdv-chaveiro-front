@@ -55,7 +55,9 @@
           </v-btn>
         </div>
         <div>
-          CheckoutItems
+          <CheckoutItems
+            :items="checkoutItems"
+          />
         </div>
       </v-col>
       <v-col cols="12" md="4">
@@ -69,6 +71,7 @@
 <script>
 import TitlePage from '@/components/TitlePage.vue';
 import QuickActionCard from '@/components/QuickActionCard.vue';
+import CheckoutItems from '@/components/CheckoutItems.vue';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -76,6 +79,7 @@ export default {
   components: {
     TitlePage,
     QuickActionCard,
+    CheckoutItems
   },
   data() {
     return {
