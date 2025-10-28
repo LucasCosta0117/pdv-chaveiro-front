@@ -12,7 +12,7 @@
     >
       <!-- Formatação para coluna monetária -->
       <template #item.price="{ item }">
-        {{ formatCurrency(item.price) }}
+        {{ $formatCurrency(item.price) }}
       </template>
     </v-data-table>
 
@@ -77,18 +77,6 @@ export default {
     openDialog(_, { item }) {
       this.dialog = true
       this.selectedProduct = item
-    },
-    /**
-     * Formata os valores da coluna 'price' para o padrão monetário Br
-     * 
-     * @param value Preço (price) do item na tabela
-     */
-    formatCurrency(value) {
-      if (value == null || value === '') return '-';
-      return new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-      }).format(value);
     }
   }
 }
