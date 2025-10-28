@@ -2,7 +2,7 @@
   <v-data-table
     :headers="headers"
     :items="checkoutItems"
-    class="checkout-table-container"
+    class="checkout-table-container border-thin"
     density="comfortable"
     striped="odd"
     hide-default-footer
@@ -16,7 +16,7 @@
 
     <!-- Coluna: Preço unitário -->
     <template #item.price="{ item }">
-      {{ formatCurrency(item.price) }}
+      {{ $formatCurrency(item.price) }}
     </template>
 
     <!-- Coluna: Quantidade (editável) -->
@@ -50,7 +50,7 @@
 
     <!-- Coluna: Total -->
     <template #item.total="{ item }">
-      {{ formatCurrency(item.total) }}
+      {{ $formatCurrency(item.total) }}
     </template>
 
     <!-- Coluna: Ações -->
@@ -67,9 +67,14 @@
 </template>
 
 <script>
+/**
+ * Tabela responsável por exibir os itens do checkout da venda.
+ * Nela são listados os Produtos/Serviços selecionados para compor a venda.
+ */
 export default {
   name: 'CheckoutItems',
   props: {
+    // Item adicionado a lista de checkout
     items: {
       type: Array,
       default: () => [],
@@ -77,6 +82,7 @@ export default {
   },
   data() {
     return {
+      // Colunas do cabeçalho da tabela de checkout
       headers: [
         { title: 'Item', key: 'name' },
         { title: 'Preço', key: 'price' },
@@ -98,12 +104,12 @@ export default {
     }
   },
   methods: {
-    formatCurrency(value) {
-      return value.toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-      });
-    },
+    /**
+     * Atualiza o valor do total do item na linha conforme são alteradas 
+     * as células de quantidade (Qtd) e desconto (Desc.).
+     * 
+     * @param item Item da tabela de checkout
+     */
     updateTotals(item) {
       // Valida quantidade
       if (item.quantity < 1) item.quantity = 1;
@@ -114,7 +120,13 @@ export default {
       const discount = (subtotal * item.discount) / 100;
       item.total = subtotal - discount;
     },
+    /**
+     * Exclui o item informado da lista de checkout.
+     * 
+     * @param item Item da tabela de checkout
+     */
     removeItem(item) {
+      console.log('click lixeira')
       this.checkoutItems = this.checkoutItems.filter(i => i !== item);
     },
   },
@@ -126,7 +138,11 @@ export default {
   cursor: pointer;
 }
 .checkout-table-container {
-  border: solid 1px rgb(var(--v-theme-cinza_w2), 0.5);
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
+  min-height: 15rem;
+}
+.checkout-table-container :deep(thead th) {
+  background-color: rgb(var(--v-theme-roxo_w1));
+  color: white;
 }
 </style>
