@@ -23,7 +23,7 @@
     <template #item.quantity="{ item }">
       <v-number-input
         class="d-flex"
-        v-model.number="item.quantity"
+        v-model="item.quantity"
         controlVariant="split"
         density="compact"
         variant="solo"
