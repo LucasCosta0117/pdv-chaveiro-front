@@ -133,7 +133,6 @@ export default {
      */
     updateItem(updatedItem) {
       updatedItem.total = this.calcTotal(updatedItem);
-      console.log('updateItem', updatedItem)
       const updatedList = this.enhancedItems.map(item =>
         item.id === updatedItem.id ? { ...updatedItem } : item
       );
