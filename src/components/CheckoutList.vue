@@ -1,0 +1,167 @@
+<template>
+  <v-data-table
+    :headers="headers"
+    :items="enhancedItems"
+    class="checkout-table-container border-thin"
+    density="comfortable"
+    striped="odd"
+    hide-default-footer
+    hide-no-data
+    hover
+  >
+    <!-- Coluna: Nome -->
+    <template #item.name="{ item }">
+      {{ item.name }}
+    </template>
+
+    <!-- Coluna: Preço unitário -->
+    <template #item.price="{ item }">
+      {{ $formatCurrency(item.price) }}
+    </template>
+
+    <!-- Coluna: Quantidade (editável) -->
+    <template #item.quantity="{ item }">
+      <v-number-input
+        class="d-flex"
+        v-model.number="item.quantity"
+        controlVariant="split"
+        density="compact"
+        variant="solo"
+        flat
+        inset
+        :min="1"
+        :max="item.stock ?? 999"
+        style="width: 150px"
+        @change="updateItem(item)"
+      />
+    </template>
+
+    <!-- Coluna: Desconto (editável) -->
+    <template #item.discount="{ item }">
+      <v-text-field
+        v-model.number="item.discount"
+        type="number"
+        min="0"
+        :max="item.price"
+        density="compact"
+        hide-details
+        variant="solo"
+        flat
+        style="width: 90px"
+        @change="updateItem(item)"
+      />
+    </template>
+    
+    <!-- Coluna: Total -->
+    <template #item.total="{ item }">
+      {{ $formatCurrency(item.total) }}
+    </template>
+
+    <!-- Coluna: Ações -->
+    <template #item.actions="{ item }">
+      <v-icon
+        color="error"
+        class="cursor-pointer"
+        @click="removeItem(item)"
+      >
+        mdi-delete
+      </v-icon>
+    </template>
+  </v-data-table>
+</template>
+
+<script>
+/**
+ * Tabela responsável por exibir a lista de itens do checkout da venda.
+ * Nela são apresentados os Produtos/Serviços selecionados para compor a venda.
+ */
+export default {
+  name: 'CheckoutList',
+  props: {
+    // Conjunto de itens (Produtos/Serviços) adicionados a lista de checkout de vendas.
+    checkoutItems: {
+      type: Array,
+      required: true
+    },
+  },
+  emits: ['update:checkoutItems'],
+  data() {
+    return {
+      // Colunas do cabeçalho da tabela de checkout
+      headers: [
+        { title: 'Item', key: 'name' },
+        { title: 'Preço', key: 'price' },
+        { title: 'Qtd', key: 'quantity' },
+        { title: 'Desc.', key: 'discount' },
+        { title: 'Total', key: 'total' },
+        { title: '', key: 'actions', sortable: false },
+      ],
+    };
+  },
+  computed: {
+    /**
+     * Cria uma cópia da lista de checkout aprimorada, itens com campos extras.
+     */
+    enhancedItems: {
+      get() {
+        return this.checkoutItems.map(item => ({
+          ...item,
+          quantity: item.quantity ?? 1,
+          discount:  item.discount ?? 0,
+          total: item.total ?? item.price
+        }))
+      },
+      set(updatedItems) {
+        // Retorna o checkoutItems aprimorado de volta ao componente pai
+        this.$emit('update:checkoutItems', updatedItems)
+      }
+    }
+  },
+  methods: {
+    /**
+     * Atualiza o valor 'Total' do item com base nas células 'Qtd' e 'Desc.''
+     * 
+     * @param item Item da tabela de checkout.
+     */
+    calcTotal(item) {
+      return (item.price * item.quantity) - item.discount;
+    },
+    /**
+     * Atualiza um item dentro da lista de checkout aprimorada.
+     * 
+     * @param updatedItem Item da tabela de checkout modificado.
+     */
+    updateItem(updatedItem) {
+      updatedItem.total = this.calcTotal(updatedItem);
+      console.log('updateItem', updatedItem)
+      const updatedList = this.enhancedItems.map(item =>
+        item.id === updatedItem.id ? { ...updatedItem } : item
+      );
+      this.enhancedItems = updatedList;
+    },
+    /**
+     * Exclui o item da lista de checkout aprimorada.
+     * 
+     * @param itemToRemove Item removido da tabela de checkout.
+     */
+    removeItem(itemToRemove) {
+      const filtered = this.enhancedItems.filter(item => item.id !== itemToRemove.id);
+      this.enhancedItems = filtered;
+    }
+  }
+};
+</script>
+
+<style scoped>
+.cursor-pointer {
+  cursor: pointer;
+}
+.checkout-table-container {
+  border-radius: 0.5rem;
+  min-height: 15rem;
+}
+.checkout-table-container :deep(thead th) {
+  background-color: rgb(var(--v-theme-roxo_w1));
+  color: white;
+}
+</style>

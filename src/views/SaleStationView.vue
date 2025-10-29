@@ -55,14 +55,22 @@
           </v-btn>
         </div>
         <div>
-          <CheckoutItems
-            :items="checkoutItems"
+          <CheckoutList
+            v-model:checkout-items="checkoutItems"
           />
         </div>
       </v-col>
       <v-col cols="12" md="4">
         <div>
-          Sale Resum
+          <div class="border-thin">
+            Sales Resume
+          </div>
+          <v-btn 
+            @click="confirmSale"
+            color="success"
+          >
+            Confirmar
+          </v-btn>
         </div>
       </v-col>
     </v-row>
@@ -71,7 +79,7 @@
 <script>
 import TitlePage from '@/components/TitlePage.vue';
 import QuickActionCard from '@/components/QuickActionCard.vue';
-import CheckoutItems from '@/components/CheckoutItems.vue';
+import CheckoutList from '@/components/CheckoutList.vue';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -79,7 +87,7 @@ export default {
   components: {
     TitlePage,
     QuickActionCard,
-    CheckoutItems
+    CheckoutList
   },
   data() {
     return {
@@ -116,8 +124,13 @@ export default {
       if (this.selectedItem) {
         this.checkoutItems.push(this.selectedItem);
         this.selectedItem = null;
-        console.log(this.checkoutItems);
       }
+    },
+    /**
+     * Confirma a venda e persiste os dados.
+     */
+    confirmSale() {
+      console.log('this.checkoutItems', this.checkoutItems)
     }
   },
   async created() {
