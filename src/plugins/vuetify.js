@@ -16,7 +16,8 @@ const vuetify = createVuetify({
           roxo_w2: '#BDB5FD',
           roxo_w3: '#EAEBFF',
           cinza_w1: '#4e4e4e',
-          cinza_w2: '#afafaf'
+          cinza_w2: '#afafaf',
+          verde_w1: '#2a6138',
         },
       },
     },

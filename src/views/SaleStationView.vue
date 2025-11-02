@@ -62,16 +62,18 @@
       </v-col>
       <v-col cols="12" md="4">
         <div>
-          <div class="border-thin">
-            Sales Resume
-          </div>
-          <v-btn 
-            @click="confirmSale"
-            color="success"
-          >
-            Confirmar
-          </v-btn>
+          <CheckoutResum />
         </div>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-btn
+          @click="confirmSale"
+          color="roxo_w2"
+        >
+          Finalizar Venda
+        </v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -81,13 +83,15 @@ import TitlePage from '@/components/TitlePage.vue';
 import QuickActionCard from '@/components/QuickActionCard.vue';
 import CheckoutList from '@/components/CheckoutList.vue';
 import { mapGetters, mapActions } from 'vuex';
+import CheckoutResum from '@/components/CheckoutResum.vue';
 
 export default {
   name: 'SaleStation',
   components: {
     TitlePage,
     QuickActionCard,
-    CheckoutList
+    CheckoutList,
+    CheckoutResum
   },
   data() {
     return {
