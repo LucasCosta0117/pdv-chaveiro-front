@@ -126,6 +126,11 @@ export default {
      * @param updatedItem Item da tabela de checkout modificado.
      */
     updateItem(updatedItem) {
+      // Limita o desconto ao preço do item
+      if (updatedItem.discount > (updatedItem.price * updatedItem.quantity)) {
+        updatedItem.discount = (updatedItem.price * updatedItem.quantity);
+      }
+
       updatedItem.total = this.calcTotal(updatedItem);
       const updatedList = this.checkoutItems.map(item =>
         item.id === updatedItem.id ? { ...updatedItem } : item
