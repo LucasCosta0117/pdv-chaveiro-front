@@ -46,7 +46,7 @@
         density="compact"
         hide-details
         variant="solo"
-        prefix="R$"
+        prefix="- R$"
         flat
         style="width: 110px"
         @change="updateItem(item)"
@@ -127,9 +127,9 @@ export default {
      */
     updateItem(updatedItem) {
       // Limita o desconto ao preço do item
-      if (updatedItem.discount > (updatedItem.price * updatedItem.quantity)) {
-        updatedItem.discount = (updatedItem.price * updatedItem.quantity);
-      }
+      if (updatedItem.discount > (updatedItem.price * updatedItem.quantity))  updatedItem.discount = (updatedItem.price * updatedItem.quantity);
+      // Valida que desconto não seja negativo
+      if (updatedItem.discount < 0) updatedItem.discount = 0;
 
       updatedItem.total = this.calcTotal(updatedItem);
       const updatedList = this.checkoutItems.map(item =>
