@@ -160,6 +160,8 @@ export default {
     togglePayment(index) {
       this.paymentOptions[index].enabled = !this.paymentOptions[index].enabled;
       this.paymentOptions[index].amount = this.paymentOptions[index].enabled ? this.newSale.total : 0;
+
+      // Atribui/remove as formas de pagamentos selecionadas à ordem de venda
       if (this.paymentOptions[index].enabled) {
         this.newSale.payment.push({
           name: this.paymentOptions[index].text,
