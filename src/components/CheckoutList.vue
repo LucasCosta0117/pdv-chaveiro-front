@@ -48,7 +48,8 @@
         variant="solo"
         prefix="- R$"
         flat
-        style="width: 110px"
+        style="width: 140px"
+        clearable
         @change="updateItem(item)"
       />
     </template>

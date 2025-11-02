@@ -70,7 +70,7 @@
       :key="index"
       class="d-flex"
     >
-      <v-col cols="7" sm="9" md="8" class="pb-1 pt-0" @click="togglePayment(index)">
+      <v-col cols="6" sm="9" md="8" class="pb-1 pt-0" @click="togglePayment(index)">
         <v-btn
           :prepend-icon="payment.icon"
           color="verde_w1"
@@ -81,7 +81,7 @@
           {{ payment.text }}
         </v-btn>
       </v-col>
-      <v-col cols="5" sm="3" md="4" class="pb-1 pt-0">
+      <v-col cols="6" sm="3" md="4" class="pb-1 pt-0">
         <v-text-field
           v-model.number="payment.amount"
           :disabled="!payment.enabled"
@@ -91,6 +91,7 @@
           variant="solo"
           prefix="R$"
           hide-details
+          clearable
           flat
           @change="updatePaymentAmount(payment)"
         />
