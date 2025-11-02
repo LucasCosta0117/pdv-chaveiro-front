@@ -62,7 +62,10 @@
       </v-col>
       <v-col cols="12" md="4">
         <div>
-          <CheckoutResum />
+          <CheckoutResum
+            v-model:sale-resum="saleResum"
+            :checkout-items="checkoutItems"
+          />
         </div>
       </v-col>
     </v-row>
@@ -100,7 +103,8 @@ export default {
       showQuickActions: false,
       selectedItem: null,
       search: '',
-      checkoutItems: []
+      checkoutItems: [],
+      saleResum: {}
     }
   },
   computed: {

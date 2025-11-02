@@ -4,12 +4,10 @@
       <v-col cols="7" sm="9" md="8">Subtotal</v-col>
       <v-col cols="5" sm="3" md="4" class="pb-1 pt-0">
         <v-text-field
-          :model-value="1234.55"
-          :min="0"
-          type="number"
+          :value="$formatCurrency(newSale.subtotal)"
           density="compact"
           variant="solo"
-          prefix="R$"
+          readonly
           hide-details
           flat
         />
@@ -26,12 +24,10 @@
       <v-col cols="7" sm="9" md="8">Descontos</v-col>
       <v-col cols="5" sm="3" md="4" class="pb-1 pt-0">
         <v-text-field
-          :model-value="20.95"
-          :min="0"
-          type="number"
+          :value="$formatCurrency(newSale.discounts)"
           density="compact"
           variant="solo"
-          prefix="R$"
+          readonly
           hide-details
           flat
         />
@@ -45,15 +41,14 @@
     </v-row>
 
     <v-row>
-      <v-col cols="7" sm="9" md="8">Total</v-col>
+      <v-col cols="7" sm="9" md="8" class="font-weight-bold">Total</v-col>
       <v-col cols="5" sm="3" md="4" class="pb-1 pt-0">
         <v-text-field
-          :model-value="80.15"
-          :min="0"
-          type="number"
+          :value="$formatCurrency(newSale.total)"
           density="compact"
           variant="solo"
-          prefix="R$"
+          class="font-weight-bold"
+          readonly
           hide-details
           flat
         />
@@ -106,8 +101,18 @@
 export default {
   name: 'CheckoutResum',
   props: {
-    //
+    // Conjunto de itens (Produtos/Serviços) adicionados a lista de checkout de vendas.
+    saleResum: {
+      type: Object,
+      required: true
+    },
+    // Conjunto de itens (Produtos/Serviços) adicionados a lista de checkout de vendas.
+    checkoutItems: {
+      type: Array,
+      required: true
+    }
   },
+  emits:['update:saleResum'],
   data() {
     return {
       // Opções de método de pagamento
@@ -119,6 +124,28 @@ export default {
       ]
     }
   },
+  computed: {
+    newSale: {
+      get() {
+        const saleValue = {};
+        // console.log(this.checkoutItems)
+        saleValue.subtotal = this.checkoutItems.reduce(
+          (accumulator, item) => accumulator + (item.quantity * item.price),
+          0
+        );
+        saleValue.discounts = this.checkoutItems.reduce(
+          (accumulator, item) => accumulator + (item.discount),
+          0
+        );
+        saleValue.total = saleValue.subtotal - saleValue.discounts;
+        // console.log('saleValue', saleValue)
+        return saleValue;
+      },
+      set(value) {
+        this.$emit('update:saleResum', value)
+      }
+    }
+  },
   methods: {
     /**
      * Habilita uma das opções do método de pagamento dentre as disponíveis.
@@ -127,6 +154,7 @@ export default {
      */
     togglePayment(index) {
       this.paymentOptions[index].enabled = !this.paymentOptions[index].enabled;
+      this.paymentOptions[index].amount = this.paymentOptions[index].enabled ? this.newSale.total : 0;
     }
   }
 }
