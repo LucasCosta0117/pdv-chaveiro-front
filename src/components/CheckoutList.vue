@@ -4,7 +4,7 @@
     :items="enhancedItems"
     class="checkout-table-container border-thin"
     density="comfortable"
-    striped="odd"
+    striped="even"
     hide-default-footer
     hide-no-data
     hover
@@ -30,9 +30,9 @@
         flat
         inset
         :min="1"
-        :max="item.stock ?? 999"
+        :max="item.stock || 999"
         style="width: 150px"
-        @change="updateItem(item)"
+        @update:model-value="(val) => onNumbInputChange(item, val)"
       />
     </template>
 
@@ -41,13 +41,14 @@
       <v-text-field
         v-model.number="item.discount"
         type="number"
-        min="0"
+        :min="0"
         :max="item.price"
         density="compact"
         hide-details
         variant="solo"
+        prefix="R$"
         flat
-        style="width: 90px"
+        style="width: 110px"
         @change="updateItem(item)"
       />
     </template>
@@ -124,7 +125,19 @@ export default {
      * @param item Item da tabela de checkout.
      */
     calcTotal(item) {
-      return (item.price * item.quantity) - item.discount;
+      const tot = (item.price * item.quantity) - item.discount
+      return (tot < 0) ? 0 : tot;
+    },
+    /**
+     * Garante o controle explícito sobre a atualização do v-number-input,
+     * inclusive via botões de controle.
+     * 
+     * @param item  Item da tabela de checkout.
+     * @param val   Valor atualizado dentro do v-number-input.
+     */
+    onNumbInputChange(item, val) {
+      item.quantity = val;
+      this.updateItem(item);
     },
     /**
      * Atualiza um item dentro da lista de checkout aprimorada.
@@ -162,5 +175,11 @@ export default {
 .checkout-table-container :deep(thead th) {
   background-color: rgb(var(--v-theme-roxo_w1));
   color: white;
+}
+:deep(.v-number-input input) {
+  font-size: 0.875rem;
+}
+:deep(.v-field input) {
+  font-size: 0.875rem;
 }
 </style>
