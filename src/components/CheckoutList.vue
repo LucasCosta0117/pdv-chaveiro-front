@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="enhancedItems"
+    :items="checkoutItems"
     class="checkout-table-container border-thin"
     density="comfortable"
     striped="even"
@@ -99,25 +99,6 @@ export default {
       ],
     };
   },
-  computed: {
-    /**
-     * Cria uma cópia da lista de checkout aprimorada, itens com campos extras.
-     */
-    enhancedItems: {
-      get() {
-        return this.checkoutItems.map(item => ({
-          ...item,
-          quantity: item.quantity ?? 1,
-          discount:  item.discount ?? 0,
-          total: item.total ?? item.price
-        }))
-      },
-      set(updatedItems) {
-        // Retorna o checkoutItems aprimorado de volta ao componente pai
-        this.$emit('update:checkoutItems', updatedItems)
-      }
-    }
-  },
   methods: {
     /**
      * Atualiza o valor 'Total' do item com base nas células 'Qtd' e 'Desc.''
@@ -146,10 +127,10 @@ export default {
      */
     updateItem(updatedItem) {
       updatedItem.total = this.calcTotal(updatedItem);
-      const updatedList = this.enhancedItems.map(item =>
+      const updatedList = this.checkoutItems.map(item =>
         item.id === updatedItem.id ? { ...updatedItem } : item
       );
-      this.enhancedItems = updatedList;
+      this.$emit('update:checkoutItems', updatedList);
     },
     /**
      * Exclui o item da lista de checkout aprimorada.
@@ -157,8 +138,8 @@ export default {
      * @param itemToRemove Item removido da tabela de checkout.
      */
     removeItem(itemToRemove) {
-      const filtered = this.enhancedItems.filter(item => item.id !== itemToRemove.id);
-      this.enhancedItems = filtered;
+      const filtered = this.checkoutItems.filter(item => item.id !== itemToRemove.id);
+      this.$emit('update:checkoutItems', filtered);
     }
   }
 };

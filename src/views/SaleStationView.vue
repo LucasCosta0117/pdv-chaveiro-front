@@ -48,7 +48,7 @@
           <v-btn
             class="ml-2"
             color="roxo_w1"
-            @click="addSelectedItem"
+            @click="addToCheckout"
             :disabled="!selectedItem"
           >
             Adicionar
@@ -124,9 +124,14 @@ export default {
     /**
      * Adiciona o item selecionado no input à lista de checkout
      */
-    addSelectedItem() {
+    addToCheckout() {
       if (this.selectedItem) {
-        this.checkoutItems.push(this.selectedItem);
+        this.checkoutItems.push({
+          ...this.selectedItem,
+          quantity: 1,
+          discount:  0,
+          total: this.selectedItem.price
+        });
         this.selectedItem = null;
       }
     },
