@@ -131,15 +131,16 @@ export default {
       get() {
         const saleValue = {};
 
-        saleValue.subtotal = this.checkoutItems.reduce(
+        saleValue.subtotal = parseFloat(this.checkoutItems.reduce(
           (accumulator, item) => accumulator + (item.quantity * item.price),
           0
-        );
-        saleValue.discounts = this.checkoutItems.reduce(
+        ).toFixed(2));
+        saleValue.discounts = parseFloat(this.checkoutItems.reduce(
           (accumulator, item) => accumulator + (item.discount),
           0
-        );
-        saleValue.total = saleValue.subtotal - saleValue.discounts;
+        ).toFixed(2));
+        saleValue.total = parseFloat((saleValue.subtotal - saleValue.discounts).toFixed(2));
+        saleValue.due = parseFloat((saleValue.subtotal - saleValue.discounts).toFixed(2)); // Variável auxiliar para controle no pagamento
         saleValue.payment = [];
 
         this.$emit('update:saleResum', saleValue);
@@ -159,7 +160,7 @@ export default {
      */
     togglePayment(index) {
       this.paymentOptions[index].enabled = !this.paymentOptions[index].enabled;
-      this.paymentOptions[index].amount = this.paymentOptions[index].enabled ? this.newSale.total : 0;
+      this.paymentOptions[index].amount = this.paymentOptions[index].enabled ? parseFloat((this.newSale.total).toFixed(2)) : 0;
 
       // Atribui/remove as formas de pagamentos selecionadas à ordem de venda
       if (this.paymentOptions[index].enabled) {
