@@ -24,7 +24,7 @@
       <v-col cols="7" sm="9" md="8">Descontos</v-col>
       <v-col cols="5" sm="3" md="4" class="pb-1 pt-0">
         <v-text-field
-          :value="$formatCurrency(newSale.discounts)"
+          :value="`- ${$formatCurrency(newSale.discounts)}`"
           density="compact"
           variant="solo"
           readonly
@@ -92,6 +92,7 @@
           prefix="R$"
           hide-details
           flat
+          @change="updatePaymentAmount(payment)"
         />
       </v-col>
     </v-row>
@@ -128,7 +129,7 @@ export default {
     newSale: {
       get() {
         const saleValue = {};
-        // console.log(this.checkoutItems)
+
         saleValue.subtotal = this.checkoutItems.reduce(
           (accumulator, item) => accumulator + (item.quantity * item.price),
           0
@@ -138,11 +139,14 @@ export default {
           0
         );
         saleValue.total = saleValue.subtotal - saleValue.discounts;
-        // console.log('saleValue', saleValue)
+        saleValue.payment = [];
+
+        this.$emit('update:saleResum', saleValue);
+
         return saleValue;
       },
       set(value) {
-        this.$emit('update:saleResum', value)
+        this.$emit('update:saleResum', value);
       }
     }
   },
@@ -155,6 +159,33 @@ export default {
     togglePayment(index) {
       this.paymentOptions[index].enabled = !this.paymentOptions[index].enabled;
       this.paymentOptions[index].amount = this.paymentOptions[index].enabled ? this.newSale.total : 0;
+      if (this.paymentOptions[index].enabled) {
+        this.newSale.payment.push({
+          name: this.paymentOptions[index].text,
+          amount: this.paymentOptions[index].amount
+        })
+      } else {
+        this.newSale.payment = this.newSale.payment.filter(
+          p => p.name !== this.paymentOptions[index].text
+        );
+      }
+    },
+    /**
+     * Atualiza o valor de um método de pagamento específico (payment.amount),
+     * dentro do array final de pagamentos da venda (this.newSale.payment).
+     *
+     * @param {Object} payment O objeto completo do método de pagamento.
+     */
+    updatePaymentAmount(payment) {
+      // console.log('value', value)
+      console.log('payment', payment)
+      this.newSale.payment = this.newSale.payment.map( p => {
+        if (p.name === payment.text) {
+          p.amount = payment.amount;
+        }
+        
+        return p;
+      });
     }
   }
 }
