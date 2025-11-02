@@ -177,8 +177,6 @@ export default {
      * @param {Object} payment O objeto completo do método de pagamento.
      */
     updatePaymentAmount(payment) {
-      // console.log('value', value)
-      console.log('payment', payment)
       this.newSale.payment = this.newSale.payment.map( p => {
         if (p.name === payment.text) {
           p.amount = payment.amount;
