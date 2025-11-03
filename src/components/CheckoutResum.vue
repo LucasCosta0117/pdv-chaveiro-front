@@ -63,7 +63,7 @@
 
     <!-- Lista de opções de pagamento -->
     <v-row>
-      <v-col>Método de pagamento</v-col>
+      <v-col>Pagamento</v-col>
     </v-row>
     <v-row  
       v-for="(payment, index) in paymentOptions" 
