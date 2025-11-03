@@ -72,8 +72,9 @@
     <v-row>
       <v-col>
         <v-btn
-          @click="confirmSale"
-          color="roxo_w2"
+          @click="finishSale"
+          color="roxo_w1"
+          :disabled="!this.checkoutItems.length"
         >
           Finalizar Venda
         </v-btn>
@@ -142,8 +143,42 @@ export default {
     /**
      * Confirma a venda e persiste os dados.
      */
-    confirmSale() {
-      console.log('this.checkoutItems', this.checkoutItems)
+    finishSale() {
+      // Atribui os itens da lista de checkout à ordem de venda
+      this.saleResum.items = this.checkoutItems.map(item => {
+        return {
+          id: item.id,
+          type: (item.stock) ? 'product' : 'job',
+          quantity: item.quantity,
+          discount: item.discount
+        }
+      });
+
+      const verifyPaidMsg = this.verifyAmountPaid();
+
+      if(verifyPaidMsg) {
+        this.$store.dispatch('ui/notify',  { message: verifyPaidMsg, color: 'error' }, { root: true } );
+        return;
+      };
+
+      console.log('this.saleResum', this.saleResum);
+    },
+    /**
+     * Verifica se o valor total informado no pagamento está coerente com o valor total dos itens.
+     */
+    verifyAmountPaid() {
+      const totalPaid = this.saleResum.payment.reduce(
+        (acc,item) => acc + item.amount,
+        0
+      )
+      
+      const msgFail1 = `Nenhum valor informado no Pagamento.`;
+      if (totalPaid == 0) return msgFail1;
+      
+      const msgFail2 = `O valor no Pagamento (R$ ${totalPaid.toFixed(2)}) é maior que o Total dos itens (R$ ${this.saleResum.total.toFixed(2)}).`;
+      if (totalPaid > this.saleResum.total) return msgFail2;
+
+      return false;
     }
   },
   async created() {
