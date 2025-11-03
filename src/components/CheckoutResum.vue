@@ -94,6 +94,7 @@
           clearable
           flat
           @change="updatePaymentAmount(payment)"
+          @click:clear="clearPaymentAmount(payment)"
         />
       </v-col>
     </v-row>
@@ -188,7 +189,16 @@ export default {
         
         return p;
       });
-    }
+    },
+    /**
+     * Forçar a atualização do valor zerado após interação com o botão 'clearable'.
+     * 
+     * @param {Object} payment O objeto completo do método de pagamento. 
+     */
+    clearPaymentAmount(payment) {
+      payment.amount = 0;
+      this.updatePaymentAmount(payment);
+    },
   }
 }
 </script>
