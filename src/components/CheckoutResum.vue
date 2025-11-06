@@ -137,9 +137,10 @@ export default {
           0
         ).toFixed(2));
         saleValue.discounts = parseFloat(this.checkoutItems.reduce(
-          (accumulator, item) => accumulator + (item.discount),
-          0
-        ).toFixed(2));
+          (accumulator, item) => {
+            const discountValue = item.discount || 0;
+            return accumulator + discountValue;
+          }, 0).toFixed(2));
         saleValue.total = parseFloat((saleValue.subtotal - saleValue.discounts).toFixed(2));
         saleValue.due = parseFloat((saleValue.subtotal - saleValue.discounts).toFixed(2)); // Variável auxiliar para controle no pagamento
         saleValue.payment = [];
@@ -166,12 +167,12 @@ export default {
       // Atribui/remove as formas de pagamentos selecionadas à ordem de venda
       if (this.paymentOptions[index].enabled) {
         this.newSale.payment.push({
-          name: this.paymentOptions[index].text,
+          method: this.paymentOptions[index].text,
           amount: this.paymentOptions[index].amount
         })
       } else {
         this.newSale.payment = this.newSale.payment.filter(
-          p => p.name !== this.paymentOptions[index].text
+          p => p.method !== this.paymentOptions[index].text
         );
       }
     },
@@ -183,7 +184,7 @@ export default {
      */
     updatePaymentAmount(payment) {
       this.newSale.payment = this.newSale.payment.map( p => {
-        if (p.name === payment.text) {
+        if (p.method === payment.text) {
           p.amount = payment.amount;
         }
         
