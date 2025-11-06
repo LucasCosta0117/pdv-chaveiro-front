@@ -150,7 +150,8 @@ export default {
           id: item.id,
           type: (item.stock) ? 'product' : 'job',
           quantity: item.quantity,
-          discount: item.discount
+          unit_price: item.price,
+          unit_discount: item.discount
         }
       });
 
