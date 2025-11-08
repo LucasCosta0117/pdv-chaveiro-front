@@ -176,8 +176,8 @@ export default {
       const msgFail1 = `Nenhum valor informado no Pagamento.`;
       if (totalPaid == 0) return msgFail1;
       
-      const msgFail2 = `O valor no Pagamento (R$ ${totalPaid.toFixed(2)}) é maior que o Total dos itens (R$ ${this.saleResum.total.toFixed(2)}).`;
-      if (totalPaid > this.saleResum.total) return msgFail2;
+      const msgFail2 = `O valor do Pagamento (R$ ${totalPaid.toFixed(2)}) não corresponde ao valor Total dos itens (R$ ${this.saleResum.total.toFixed(2)}).`;
+      if (totalPaid !== this.saleResum.total) return msgFail2;
 
       return false;
     }

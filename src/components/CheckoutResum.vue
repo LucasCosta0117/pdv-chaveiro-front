@@ -142,7 +142,6 @@ export default {
             return accumulator + discountValue;
           }, 0).toFixed(2));
         saleValue.total = parseFloat((saleValue.subtotal - saleValue.discounts).toFixed(2));
-        saleValue.due = parseFloat((saleValue.subtotal - saleValue.discounts).toFixed(2)); // Variável auxiliar para controle no pagamento
         saleValue.payment = [];
 
         this.$emit('update:saleResum', saleValue);
