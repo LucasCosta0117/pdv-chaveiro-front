@@ -162,7 +162,8 @@ export default {
         return;
       };
 
-      console.log('this.saleResum', this.saleResum);
+      this.$store.dispatch('sales/saveSale', this.saleResum);
+      //@todo verificar se o retorno do save for 'true', para limpar os dados do componente (this.saleResum e this.checkoutItems)
     },
     /**
      * Verifica se o valor total informado no pagamento está coerente com o valor total dos itens.

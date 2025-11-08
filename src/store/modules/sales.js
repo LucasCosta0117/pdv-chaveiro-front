@@ -32,14 +32,15 @@ export default {
         dispatch('ui/stopLoading', null, { root: true });
       }
     },
-    async saveSale({ commit, dispatch }) {
+    async saveSale({ commit, dispatch }, newSale) {
       try {
         dispatch('ui/startLoading', null, { root: true });
-
-        const response = await api.post('/sale/save', saleData);
+        
+        console.log('newSale', newSale)
+        const response = await api.post('/sale/save', newSale);
         commit('setItems', response.data);
 
-        dispatch('ui/notify', { 
+        dispatch('ui/notify', {
           message: 'Venda registrada com sucesso!',
           color: 'success'
         }, { root: true });
