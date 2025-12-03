@@ -22,7 +22,7 @@
     <!-- Coluna: Quantidade (editável) -->
     <template #item.quantity="{ item }">
       <v-number-input
-        class="d-flex"
+        class="d-flex custom-qtd-input"
         v-model="item.quantity"
         controlVariant="split"
         density="compact"
@@ -31,7 +31,6 @@
         inset
         :min="1"
         :max="item.stock || 999"
-        style="width: 150px"
         @update:model-value="(val) => onNumbInputChange(item, val)"
       />
     </template>
@@ -39,6 +38,7 @@
     <!-- Coluna: Desconto (editável) -->
     <template #item.discount="{ item }">
       <v-text-field
+        class="d-flex custom-desc-input"
         v-model.number="item.discount"
         type="number"
         :min="0"
@@ -92,6 +92,7 @@ export default {
       // Colunas do cabeçalho da tabela de checkout
       headers: [
         { title: 'Item', key: 'name' },
+        { title: 'Código', key: 'code' },
         { title: 'Preço', key: 'price' },
         { title: 'Qtd', key: 'quantity' },
         { title: 'Desc.', key: 'discount' },
@@ -168,5 +169,20 @@ export default {
 }
 :deep(.v-field input) {
   font-size: 0.875rem;
+}
+:deep(.custom-qtd-input .v-field) {
+  display: flex;
+}
+:deep(.custom-qtd-input .v-input__details) {
+  display: none;
+}
+:deep(.custom-qtd-input .v-field__input) {
+  width: 3rem;
+}
+:deep(.custom-desc-input .v-field) {
+  display: flex;
+}
+:deep(.custom-desc-input .v-field__input) {
+  width: 4rem;
 }
 </style>
