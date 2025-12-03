@@ -1,8 +1,8 @@
 <template>
   <v-container class="checkout-resum-container border-thin">
     <v-row>
-      <v-col cols="7" sm="9" md="8">Subtotal</v-col>
-      <v-col cols="5" sm="3" md="4" class="pb-1 pt-0">
+      <v-col cols="7" sm="9" md="7">Subtotal</v-col>
+      <v-col cols="5" sm="3" md="5" class="pb-1 pt-0">
         <v-text-field
           :value="$formatCurrency(newSale.subtotal)"
           density="compact"
@@ -21,8 +21,8 @@
     </v-row>
 
     <v-row>
-      <v-col cols="7" sm="9" md="8">Descontos</v-col>
-      <v-col cols="5" sm="3" md="4" class="pb-1 pt-0">
+      <v-col cols="7" sm="9" md="7">Descontos</v-col>
+      <v-col cols="5" sm="3" md="5" class="pb-1 pt-0">
         <v-text-field
           :value="`- ${$formatCurrency(newSale.discounts)}`"
           density="compact"
@@ -41,8 +41,8 @@
     </v-row>
 
     <v-row>
-      <v-col cols="7" sm="9" md="8" class="font-weight-bold">Total</v-col>
-      <v-col cols="5" sm="3" md="4" class="pb-1 pt-0">
+      <v-col cols="7" sm="9" md="7" class="font-weight-bold">Total</v-col>
+      <v-col cols="5" sm="3" md="5" class="pb-1 pt-0">
         <v-text-field
           :value="$formatCurrency(newSale.total)"
           density="compact"
@@ -70,7 +70,7 @@
       :key="index"
       class="d-flex"
     >
-      <v-col cols="6" sm="9" md="8" class="pb-1 pt-0" @click="togglePayment(index)">
+      <v-col cols="6" sm="9" md="5" class="pb-1 pt-0" @click="togglePayment(index)">
         <v-btn
           :prepend-icon="payment.icon"
           color="verde_w1"
@@ -81,7 +81,7 @@
           {{ payment.text }}
         </v-btn>
       </v-col>
-      <v-col cols="6" sm="3" md="4" class="pb-1 pt-0">
+      <v-col cols="6" sm="3" md="7" class="pb-1 pt-0">
         <v-text-field
           v-model.number="payment.amount"
           :disabled="!payment.enabled"
