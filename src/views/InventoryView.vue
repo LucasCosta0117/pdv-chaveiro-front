@@ -116,10 +116,11 @@ export default {
         case 'product':
           this.tableHeader = [
             { title: 'Produto', key: 'name' },
-            { title: 'Marca', key: 'brand' },
-            { title: 'Preço', key: 'price' },
             { title: 'Código', key: 'code' },
-            { title: 'Estoque', key: 'stock' }
+            { title: 'Preço', key: 'price' },
+            { title: 'Estoque', key: 'stock' },
+            { title: 'Categoria', key: 'category', filterable: true },
+            { title: 'Subcategoria', key: 'subcategory', filterable: true }
           ];
           this.tableDetails = [
             { title: 'Produto', key: 'name' },
@@ -139,7 +140,9 @@ export default {
           this.tableHeader = [
             { title: 'Serviço', key: 'name' },
             { title: 'Preço', key: 'price' },
-            { title: 'Código', key: 'code' }
+            { title: 'Código', key: 'code' },
+            { title: 'Categoria', key: 'category', filterable: true },
+            { title: 'Subcategoria', key: 'subcategory', filterable: true }
           ];
           this.tableDetails = [
             { title: 'Serviço', key: 'name' },
