@@ -128,6 +128,7 @@ export default {
     }
   },
   computed: {
+    // Permite armazenar/manipular todas as informações de uma nova venda antes de finaliza-la.
     newSale: {
       get() {
         const saleValue = {};
@@ -136,13 +137,23 @@ export default {
           (accumulator, item) => accumulator + (item.quantity * item.price),
           0
         ).toFixed(2));
+
         saleValue.discounts = parseFloat(this.checkoutItems.reduce(
           (accumulator, item) => {
             const discountValue = item.discount || 0;
             return accumulator + discountValue;
           }, 0).toFixed(2));
+
         saleValue.total = parseFloat((saleValue.subtotal - saleValue.discounts).toFixed(2));
-        saleValue.payment = [];
+
+        saleValue.payment = this.paymentOptions
+          .filter( payment => payment.amount > 0)
+          .map( p => (
+            {
+              method: p.text,
+              amount: p.amount
+            }
+          ));
 
         this.$emit('update:saleResum', saleValue);
 
@@ -163,13 +174,8 @@ export default {
       this.paymentOptions[index].enabled = !this.paymentOptions[index].enabled;
       this.paymentOptions[index].amount = this.paymentOptions[index].enabled ? parseFloat((this.newSale.total).toFixed(2)) : 0;
 
-      // Atribui/remove as formas de pagamentos selecionadas à ordem de venda
-      if (this.paymentOptions[index].enabled) {
-        this.newSale.payment.push({
-          method: this.paymentOptions[index].text,
-          amount: this.paymentOptions[index].amount
-        })
-      } else {
+      // Remove as formas de pagamentos desabilitadas da ordem de venda
+      if (!this.paymentOptions[index].enabled) {
         this.newSale.payment = this.newSale.payment.filter(
           p => p.method !== this.paymentOptions[index].text
         );
