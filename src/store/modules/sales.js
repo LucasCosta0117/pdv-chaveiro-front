@@ -35,8 +35,7 @@ export default {
     async saveSale({ commit, dispatch }, newSale) {
       try {
         dispatch('ui/startLoading', null, { root: true });
-        
-        console.log('newSale', newSale)
+
         const response = await api.post('/sale/save', newSale);
         commit('setItems', response.data);
 
@@ -44,14 +43,17 @@ export default {
           message: 'Venda registrada com sucesso!',
           color: 'success'
         }, { root: true });
+
+        return true;
       } catch (error) {
         const msgError = 'Erro ao registrar a venda';
         dispatch('ui/notify',  { 
           message: msgError, 
           color: 'error' 
         }, { root: true } );
-        
         console.error('Erro ao salvar venda: ', error);
+
+        return false;
       } finally {
         dispatch('ui/stopLoading', null, { root: true });
       }

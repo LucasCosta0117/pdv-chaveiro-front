@@ -143,7 +143,7 @@ export default {
     /**
      * Confirma a venda e persiste os dados.
      */
-    finishSale() {
+    async finishSale() {
       // Atribui os itens da lista de checkout à ordem de venda
       this.saleResum.items = this.checkoutItems.map(item => {
         return {
@@ -162,8 +162,12 @@ export default {
         return;
       };
 
-      this.$store.dispatch('sales/saveSale', this.saleResum);
-      //@todo verificar se o retorno do save for 'true', para limpar os dados do componente (this.saleResum e this.checkoutItems)
+      const hasSaveSale = await this.$store.dispatch('sales/saveSale', this.saleResum);
+
+      if (hasSaveSale) {
+        this.checkoutItems = [];
+        this.saleResum = {};
+      }
     },
     /**
      * Verifica se o valor total informado no pagamento está coerente com o valor total dos itens.
