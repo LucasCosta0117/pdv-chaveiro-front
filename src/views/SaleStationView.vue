@@ -5,7 +5,7 @@
         <TitlePage :title="title" :subtitle="subtitle" />
       </v-col>
     </v-row>
-    <v-row>
+    <v-row class="d-none">
       <v-col cols="12" class="d-flex">
         <h4 class="mr-2">Ações Rápidas</h4>
         <v-icon 
