@@ -10,9 +10,20 @@
       :search="search"
       @click:row="openDialog"
     >
-      <!-- Formatação para coluna monetária -->
-      <template #item.price="{ item }">
-        {{ $formatCurrency(item.price) }}
+      <template v-for="header in headers" :key="header.key" #[`item.${header.key}`]="{ value, column }">
+        <!-- Formatação para coluna monetária -->
+        <template v-if="column.type === 'currency'">
+          {{ $formatCurrency(value) }}
+        </template>
+
+        <!-- Formatação para coluna date/time -->
+        <template v-else-if="column.type === 'date'">
+          {{ $formatDateTime(value) }}
+        </template>
+
+        <template v-else>
+          {{ value }}
+        </template>
       </template>
     </v-data-table>
 

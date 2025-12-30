@@ -117,7 +117,7 @@ export default {
           this.tableHeader = [
             { title: 'Produto', key: 'name' },
             { title: 'Código', key: 'code' },
-            { title: 'Preço', key: 'price' },
+            { title: 'Preço', key: 'price', type: 'currency' },
             { title: 'Estoque', key: 'stock' },
             { title: 'Categoria', key: 'category', filterable: true },
             { title: 'Subcategoria', key: 'subcategory', filterable: true }

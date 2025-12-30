@@ -49,7 +49,7 @@ export default {
   data() {
     return {
       // Título da página
-      title: 'HIstórico de Vendas',
+      title: 'Histórico de Vendas',
       // Subtítulo da página
       subtitle: 'Consulte as vendas realizadas em sua loja',
       // Array de objetos que define as colunas da tabela.
@@ -72,11 +72,11 @@ export default {
       await this.fetchSales();
     }
     this.tableHeader = [
-      { title: 'Código', key: 'code' },
-      { title: 'Data Venda', key: 'createdAt' },
-      { title: 'Subtotal', key: 'subtotal' },
-      { title: 'Descontos', key: 'totalDiscount' },
-      { title: 'Total Pago', key: 'total'},
+      { title: 'Código', key: 'code'},
+      { title: 'Data Venda', key: 'createdAt', type: 'date' },
+      { title: 'Subtotal', key: 'subtotal', type: 'currency' },
+      { title: 'Descontos', key: 'totalDiscount', type: 'currency' },
+      { title: 'Total Pago', key: 'total', type: 'currency'},
       { title: 'Status Pagamento', key: 'paymentStatus'}
     ];
     this.tableDetails = [
