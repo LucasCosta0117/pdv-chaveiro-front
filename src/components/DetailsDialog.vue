@@ -1,12 +1,10 @@
 <template>
   <v-dialog v-model="isOpen" max-width="600px">
     <v-card>
-      <v-card-title class="text-h6 font-weight-bold">
+      <v-card-title class="text-h5 font-weight-bold">
         {{ selectedItem[details.header?.titleKey] }}
       </v-card-title>
-
-      <v-card-subtitle>{{ selectedItem[details.header?.subtitleKey] }}</v-card-subtitle>
-
+      
       <v-card-text>
         <v-row>
           <v-col cols="12" sm="6" v-if="details.header.imgKey">

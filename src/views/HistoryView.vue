@@ -82,11 +82,11 @@ export default {
     this.tableDetails = {
       header: {
         titleKey: 'code',
-        subtitleKey: 'userId',
         imgKey: ''
       },
       fields: [
         { text: 'Data Venda', key: 'createdAt', type: 'date' },
+        { text: 'Vendedor', key: 'sellerName'},
         { text: 'Subtotal', key: 'subtotal', type: 'currency' },
         { text: 'Descontos', key: 'totalDiscount', type: 'currency' },
         { text: 'Total Pago', key: 'total', type: 'currency'},
@@ -94,10 +94,10 @@ export default {
         { text: 'Nota Fiscal', key: 'fiscalNumber' },
         { text: 'Produtos/Serviços', key: 'items', type: 'list', 
           subFields: [
-            { text: 'Item', key: 'itemId'},
-            { text: 'Qtd', key: 'quantity'},
+            { text: 'Item', key: 'itemName'},
             { text: 'Preço Unitário', key: 'unitPrice', type: 'currency' },
-            { text: 'Desconto', key: 'unitDiscount', type: 'currency' }
+            { text: 'Desconto', key: 'discount', type: 'currency' },
+            { text: 'Qtd', key: 'quantity'}
           ]
         },
         { text: 'Pagamento', key: 'payments', type: 'list', 

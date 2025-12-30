@@ -125,7 +125,6 @@ export default {
           this.tableDetails = {
             header: {
               titleKey: 'name',
-              subtitleKey: 'brand',
               imgKey: 'imgUrl'
             },
             fields: [

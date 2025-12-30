@@ -151,7 +151,7 @@ export default {
           type: (item.stock) ? 'product' : 'job',
           quantity: item.quantity,
           unit_price: item.price,
-          unit_discount: item.discount
+          discount: item.discount
         }
       });
 
