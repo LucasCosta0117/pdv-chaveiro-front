@@ -27,7 +27,8 @@ export default {
           color: 'error' 
         }, { root: true } );
 
-        console.error('Erro ao carregar produtos: ', error);
+        commit('setItems', []);
+        console.error('Erro ao carregar o histórico de vendas', error);
       } finally {
         dispatch('ui/stopLoading', null, { root: true });
       }
@@ -35,6 +36,8 @@ export default {
     async saveSale({ commit, dispatch }, newSale) {
       try {
         dispatch('ui/startLoading', null, { root: true });
+
+        newSale.sellerName = setSeller();
 
         const response = await api.post('/sale/save', newSale);
         commit('setItems', response.data);
@@ -59,4 +62,14 @@ export default {
       }
     }
   }
+}
+
+/**
+ *  Define o nome do vendedor com base no  Nome e Sobrenome do usuário loggado, 
+ * 
+ * @returns  Vendedor que realizou a venda. 
+ */
+function setSeller() {
+  //@todobuscar da store a partir do user conectado.
+  return 'Lucas Costa';
 }

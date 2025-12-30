@@ -21,7 +21,13 @@ export default {
         commit('setItems', response.data);
       } catch (error) {
         const msgError = 'Erro ao carregar a lista de serviços';
-        dispatch('ui/notify',  { message: msgError, color: 'error' }, { root: true } );
+
+        dispatch('ui/notify',  { 
+          message: msgError, 
+          color: 'error' 
+        }, { root: true } );
+        
+        commit('setItems', []);
         console.error('Erro ao carregar serviços: ', error);
       } finally {
         dispatch('ui/stopLoading', null, { root: true });
