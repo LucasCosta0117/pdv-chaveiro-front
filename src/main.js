@@ -5,7 +5,7 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
 import api from './api/axios'
-import { formatCurrency } from './helpers/formatters'
+import { formatCurrency, formatDateTime } from './helpers/formatters'
 
 loadFonts();
 
@@ -13,6 +13,7 @@ const app = createApp(App);
 
 app.config.globalProperties.$api = api;
 app.config.globalProperties.$formatCurrency = formatCurrency;
+app.config.globalProperties.$formatDateTime = formatDateTime;
 
 app.use(router)
   .use(store)

@@ -23,3 +23,27 @@ export function formatCurrency(value) {
     currency: 'BRL'
   })
 }
+
+/**
+ * Formata uma data do tipo string ISO-8601 para o padrão de data/hora pt-BR (DMY-h:m)
+ * 
+ * @param {string} value - Valor a ser formatado
+ * 
+ * @returns {string} - Valor formatado (ex: "30/12/2025, 12:30")
+ */
+export function formatDateTime(value) {
+  if (!value) return ''
+  
+  const date = new Date(value)
+  
+  // Verifica se a data é válida
+  if (isNaN(date.getTime())) return value
+
+  return date.toLocaleString('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+}
