@@ -40,7 +40,7 @@ export default {
         newSale.sellerName = setSeller();
 
         const response = await api.post('/sale/save', newSale);
-        commit('setItems', response.data);
+        await dispatch('fetchSales');
 
         dispatch('ui/notify', {
           message: 'Venda registrada com sucesso!',
