@@ -144,20 +144,24 @@ export default {
         case 'job':
           this.tableHeader = [
             { title: 'Serviço', key: 'name' },
-            { title: 'Preço', key: 'price' },
+            { title: 'Preço', key: 'price', type: 'currency' },
             { title: 'Código', key: 'code' },
             { title: 'Categoria', key: 'category', filterable: true },
             { title: 'Subcategoria', key: 'subcategory', filterable: true }
           ];
-          this.tableDetails = [
-            { title: 'Serviço', key: 'name' },
-            { title: 'Preço', key: 'price' },
-            { title: 'Código', key: 'code' },
-            { title: 'Categoria', key: 'category' },
-            { title: 'Subcategoria', key: 'subcategory' },
-            { title: 'Disponível', key: 'isActive' }
-          ];
-          
+          this.tableDetails = {
+            header: {
+              titleKey: 'name'
+            },
+            fields: [
+              { text: 'Preço', key: 'price', type: 'currency' },
+              { text: 'Código', key: 'code' },
+              { text: 'Categoria', key: 'category' },
+              { text: 'Subcategoria', key: 'subcategory' },
+              { text: 'Disponível', key: 'isActive', type: 'bool' }
+            ]
+          };
+
           break;
       }
     }
