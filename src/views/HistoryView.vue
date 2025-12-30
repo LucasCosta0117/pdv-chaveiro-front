@@ -74,9 +74,8 @@ export default {
     this.tableHeader = [
       { title: 'Código', key: 'code'},
       { title: 'Data Venda', key: 'createdAt', type: 'date' },
-      { title: 'Subtotal', key: 'subtotal', type: 'currency' },
-      { title: 'Descontos', key: 'totalDiscount', type: 'currency' },
       { title: 'Total Pago', key: 'total', type: 'currency'},
+      { title: 'Vendedor', key: 'sellerName'},
       { title: 'Status Pagamento', key: 'paymentStatus'}
     ];
     this.tableDetails = {
