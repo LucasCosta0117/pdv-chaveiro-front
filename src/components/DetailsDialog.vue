@@ -19,7 +19,7 @@
             />
           </v-col>
 
-          <v-col cols="12" sm="6">
+          <v-col cols="12" :sm="details.header.imgKey ? 6 : 12">
             <div v-for="value in details.fields" :key="value.key">
               <p v-if="value?.type === 'currency'"><strong>{{ value.text }}: </strong>{{ $formatCurrency(selectedItem[value.key]) }}</p>
               <p v-else-if="value?.type === 'date'"><strong>{{ value.text }}: </strong>{{ $formatDateTime(selectedItem[value.key]) }}</p>
@@ -27,8 +27,16 @@
               <div v-else-if="value?.type === 'list'">
                 <strong>{{ value.text }}: </strong>
                 <ul>
-                  <li v-for="subValue in selectedItem[value.key]" :key="subValue" class="ml-8">
-                    {{ subValue[value.subkey]}}
+                  <li v-for="subValue in selectedItem[value.key]" :key="subValue" class="ml-8 mb-2">
+                    <p v-for="(subField, index) in value.subFields" :key="index">
+                      <template v-if="subValue[subField.key]">
+                        <i><b>{{ subField.text }}: </b></i>
+                        <span v-if="subField.type === 'currency'">{{ $formatCurrency(subValue[subField.key]) }}</span>
+                        <span v-else-if="subField.type === 'date'">{{ $formatDateTime(subValue[subField.key]) }}</span>
+                        <span v-else-if="subField.type === 'bool'">{{ subValue[subField.key] == true ? 'Sim': 'Não'}}</span>
+                        <span v-else>{{ subValue[subField.key]}}</span>
+                      </template>
+                    </p>
                   </li>
                 </ul>
               </div>

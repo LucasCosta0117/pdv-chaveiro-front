@@ -92,8 +92,20 @@ export default {
         { text: 'Total Pago', key: 'total', type: 'currency'},
         { text: 'Status Pagamento', key: 'paymentStatus'},
         { text: 'Nota Fiscal', key: 'fiscalNumber' },
-        { text: 'Produtos/Serviços', key: 'items', type: 'list', subkey: 'itemId' },
-        { text: 'Pagamento', key: 'payments', type: 'list', subkey: 'method' }
+        { text: 'Produtos/Serviços', key: 'items', type: 'list', 
+          subFields: [
+            { text: 'Item', key: 'itemId'},
+            { text: 'Qtd', key: 'quantity'},
+            { text: 'Preço Unitário', key: 'unitPrice', type: 'currency' },
+            { text: 'Desconto', key: 'unitDiscount', type: 'currency' }
+          ]
+        },
+        { text: 'Pagamento', key: 'payments', type: 'list', 
+          subFields: [
+            { text: 'Método', key: 'method'},
+            { text: 'Subtotal', key: 'amount', type: 'currency' }
+          ]
+        }
       ]
     };
   }
