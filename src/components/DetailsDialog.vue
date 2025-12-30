@@ -2,16 +2,16 @@
   <v-dialog v-model="isOpen" max-width="600px">
     <v-card>
       <v-card-title class="text-h6 font-weight-bold">
-        {{ product.name }}
+        {{ selectedItem[details.header?.titleKey] }}
       </v-card-title>
 
-      <v-card-subtitle>{{ product.department }}</v-card-subtitle>
+      <v-card-subtitle>{{ selectedItem[details.header?.subtitleKey] }}</v-card-subtitle>
 
       <v-card-text>
         <v-row>
-          <v-col cols="12" sm="6">
+          <v-col cols="12" sm="6" v-if="details.header.imgKey">
             <v-img
-              :src="product.imgUrl"
+              :src="selectedItem[details.header?.imgKey]"
               aspect-ratio="1"
               class="rounded-lg elevation-1"
               contain
@@ -20,13 +20,20 @@
           </v-col>
 
           <v-col cols="12" sm="6">
-            <p><strong>Preço: </strong>R$ {{ product.price }}</p>
-            <p><strong>Marca: </strong>{{ product.brand }}</p>
-            <p><strong>Categoria: </strong>{{ product.category }}</p>
-            <p><strong>Subcategoria: </strong>{{ product.subcategory }}</p>
-            <p><strong>Estoque: </strong>{{ product.stock }} unidades</p>
-            <p><strong>Disponível: </strong>{{ (product.isActive) ? 'Sim' : 'Não' }}</p>
-            <p><strong>À venda: </strong>{{ (product.canSale) ? 'Sim' : 'Não' }}</p>
+            <div v-for="value in details.fields" :key="value.key">
+              <p v-if="value?.type === 'currency'"><strong>{{ value.text }}: </strong>{{ $formatCurrency(selectedItem[value.key]) }}</p>
+              <p v-else-if="value?.type === 'date'"><strong>{{ value.text }}: </strong>{{ $formatDateTime(selectedItem[value.key]) }}</p>
+              <p v-else-if="value?.type === 'bool'"><strong>{{ value.text }}: </strong>{{ selectedItem[value.key] == true ? 'Sim': 'Não'}}</p>
+              <div v-else-if="value?.type === 'list'">
+                <strong>{{ value.text }}: </strong>
+                <ul>
+                  <li v-for="subValue in selectedItem[value.key]" :key="subValue" class="ml-8">
+                    {{ subValue[value.subkey]}}
+                  </li>
+                </ul>
+              </div>
+              <p v-else><strong>{{ value.text }}: </strong>{{ selectedItem[value.key] }}</p>
+            </div>
           </v-col>
         </v-row>
       </v-card-text>
@@ -58,9 +65,17 @@ export default {
       default: false
     },
     /**
-     * Informações do produto 'clickado'.
+     * Informações do item 'clickado'.
      */
-    product: {
+    selectedItem: {
+      type: Object,
+      required: true,
+      default: () => ({})
+    },
+    /**
+     * Definição a cerca das informações à serem exibidas.
+     */
+    details: {
       type: Object,
       required: true,
       default: () => ({})

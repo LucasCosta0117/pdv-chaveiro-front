@@ -122,18 +122,24 @@ export default {
             { title: 'Categoria', key: 'category', filterable: true },
             { title: 'Subcategoria', key: 'subcategory', filterable: true }
           ];
-          this.tableDetails = [
-            { title: 'Produto', key: 'name' },
-            { title: 'Marca', key: 'brand' },
-            { title: 'Preço', key: 'price' },
-            { title: 'Código', key: 'code' },
-            { title: 'Departamento', key: 'department' },
-            { title: 'Categoria', key: 'category' },
-            { title: 'Subcategoria', key: 'subcategory' },
-            { title: 'Estoque', key: 'stock' },
-            { title: 'À venda', key: 'canSale' },
-            { title: 'Disponível', key: 'isActive' }
-          ];
+          this.tableDetails = {
+            header: {
+              titleKey: 'name',
+              subtitleKey: 'brand',
+              imgKey: 'imgUrl'
+            },
+            fields: [
+              { text: 'Marca', key: 'brand' },
+              { text: 'Preço', key: 'price', type: 'currency' },
+              { text: 'Código', key: 'code' },
+              { text: 'Departamento', key: 'department' },
+              { text: 'Categoria', key: 'category' },
+              { text: 'Subcategoria', key: 'subcategory' },
+              { text: 'Estoque', key: 'stock' },
+              { text: 'À venda', key: 'canSale', type: 'bool' },
+              { text: 'Disponível', key: 'isActive', type: 'bool' }
+            ]
+          };
 
           break;
         case 'job':

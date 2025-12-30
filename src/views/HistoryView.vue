@@ -79,18 +79,23 @@ export default {
       { title: 'Total Pago', key: 'total', type: 'currency'},
       { title: 'Status Pagamento', key: 'paymentStatus'}
     ];
-    this.tableDetails = [
-      { title: 'Código', key: 'code' },
-      { title: 'Data Venda', key: 'createdAt' },
-      { title: 'Subtotal', key: 'subtotal' },
-      { title: 'Descontos', key: 'totalDiscount' },
-      { title: 'Total Pago', key: 'total'},
-      { title: 'Status Pagamento', key: 'paymentStatus'},
-      { title: 'Vendedor', key: 'userId' },
-      { title: 'Nota Fiscal', key: 'fiscalNumber' },
-      { title: 'Produtos/Serviços', key: 'items' },
-      { title: 'Pagamento', key: 'payments' }
-    ];
+    this.tableDetails = {
+      header: {
+        titleKey: 'code',
+        subtitleKey: 'userId',
+        imgKey: ''
+      },
+      fields: [
+        { text: 'Data Venda', key: 'createdAt', type: 'date' },
+        { text: 'Subtotal', key: 'subtotal', type: 'currency' },
+        { text: 'Descontos', key: 'totalDiscount', type: 'currency' },
+        { text: 'Total Pago', key: 'total', type: 'currency'},
+        { text: 'Status Pagamento', key: 'paymentStatus'},
+        { text: 'Nota Fiscal', key: 'fiscalNumber' },
+        { text: 'Produtos/Serviços', key: 'items', type: 'list', subkey: 'itemId' },
+        { text: 'Pagamento', key: 'payments', type: 'list', subkey: 'method' }
+      ]
+    };
   }
 }
 

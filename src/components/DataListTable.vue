@@ -28,9 +28,10 @@
     </v-data-table>
 
     <DetailsDialog
-      v-if="selectedProduct"
+      v-if="selectedItem"
       v-model:showModal="dialog"
-      :product="selectedProduct"
+      :selectedItem="selectedItem"
+      :details="details"
     />
   </div>
 </template>
@@ -63,8 +64,8 @@ export default {
     },
     // Array de objetos com os dados para exibir os detalhes adicionais no DetailsDialog.
     details: {
-      type: Array,
-      default: () => ([])
+      type: Object,
+      default: () => ({})
     }
   },
   data() {
@@ -72,7 +73,7 @@ export default {
       // Controla a visibilidade do diálogo de detalhes (DetailsDialog).
       dialog: false,
       // Armazena o item selecionado quando uma linha da tabela é clicada.
-      selectedProduct: null
+      selectedItem: null
     }
   },
   methods: {
@@ -87,7 +88,7 @@ export default {
      */
     openDialog(_, { item }) {
       this.dialog = true
-      this.selectedProduct = item
+      this.selectedItem = item
     }
   }
 }
