@@ -94,7 +94,7 @@ export default {
         { text: 'Produtos/Serviços', key: 'items', type: 'list', 
           subFields: [
             { text: 'Item', key: 'itemName'},
-            { text: 'Preço Unitário', key: 'unitPrice', type: 'currency' },
+            { text: 'Valor', key: 'unitPrice', type: 'currency' },
             { text: 'Desconto', key: 'discount', type: 'currency' },
             { text: 'Qtd', key: 'quantity'}
           ]

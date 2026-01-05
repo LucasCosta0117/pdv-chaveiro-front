@@ -28,7 +28,7 @@
                   <li v-for="subValue in selectedItem[value.key]" :key="subValue" class="ml-8 mb-2">
                     <p v-for="(subField, index) in value.subFields" :key="index">
                       <template v-if="subValue[subField.key]">
-                        <i><b>{{ subField.text }}: </b></i>
+                        <b>{{ subField.text }}: </b>
                         <span v-if="subField.type === 'currency'">{{ $formatCurrency(subValue[subField.key]) }}</span>
                         <span v-else-if="subField.type === 'date'">{{ $formatDateTime(subValue[subField.key]) }}</span>
                         <span v-else-if="subField.type === 'bool'">{{ subValue[subField.key] == true ? 'Sim': 'Não'}}</span>
