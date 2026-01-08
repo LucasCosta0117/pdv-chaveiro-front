@@ -18,7 +18,8 @@ export default {
       try {
         dispatch('ui/startLoading', null, { root: true });
         const response = await api.get('/job/all');
-        commit('setItems', response.data);
+        const jobsNormalized = normalizedJob(response.data);
+        commit('setItems', jobsNormalized);
       } catch (error) {
         const msgError = 'Erro ao carregar a lista de serviços';
 
@@ -34,4 +35,19 @@ export default {
       }
     }
   }
+}
+
+/**
+ * Normaliza os dados brutos vindos do Back-end.
+ * Converte Enums para labels amigáveis e adiciona metadados.
+ * @param {Array} data - Array de objetos vindos da API.
+ * @returns {Array} Array de objetos normalizados.
+ */
+function normalizedJob(data) {
+  if (!data || !Array.isArray(data)) return [];
+
+  return data.map(item => ({
+    ...item,
+    entity: 'jobs'
+  }));
 }

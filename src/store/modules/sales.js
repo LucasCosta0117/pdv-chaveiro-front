@@ -18,7 +18,8 @@ export default {
       try {
         dispatch('ui/startLoading', null, { root: true });
         const response = await api.get('/sale/all');
-        commit('setItems', response.data);
+        const salesNormalized = normalizedSale(response.data);
+        commit('setItems', salesNormalized);
       } catch (error) {
         const msgError = 'Erro ao carregar o histórico de vendas';
 
@@ -75,4 +76,29 @@ export default {
 function setSeller() {
   //@todobuscar da store a partir do user conectado.
   return 'Lucas Costa';
+}
+
+// No final do seu arquivo de Store (Sale)
+
+/**
+ * Normaliza os dados brutos vindos do Back-end.
+ * Converte Enums para labels amigáveis e adiciona metadados.
+ * @param {Array} data - Array de objetos vindos da API.
+ * @returns {Array} Array de objetos normalizados.
+ */
+function normalizedSale(data) {
+  if (!data || !Array.isArray(data)) return [];
+
+  const paymentStatusMap = {
+    'PAID': 'Pago',
+    'PENDING': 'Pendente',
+    'CANCELED': 'Cancelado',
+    'REFUNDED': 'Reembolsado'
+  };
+
+  return data.map(item => ({
+    ...item,
+    entity: 'sales',
+    paymentStatus: paymentStatusMap[item.paymentStatus] || item.paymentStatus,
+  }));
 }
