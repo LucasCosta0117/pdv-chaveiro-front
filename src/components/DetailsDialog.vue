@@ -2,7 +2,18 @@
   <v-dialog v-model="isOpen" max-width="600px">
     <v-card>
       <v-card-title class="text-h5 font-weight-bold">
-        {{ selectedItem[details.header?.titleKey] }}
+        <div class="d-flex">
+          <p>
+            {{ selectedItem[details.header?.titleKey] }}
+          </p>
+          <v-spacer></v-spacer>
+          <v-btn
+            icon="mdi-close"
+            color="roxo_w1"
+            variant="text"
+            @click="isOpen = false"
+          ></v-btn>
+        </div>
       </v-card-title>
       
       <v-card-text>
@@ -43,24 +54,50 @@
           </v-col>
         </v-row>
       </v-card-text>
-
-      <v-card-actions>
-        <v-spacer />
-        <v-btn color="primary" @click="close">
-          Fechar
+      <v-divider color="roxo_w1" class="ma-2"></v-divider>
+      <v-card-actions class="d-flex justify-space-evenly mb-2">
+        <v-btn 
+          prepend-icon="mdi-pencil" 
+          color="verde_w1" 
+          variant="flat" 
+          @click=""
+        >
+          Editar
+        </v-btn>
+        <v-btn 
+          prepend-icon="mdi-delete" 
+          color="vermelho_w1"
+          variant="flat"
+          @click="msgConfirm = true"
+        >
+          Excluir
         </v-btn>
       </v-card-actions>
     </v-card>
+    <confirm-dialog
+      v-model:showModal="msgConfirm"
+      @confirm="deleteItem"
+    ></confirm-dialog>
   </v-dialog>
 </template>
 
 <script>
+import ConfirmDialog from './ConfirmDialog.vue';
+
 /**
  * Dialog aberto ao clickar sobre um item da tabela de produtos,
  * de modo a apresentar mais detalhes do produto selecionado.
  */
 export default {
   name: 'DetailsDialog',
+  components: {
+    ConfirmDialog,
+  },
+  data() {
+    return{
+      msgConfirm: false,
+    }
+  },
   props: {
     /**
      * Flag para controle de exibição do modal/dialog.
@@ -101,11 +138,8 @@ export default {
     }
   },
   methods: {
-    /**
-     * Fecha o modal/dialog.
-     */
-    close() {
-      this.isOpen = false;
+    deleteItem() {
+      console.log('delete', this.selectedItem);
     }
   }
 }

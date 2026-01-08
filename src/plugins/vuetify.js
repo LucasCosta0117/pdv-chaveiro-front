@@ -18,6 +18,8 @@ const vuetify = createVuetify({
           cinza_w1: '#4e4e4e',
           cinza_w2: '#afafaf',
           verde_w1: '#2a6138',
+          vermelho_w1: '#af1818ff',
+          vinho_w1: '#612a2aff',
         },
       },
     },
