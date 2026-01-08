@@ -14,7 +14,7 @@ export default {
     }
   },
   actions: {
-    async fetchSales({ commit, dispatch }) {
+    async fetchAll({ commit, dispatch }) {
       try {
         dispatch('ui/startLoading', null, { root: true });
         const response = await api.get('/sale/all');
@@ -33,14 +33,14 @@ export default {
         dispatch('ui/stopLoading', null, { root: true });
       }
     },
-    async saveSale({ commit, dispatch }, newSale) {
+    async save({ commit, dispatch }, newSale) {
       try {
         dispatch('ui/startLoading', null, { root: true });
 
         newSale.sellerName = setSeller();
 
         const response = await api.post('/sale/save', newSale);
-        await dispatch('fetchSales');
+        await dispatch('fetchAll');
 
         dispatch('ui/notify', {
           message: 'Venda registrada com sucesso!',
@@ -60,6 +60,9 @@ export default {
       } finally {
         dispatch('ui/stopLoading', null, { root: true });
       }
+    },
+    async delete({ commit, dispatch }, saleId) {
+      console.log('delete storeSale: ', saleId);
     }
   }
 }

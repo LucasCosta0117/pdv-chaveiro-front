@@ -14,7 +14,7 @@ export default {
     }
   },
   actions: {
-    async fetchProducts({ commit, dispatch }) {
+    async fetchAll({ commit, dispatch }) {
       try {
         dispatch('ui/startLoading', null, { root: true });
         const response = await api.get('/product/all');

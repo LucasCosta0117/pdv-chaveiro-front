@@ -124,8 +124,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions('products', ['fetchProducts']),
-    ...mapActions('jobs', ['fetchJobs']),
+    ...mapActions('products', { fetchProducts: 'fetchAll' }),
+    ...mapActions('jobs', { fetchJobs: 'fetchAll' }),
     /**
      * Adiciona o item selecionado no input à lista de checkout
      */
@@ -148,7 +148,7 @@ export default {
       this.saleResum.items = this.checkoutItems.map(item => {
         return {
           id: item.id,
-          type: (item.stock) ? 'product' : 'job',
+          type: (item.stock) ? 'product' : 'job', // @todo trocar item.stock por item.entity
           quantity: item.quantity,
           unit_price: item.price,
           discount: item.discount
@@ -162,7 +162,7 @@ export default {
         return;
       };
 
-      const hasSaveSale = await this.$store.dispatch('sales/saveSale', this.saleResum);
+      const hasSaveSale = await this.$store.dispatch('sales/save', this.saleResum);
 
       if (hasSaveSale) {
         this.checkoutItems = [];

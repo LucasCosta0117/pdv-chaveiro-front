@@ -14,7 +14,7 @@ export default {
     }
   },
   actions: {
-    async fetchJobs({ commit, dispatch }) {
+    async fetchAll({ commit, dispatch }) {
       try {
         dispatch('ui/startLoading', null, { root: true });
         const response = await api.get('/job/all');

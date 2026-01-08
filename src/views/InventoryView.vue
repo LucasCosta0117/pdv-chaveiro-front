@@ -103,8 +103,8 @@ export default {
     },
   },
   methods: {
-    ...mapActions('products', ['fetchProducts']),
-    ...mapActions('jobs', ['fetchJobs']),
+    ...mapActions('products', { fetchProducts: 'fetchAll' }),
+    ...mapActions('jobs', { fetchJobs: 'fetchAll' }),
     /**
      * Define qual modulo será exibido no catálogo (Produtos ou Serviços).
      * 

@@ -65,7 +65,7 @@ export default {
     ...mapGetters('sales', { sales: 'getItems' }),
   },
   methods: {
-    ...mapActions('sales', ['fetchSales']),
+    ...mapActions('sales', { fetchSales: 'fetchAll'}),
   },
   async created() {
     if (!this.sales.length) {
