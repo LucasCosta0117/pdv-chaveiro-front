@@ -138,8 +138,10 @@ export default {
     }
   },
   methods: {
-    deleteItem() {
-      console.log('delete', this.selectedItem);
+    async deleteItem() {
+      const actionPath = `${this.selectedItem.entity}/delete`;
+      const wasDeleted = await this.$store.dispatch(actionPath, this.selectedItem.id);
+      if (wasDeleted) this.isOpen = false;
     }
   }
 }

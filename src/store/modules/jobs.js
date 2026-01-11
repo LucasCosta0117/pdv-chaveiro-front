@@ -21,15 +21,38 @@ export default {
         const jobsNormalized = normalizedJob(response.data);
         commit('setItems', jobsNormalized);
       } catch (error) {
-        const msgError = 'Erro ao carregar a lista de serviços';
-
         dispatch('ui/notify',  { 
-          message: msgError, 
+          message: 'Não possível carregar a lista de serviços', 
           color: 'error' 
         }, { root: true } );
         
         commit('setItems', []);
         console.error('Erro ao carregar serviços: ', error);
+      } finally {
+        dispatch('ui/stopLoading', null, { root: true });
+      }
+    },
+    async delete({ commit, dispatch }, id) {
+      try {
+        dispatch('ui/startLoading', null, { root: true });
+
+        await api.delete(`job/delete/${id}`);
+        await dispatch('fetchAll');
+
+        dispatch('ui/notify', {
+          message: 'Serviço excluído com sucesso!',
+          color: 'success'
+        }, { root: true });
+
+        return true;
+      } catch (error) {
+        dispatch('ui/notify',  { 
+          message: 'Não foi possível excluir este serviço.', 
+          color: 'error'
+        }, { root: true } );
+        console.error('Erro ao excluir o serviço: ', error);
+
+        return false;
       } finally {
         dispatch('ui/stopLoading', null, { root: true });
       }

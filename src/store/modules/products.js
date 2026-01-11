@@ -21,14 +21,38 @@ export default {
         const productsNormalized = normalizedProduct(response.data);
         commit('setItems', productsNormalized);
       } catch (error) {
-        const msgError = 'Erro ao carregar a lista de produtos';
-
         dispatch('ui/notify',  { 
-          message: msgError, color: 'error' 
+          message: 'Não possível carregar a lista de produtos', 
+          color: 'error' 
         }, { root: true } );
 
         commit('setItems', []);
         console.error('Erro ao carregar produtos: ', error);
+      } finally {
+        dispatch('ui/stopLoading', null, { root: true });
+      }
+    },
+    async delete({ commit, dispatch }, id) {
+      try {
+        dispatch('ui/startLoading', null, { root: true });
+
+        await api.delete(`product/delete/${id}`);
+        await dispatch('fetchAll');
+
+        dispatch('ui/notify', {
+          message: 'Produto excluído com sucesso!',
+          color: 'success'
+        }, { root: true });
+
+        return true;
+      } catch (error) {
+        dispatch('ui/notify',  { 
+          message: 'Não foi possível excluir este produto.', 
+          color: 'error'
+        }, { root: true } );
+        console.error('Erro ao excluir o produto: ', error);
+
+        return false;
       } finally {
         dispatch('ui/stopLoading', null, { root: true });
       }

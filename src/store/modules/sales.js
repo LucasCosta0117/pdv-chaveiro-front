@@ -50,20 +50,41 @@ export default {
 
         return true;
       } catch (error) {
-        const msgError = 'Erro ao registrar a venda';
         dispatch('ui/notify',  { 
-          message: msgError, 
+          message: 'Não foi possível registrar esta venda', 
           color: 'error' 
         }, { root: true } );
-        console.error('Erro ao salvar venda: ', error);
+        console.error('Erro ao registrar a venda: ', error);
 
         return false;
       } finally {
         dispatch('ui/stopLoading', null, { root: true });
       }
     },
-    async delete({ commit, dispatch }, saleId) {
-      console.log('delete storeSale: ', saleId);
+    async delete({ commit, dispatch }, id) {
+      try {
+        dispatch('ui/startLoading', null, { root: true });
+
+        await api.delete(`sale/delete/${id}`);
+        await dispatch('fetchAll');
+
+        dispatch('ui/notify', {
+          message: 'Venda excluída com sucesso!',
+          color: 'success'
+        }, { root: true });
+
+        return true;
+      } catch (error) {
+        dispatch('ui/notify',  { 
+          message: 'Não foi possível excluir esta venda.', 
+          color: 'error'
+        }, { root: true } );
+        console.error('Erro ao excluir a venda: ', error);
+
+        return false;
+      } finally {
+        dispatch('ui/stopLoading', null, { root: true });
+      }
     }
   }
 }
