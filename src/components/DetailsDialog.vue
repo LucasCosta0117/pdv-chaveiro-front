@@ -1,19 +1,15 @@
 <template>
   <v-dialog v-model="isOpen" max-width="600px">
     <v-card>
-      <v-card-title class="text-h5 font-weight-bold card-title-details">
-        <div class="d-flex">
-          <p>
-            {{ selectedItem[details.header?.titleKey] }}
-          </p>
-          <v-spacer></v-spacer>
-          <v-btn
-            icon="mdi-close"
-            color="roxo_w1"
-            variant="text"
-            @click="isOpen = false"
-          ></v-btn>
-        </div>
+      <v-card-title class="bg-roxo_w1 font-weight-bold d-flex justify-space-between align-center">
+        <span>
+          {{ selectedItem[details.header?.titleKey] }}
+        </span>
+        <v-btn
+          icon="mdi-close"
+          variant="text"
+          @click="isOpen = false"
+        ></v-btn>
       </v-card-title>
       
       <v-card-text>
@@ -150,8 +146,5 @@ export default {
 <style scoped>
 .v-img {
   border-radius: 8px;
-}
-.card-title-details {
-  color: rgb(var(--v-theme-roxo_w1));
 }
 </style>
