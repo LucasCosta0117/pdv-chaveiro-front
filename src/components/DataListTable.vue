@@ -103,4 +103,11 @@ export default {
   background-color: rgb(var(--v-theme-roxo_w1));
   color: white;
 }
+
+/* Breakpoint LG (1280px) ou superior */
+@media (min-width: 1280px) {
+  .products-table-container {
+    height: 35rem;
+  }
+}
 </style>
