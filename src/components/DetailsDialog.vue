@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="isOpen" max-width="600px">
     <v-card>
-      <v-card-title class="text-h5 font-weight-bold">
+      <v-card-title class="text-h5 font-weight-bold card-title-details">
         <div class="d-flex">
           <p>
             {{ selectedItem[details.header?.titleKey] }}
@@ -58,7 +58,7 @@
       <v-card-actions class="d-flex justify-space-evenly mb-2">
         <v-btn 
           prepend-icon="mdi-pencil" 
-          color="verde_w1" 
+          color="roxo_w2" 
           variant="flat" 
           @click=""
         >
@@ -150,5 +150,8 @@ export default {
 <style scoped>
 .v-img {
   border-radius: 8px;
+}
+.card-title-details {
+  color: rgb(var(--v-theme-roxo_w1));
 }
 </style>
