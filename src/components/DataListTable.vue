@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-data-table
-      striped="odd"
+      striped="even"
       hover
       class="products-table-container border-thin"
       :headers="headers"
