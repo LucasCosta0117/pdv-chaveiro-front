@@ -46,9 +46,32 @@
         />
       </v-col>
     </v-row>
+
+    <v-row>
+      <v-col cols="12">
+        <!-- Botão para adicionar novo item -->
+        <v-btn 
+          prepend-icon="mdi-plus-thick" 
+          color="roxo_w1"
+          variant="flat"
+          @click="showActionForm = true"
+        >
+          Cadastrar novo {{ (itemType == 'product') ? 'produto' : 'serviço' }}
+        </v-btn>
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <ActionFormDialog
+        v-model:showModal="showActionForm"
+        :entityTitle="itemType"
+        :config="actionFormConfig"
+      />
+    </v-row>
   </v-container>
 </template>
 <script>
+import ActionFormDialog from '@/components/ActionFormDialog.vue';
 import DataListTable from '@/components/DataListTable.vue';
 import TitlePage from '@/components/TitlePage.vue';
 import { mapActions, mapGetters } from 'vuex';
@@ -60,7 +83,8 @@ export default {
   name: 'InventoryView',
   components: {
     DataListTable,
-    TitlePage
+    TitlePage,
+    ActionFormDialog
   },
   data() {
     return {
@@ -80,7 +104,9 @@ export default {
       itemTypeOptions: [
         { title: 'Produtos', value: 'product' },
         { title: 'Serviços', value: 'job' }
-      ]
+      ],
+      showActionForm: false,
+      actionFormConfig: []
     }
   },
   computed: {
@@ -140,6 +166,20 @@ export default {
             ]
           };
 
+          this.actionFormConfig = [
+            { label: 'Nome', key: 'name'},
+            { label: 'Foto Thumb', key: 'imgUrl', type: 'upload' },
+            { label: 'Marca', key: 'brand' },
+            { label: 'Preço', key: 'price', type: 'currency' },
+            { label: 'Código', key: 'code' },
+            { label: 'Departamento', key: 'department' },
+            { label: 'Categoria', key: 'category' },
+            { label: 'Subcategoria', key: 'subcategory' },
+            { label: 'Estoque', key: 'stock', type: 'qtd' },
+            { label: 'À venda', key: 'canSale', type: 'bool' },
+            { label: 'Disponível', key: 'isActive', type: 'bool' }
+          ];
+
           break;
         case 'job':
           this.tableHeader = [
@@ -161,6 +201,15 @@ export default {
               { text: 'Disponível', key: 'isActive', type: 'bool' }
             ]
           };
+
+          this.actionFormConfig = [
+            { label: 'Nome', key: 'name'},
+            { label: 'Preço', key: 'price', type: 'currency' },
+            { label: 'Código', key: 'code' },
+            { label: 'Categoria', key: 'category' },
+            { label: 'Subcategoria', key: 'subcategory' },
+            { label: 'Disponível', key: 'isActive', type: 'bool' }
+          ];
 
           break;
       }
