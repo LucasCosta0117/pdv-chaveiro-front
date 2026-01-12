@@ -1,37 +1,76 @@
 <template>
   <v-dialog v-model="isOpen" height="100vh" persistent class="action-form-dialog-container">
     <v-card>
-      <v-card-title class="bg-roxo_w1 d-flex justify-space-between align-center">
+      <v-card-title class="bg-roxo_w1 d-flex justify-space-between align-center text-uppercase">
         <span>{{ formTitle }}</span>
         <v-btn icon="mdi-close" variant="text" @click="close"></v-btn>
       </v-card-title>
 
-      <v-card-text class="pt-4">
-        <v-form ref="form">
-          <v-row
-            v-for="field in config"
-            :key="field.key"
-          >
-            <v-col cols="12" class="pb-0">
-              <span>{{ field.label }}</span>
-            </v-col>
+      <v-card-text class="pt-4 d-flex justify-center align-center">
+        <v-form ref="form" class="form-container">
+          <v-row>
+            <v-col
+              v-for="field in config"
+              :key="field.key"
+              cols="12"
+              :md="field.cols || 12"
+            >
+              <label>{{ field.label }}</label>
 
-            <v-col cols="12" class="pt-2">
               <v-text-field
-                v-if="field.type === 'qtd' || field.type === 'currency'"
+                v-if="field.type === 'currency'"
                 v-model.number="formData[field.key]"
                 type="number"
                 variant="solo"
                 density="compact"
-                :prefix="field.type === 'currency' ? 'R$' : ''"
+                bg-color="grey-lighten-5"
+                prefix="R$"
+                min="0"
+                step="0.01"
+                :rules="[v => v >= 0 || 'Valor não pode ser negativo']"
+                @update:model-value="handleCurrencyInput(field.key, $event)"
               ></v-text-field>
 
-              <v-select
-                v-else-if="field.type === 'select'"
-                v-model="formData[field.key]"
-                :items="field.options"
+              <v-text-field
+                v-else-if="field.type === 'qtd'"
+                v-model.number="formData[field.key]"
+                type="number"
                 variant="solo"
                 density="compact"
+                bg-color="grey-lighten-5"
+                min="1"
+                step="1"
+                :rules="[
+                  v => v >= 1 || 'Mínimo de 1 unidade',
+                  v => Number.isInteger(v) || 'Apenas números inteiros'
+                ]"
+                @update:model-value="handleQtdInput(field.key, $event)"
+              ></v-text-field>
+
+              <v-combobox
+                v-else-if="field.type === 'select'"
+                v-model="formData[field.key]"
+                clearable
+                :items="field.options"
+                :list-props="{ bgColor: 'roxo_w3' }"
+                variant="solo"
+                density="compact"
+                bg-color="grey-lighten-5"
+              ></v-combobox>
+
+              <v-select
+                v-else-if="field.type === 'bool'"
+                v-model="formData[field.key]"
+                :items="[
+                  { texto: 'Sim', valor: true },
+                  { texto: 'Não', valor: false }
+                ]"
+                item-title="texto"
+                item-value="valor"
+                :list-props="{ bgColor: 'roxo_w3' }"
+                variant="solo"
+                density="compact"
+                bg-color="grey-lighten-5"
               ></v-select>
 
               <v-text-field
@@ -39,6 +78,7 @@
                 v-model="formData[field.key]"
                 variant="solo"
                 density="compact"
+                bg-color="grey-lighten-5"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -122,7 +162,13 @@
       }
     },
     formTitle() {
-      return `${this.isEdit ? 'Editar' : 'Novo'} ${this.entityTitle}`;
+      const entityNamesMap = { 
+        'products': 'Produto', 
+        'jobs': 'Serviço', 
+        'sales': 'Venda'
+      };
+
+      return `${this.isEdit ? 'Editar' : 'Cadastrar'} ${entityNamesMap[this.entityTitle]} `;
     }
   },
   watch: {
@@ -130,12 +176,34 @@
     showModal(val) {
       if (val) {
         this.formData = { ...this.initialData };
+        this.isEdit = !!(this.initialData && this.initialData.id);
       }
     }
   },
   methods: {
     close() {
       this.isOpen = false;
+    },
+    /**
+     * Trata a entrada de campos do tipo 'currency'.
+     * Garante que seja sempre positivo e no máximo 2 casas decimais.
+     */
+    handleCurrencyInput(key, value) {
+      if (value === null || value === undefined) return;
+      let newValue = Math.abs(value);
+      newValue = parseFloat(newValue.toFixed(2));
+      this.formData[key] = newValue;
+    },
+
+    /**
+     * Trata a entrada de campos do tipo 'qtd'.
+     * Garante que seja sempre inteiro, positivo e no mínimo 1.
+     */
+    handleQtdInput(key, value) {
+      if (value === null || value === undefined) return;
+      let newValue = Math.floor(Math.abs(value));
+      if (newValue < 1) newValue = 1;
+      this.formData[key] = newValue;
     },
     async save() {
       console.log('Salvou: ', this.formData);
@@ -144,9 +212,6 @@
       // if (wasSaved) this.close();
       this.close();
     }
-  },
-  created() {
-    this.isEdit = this.initialData && this.initialData.id;
   }
 }
 </script>
@@ -156,6 +221,9 @@
 @media (min-width: 960px) {
   .action-form-dialog-container {
     width: 70vw;
+  }
+  .form-container {
+    width: 60%;
   }
 }
 </style>

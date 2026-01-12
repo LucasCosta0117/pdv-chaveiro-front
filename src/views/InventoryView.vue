@@ -56,7 +56,7 @@
           variant="flat"
           @click="showActionForm = true"
         >
-          Cadastrar novo {{ (itemType == 'product') ? 'produto' : 'serviço' }}
+          {{ labelActionFormBtn }}
         </v-btn>
       </v-col>
     </v-row>
@@ -99,11 +99,11 @@ export default {
       // Termo de busca para filtro no v-data-table
       search: '',
       // Variável de controle para o v-select
-      itemType: 'product', 
+      itemType: 'products', 
       // Opções para o v-select
       itemTypeOptions: [
-        { title: 'Produtos', value: 'product' },
-        { title: 'Serviços', value: 'job' }
+        { title: 'Produtos', value: 'products' },
+        { title: 'Serviços', value: 'jobs' }
       ],
       showActionForm: false,
       actionFormConfig: []
@@ -114,8 +114,11 @@ export default {
     ...mapGetters('jobs', { jobs: 'getItems' }),
     // Array de objetos contendo os dados a serem exibidos na tabela.
     tableItems() {
-      return this.itemType === 'product' ? this.products : this.jobs;
-    }
+      return this.itemType === 'products' ? this.products : this.jobs;
+    },
+    labelActionFormBtn() {
+      return `Cadastrar novo ${(this.itemType == 'products') ? 'produto' : 'serviço'}`
+    },
   },
   watch: {
     /**
@@ -135,11 +138,11 @@ export default {
      * Define qual modulo será exibido no catálogo (Produtos ou Serviços).
      * 
      * @param {String} filter nome do módulo usado para filtrar os itens da tabela.
-     *                          'product' | 'jobs'
+     *                          'products' | 'jobs'
      */
     setFilter(filter) {
       switch (filter) {
-        case 'product':
+        case 'products':
           this.tableHeader = [
             { title: 'Produto', key: 'name' },
             { title: 'Código', key: 'code' },
@@ -167,21 +170,21 @@ export default {
           };
 
           this.actionFormConfig = [
-            { label: 'Nome', key: 'name'},
-            { label: 'Foto Thumb', key: 'imgUrl', type: 'upload' },
+            { label: 'Nome do Produto', key: 'name'},
+            { label: 'Foto', key: 'imgUrl', type: 'upload' },
+            { label: 'Preço', key: 'price', type: 'currency', cols: 6 },
+            { label: 'Quantide em Estoque', key: 'stock', type: 'qtd', cols: 6 },
             { label: 'Marca', key: 'brand' },
-            { label: 'Preço', key: 'price', type: 'currency' },
             { label: 'Código', key: 'code' },
-            { label: 'Departamento', key: 'department' },
-            { label: 'Categoria', key: 'category' },
-            { label: 'Subcategoria', key: 'subcategory' },
-            { label: 'Estoque', key: 'stock', type: 'qtd' },
-            { label: 'À venda', key: 'canSale', type: 'bool' },
-            { label: 'Disponível', key: 'isActive', type: 'bool' }
+            { label: 'Departamento', key: 'department', type: 'select', cols: 4, options: ['Vitrine', 'Insumo'] },
+            { label: 'Categoria', key: 'category', type: 'select', cols: 4 },
+            { label: 'Subcategoria', key: 'subcategory', type: 'select', cols: 4 },
+            { label: 'À venda?', key: 'canSale', type: 'bool', cols: 6 },
+            { label: 'Disponível?', key: 'isActive', type: 'bool', cols: 6 }
           ];
 
           break;
-        case 'job':
+        case 'jobs':
           this.tableHeader = [
             { title: 'Serviço', key: 'name' },
             { title: 'Preço', key: 'price', type: 'currency' },
