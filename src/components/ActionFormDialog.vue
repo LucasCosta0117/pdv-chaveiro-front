@@ -172,13 +172,28 @@
     }
   },
   watch: {
-    // Sincroniza os dados sempre que o modal abrir ou o item mudar
+    // Sincroniza os dados sempre que o modal abrir, ou, o item mudar.
     showModal(val) {
-      if (val) {
-        this.formData = { ...this.initialData };
-        this.isEdit = !!(this.initialData && this.initialData.id);
+    if (val) {
+      // Clona os dados iniciais (vazio para novo, preenchido para edit)
+      const data = { ...this.initialData };
+
+      // Verifica se é um NOVO registro (sem ID)
+      const isNew = !data.id;
+
+      if (isNew) {
+        // Itera na configuração para encontrar campos 'bool' e setar default = true
+        this.config.forEach(field => {
+          if (field.type === 'bool' && data[field.key] === undefined) {
+            data[field.key] = true; // Define 'Sim' como padrão
+          }
+        });
       }
+
+      this.formData = data;
+      this.isEdit = !isNew;
     }
+  }
   },
   methods: {
     close() {
