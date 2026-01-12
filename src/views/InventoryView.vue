@@ -206,12 +206,12 @@ export default {
           };
 
           this.actionFormConfig = [
-            { label: 'Nome', key: 'name'},
-            { label: 'Preço', key: 'price', type: 'currency' },
+            { label: 'Nome do Serviço', key: 'name'},
             { label: 'Código', key: 'code' },
-            { label: 'Categoria', key: 'category' },
-            { label: 'Subcategoria', key: 'subcategory' },
-            { label: 'Disponível', key: 'isActive', type: 'bool' }
+            { label: 'Preço', key: 'price', type: 'currency', cols: 6 },
+            { label: 'Disponível', key: 'isActive', type: 'bool', cols: 6 },
+            { label: 'Categoria', key: 'category', type: 'select', cols: 6 },
+            { label: 'Subcategoria', key: 'subcategory', type: 'select', cols: 6 }
           ];
 
           break;
