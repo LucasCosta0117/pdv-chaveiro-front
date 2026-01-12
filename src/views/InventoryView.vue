@@ -64,7 +64,7 @@
     <v-row>
       <ActionFormDialog
         v-model:showModal="showActionForm"
-        :entityTitle="itemType"
+        :entity="itemType"
         :config="actionFormConfig"
       />
     </v-row>

@@ -140,7 +140,7 @@
     /**
      * Nome da entidade para compor o título do formulário.
      */
-    entityTitle: {
+    entity: {
       type: String,
       required: true
     },
@@ -181,7 +181,7 @@
         'sales': 'Venda'
       };
 
-      return `${this.isEdit ? 'Editar' : 'Cadastrar'} ${entityNamesMap[this.entityTitle]} `;
+      return `${this.isEdit ? 'Editar' : 'Cadastrar'} ${entityNamesMap[this.entity]} `;
     }
   },
   watch: {
