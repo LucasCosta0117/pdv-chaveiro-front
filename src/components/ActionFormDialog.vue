@@ -15,7 +15,7 @@
               cols="12"
               :md="field.cols || 12"
             >
-              <label>{{ field.label }}</label>
+              <label>{{ field.label }}<span v-if="field.required" > *</span></label>
 
               <v-text-field
                 v-if="field.type === 'currency'"
@@ -27,7 +27,10 @@
                 prefix="R$"
                 min="0"
                 step="0.01"
-                :rules="[v => v >= 0 || 'Valor não pode ser negativo']"
+                :rules="[
+                  v => v >= 0 || 'Valor não pode ser negativo',
+                  v => (!field.required || !!v) || `${field.label} é obrigatório`
+                ]"
                 @update:model-value="handleCurrencyInput(field.key, $event)"
               ></v-text-field>
 
@@ -42,7 +45,8 @@
                 step="1"
                 :rules="[
                   v => v >= 1 || 'Mínimo de 1 unidade',
-                  v => Number.isInteger(v) || 'Apenas números inteiros'
+                  v => Number.isInteger(v) || 'Apenas números inteiros',
+                  v => (!field.required || !!v) || `${field.label} é obrigatório`
                 ]"
                 @update:model-value="handleQtdInput(field.key, $event)"
               ></v-text-field>
@@ -56,6 +60,9 @@
                 variant="solo"
                 density="compact"
                 bg-color="grey-lighten-5"
+                :rules="[
+                  v => (!field.required || !!v) || `${field.label} é obrigatório`
+                ]"
               ></v-combobox>
 
               <v-select
@@ -71,6 +78,9 @@
                 variant="solo"
                 density="compact"
                 bg-color="grey-lighten-5"
+                :rules="[
+                  v => (!field.required || !!v) || `${field.label} é obrigatório`
+                ]"
               ></v-select>
 
               <v-text-field
@@ -79,6 +89,9 @@
                 variant="solo"
                 density="compact"
                 bg-color="grey-lighten-5"
+                :rules="[
+                  v => (!field.required || !!v) || `${field.label} é obrigatório`
+                ]"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -209,7 +222,6 @@
       newValue = parseFloat(newValue.toFixed(2));
       this.formData[key] = newValue;
     },
-
     /**
      * Trata a entrada de campos do tipo 'qtd'.
      * Garante que seja sempre inteiro, positivo e no mínimo 1.
@@ -220,7 +232,28 @@
       if (newValue < 1) newValue = 1;
       this.formData[key] = newValue;
     },
+    /**
+     * 
+     */
+    getRequiRules(field) {
+      const rules = [];
+      if (field.required) {
+        rules.push(v => !!v || `${field.label} é obrigatório`);
+      }
+      // Você pode adicionar mais regras aqui (ex: tamanho mínimo, e-mail, etc)
+      return rules;
+    },
     async save() {
+      const { valid } = await this.$refs.form.validate();
+
+      if (!valid) {
+        this.$store.dispatch('ui/notify', {
+          message: 'Por favor, preencha os campos obrigatórios!',
+          color: 'warning'
+        }, { root: true });
+        return;
+      }
+
       console.log('Salvou: ', this.formData);
       // const actionPath = (this.isEdit) ? `${this.formData.entity}/edit` : `${this.formData.entity}/save`; //@todo corrigir este else
       // const wasSaved = await this.$store.dispatch(actionPath, this.this.formData);

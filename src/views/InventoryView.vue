@@ -170,10 +170,10 @@ export default {
           };
 
           this.actionFormConfig = [
-            { label: 'Nome do Produto', key: 'name'},
+            { label: 'Nome do Produto', key: 'name', required: true },
             { label: 'Foto', key: 'imgUrl', type: 'upload' },
-            { label: 'Preço', key: 'price', type: 'currency', cols: 6 },
-            { label: 'Quantide em Estoque', key: 'stock', type: 'qtd', cols: 6 },
+            { label: 'Preço', key: 'price', type: 'currency', cols: 6, required: true },
+            { label: 'Quantide em Estoque', key: 'stock', type: 'qtd', cols: 6, required: true },
             { label: 'Marca', key: 'brand' },
             { label: 'Código', key: 'code' },
             { label: 'Departamento', key: 'department', type: 'select', cols: 4, options: ['Vitrine', 'Insumo'] },
@@ -206,9 +206,9 @@ export default {
           };
 
           this.actionFormConfig = [
-            { label: 'Nome do Serviço', key: 'name'},
+            { label: 'Nome do Serviço', key: 'name', required: true},
             { label: 'Código', key: 'code' },
-            { label: 'Preço', key: 'price', type: 'currency', cols: 6 },
+            { label: 'Preço', key: 'price', type: 'currency', cols: 6, required: true },
             { label: 'Disponível', key: 'isActive', type: 'bool', cols: 6 },
             { label: 'Categoria', key: 'category', type: 'select', cols: 6 },
             { label: 'Subcategoria', key: 'subcategory', type: 'select', cols: 6 }
