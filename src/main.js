@@ -6,8 +6,10 @@ import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
 import api from './api/axios'
 import { formatCurrency, formatDateTime } from './helpers/formatters'
+import { loginAnonimo } from './services/firebase';
 
 loadFonts();
+loginAnonimo(); //@todo talvez encapsular isso em um async init(), para garantir o login no firebase antes de montar o app
 
 const app = createApp(App);
 

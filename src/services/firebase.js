@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
+import { getAuth, signInAnonymously } from 'firebase/auth';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -17,5 +18,17 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Exporta apenas a instância do storage configurada
+// Exportar instâncias fixas.
 export const storage = getStorage(app);
+export const auth = getAuth(app);
+
+// Exporta função para realizar o login automático
+export const loginAnonimo = async () => {
+  try {
+    const userCredential = await signInAnonymously(auth);
+    return userCredential.user;
+  } catch (error) {
+    console.error("Erro ao autenticar anonimamente no Firebase:", error);
+    throw error;
+  }
+};
