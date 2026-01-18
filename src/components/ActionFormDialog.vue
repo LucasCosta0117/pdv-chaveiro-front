@@ -3,7 +3,7 @@
     <v-card>
       <v-card-title class="bg-roxo_w1 d-flex justify-space-between align-center text-uppercase">
         <span>{{ formTitle }}</span>
-        <v-btn icon="mdi-close" variant="text" @click="close"></v-btn>
+        <v-btn icon="mdi-close" variant="text" @click="cancel"></v-btn>
       </v-card-title>
 
       <v-card-text class="pt-4 d-flex justify-center align-center">
@@ -135,7 +135,7 @@
           prepend-icon="mdi-cancel"
           color="roxo_w2"
           variant="flat" 
-          @click="close"
+          @click="cancel"
         >
           Cancelar
         </v-btn>
@@ -144,7 +144,7 @@
   </v-dialog>
 </template>
 <script>
-  import { uploadFile } from '@/services/storageService';
+  import { uploadFile, deleteFile } from '@/services/storageService';
 
   /**
    * Cria um formulário dinâmico, baseado em um objeto de configuração, que permite
@@ -187,6 +187,7 @@
     return {
       isEdit: null,
       isImgUploading: false,
+      imgUploaded: null,
       formData: {}
     }
   },
@@ -234,9 +235,29 @@
   }
   },
   methods: {
+    /**
+     * Reseta as variáveis e fecha o dialog.
+     */
     close() {
-      // @todo remove possíveis imagens que foram carregadas para a núvem.
+      this.isEdit = null;
+      this.imgUploaded = null;
+      this.formData = {};
       this.isOpen = false;
+    },
+    /**
+     * Cancela a ação atual e remove possíveis imagens que foram enviadas para a store.
+     */
+    async cancel() {
+      try {
+        if (this.imgUploaded) {
+          console.log('Removendo imagem órfã: ', this.imgUploaded);
+          await deleteFile(this.imgUploaded);
+        }
+      } catch (error) {
+        console.error("Não foi possível remover a imagem da nuvem ao cancelar o formulário.");
+      } finally {
+        this.close();
+      }
     },
     /**
      * Trata a entrada de campos do tipo 'currency'.
@@ -270,6 +291,7 @@
         this.isImgUploading = true;
         const url = await uploadFile(file, this.entity.toLowerCase());
         this.formData[key] = url;
+        this.imgUploaded = url;
 
         this.$store.dispatch('ui/notify', {
           message: 'Imagem carregada com sucesso!',
