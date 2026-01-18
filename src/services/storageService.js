@@ -9,11 +9,16 @@ import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage
 export const uploadFile = async (file, folder = 'general') => {
   if (!file) return null;
 
-  const fileName = `${Date.now()}_${file.name}`;
-  const fileRef = ref(storage, `${folder}/${fileName}`);
-  const snapshot = await uploadBytes(fileRef, file);
+  try {
+    const fileName = `${Date.now()}_${file.name}`;
+    const fileRef = ref(storage, `${folder}/${fileName}`);
+    const snapshot = await uploadBytes(fileRef, file);
 
-  return await getDownloadURL(snapshot.ref);
+    return await getDownloadURL(snapshot.ref);
+  } catch (error) {
+    console.error("Erro no uploadFile:", error);
+    throw error;
+  }
 };
 
 /**
@@ -22,8 +27,12 @@ export const uploadFile = async (file, folder = 'general') => {
  */
 export const deleteFile = async (fileUrl) => {
   if (!fileUrl) return;
-  
-  const fileRef = ref(storage, fileUrl);
 
-  return await deleteObject(fileRef);
+  try {
+    const fileRef = ref(storage, fileUrl);
+    await deleteObject(fileRef);
+  } catch (error) {
+    console.error("Erro no deleteFile:", error);
+    throw error;
+  }
 };
