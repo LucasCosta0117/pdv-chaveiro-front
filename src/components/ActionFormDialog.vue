@@ -1,13 +1,15 @@
 <template>
-  <v-dialog v-model="isOpen" height="100vh" persistent class="action-form-dialog-container">
-    <v-card>
-      <v-card-title class="bg-roxo_w1 d-flex justify-space-between align-center text-uppercase">
+  <v-dialog v-model="isOpen" height="90vh" persistent class="action-form-dialog-container">
+    <v-card class="d-flex flex-column h-100">
+      <v-card-title class="bg-roxo_w1 d-flex justify-space-between align-center text-uppercase flex-none">
         <span>{{ formTitle }}</span>
         <v-btn icon="mdi-close" variant="text" @click="cancel"></v-btn>
       </v-card-title>
 
-      <v-card-text class="pt-4 d-flex justify-center align-center">
-        <v-form ref="form" class="form-container">
+      <v-divider></v-divider>
+
+      <v-card-text class="pt-4 d-flex flex-grow-1 overflow-y-auto">
+        <v-form ref="form" class="form-container mx-auto">
           <v-row>
             <v-col
               v-for="field in config"
@@ -119,7 +121,7 @@
 
       <v-divider></v-divider>
 
-      <v-card-actions class="pa-4 d-flex justify-space-evenly">
+      <v-card-actions class="pa-4 d-flex justify-space-evenly flex-none">
         <v-btn
           prepend-icon="mdi-content-save"
           color="roxo_w1"
@@ -334,10 +336,10 @@
 /* Breakpoint MD (960px - 1279px) ou superior */
 @media (min-width: 960px) {
   .action-form-dialog-container {
-    width: 70vw;
+    width: 60vw;
   }
   .form-container {
-    width: 60%;
+    width: 80%;
   }
   .img-thumb {
     height: 350px;
