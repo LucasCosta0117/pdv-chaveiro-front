@@ -171,7 +171,7 @@ export default {
 
           this.actionFormConfig = [
             { label: 'Nome do Produto', key: 'name', required: true },
-            { label: 'Foto', key: 'imgUrl', type: 'upload' },
+            { label: 'Foto', key: 'imgUrl', type: 'image' },
             { label: 'Preço', key: 'price', type: 'currency', cols: 6, required: true },
             { label: 'Quantide em Estoque', key: 'stock', type: 'qtd', cols: 6, required: true },
             { label: 'Marca', key: 'brand' },

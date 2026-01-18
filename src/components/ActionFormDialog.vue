@@ -83,6 +83,28 @@
                 ]"
               ></v-select>
 
+              <template v-else-if="field.type === 'image'">
+                <v-img
+                  :src="formData[field.key]"
+                  width="450"
+                  height="250"
+                  class="mb-2 rounded border"
+                  cover
+                ></v-img>
+                <v-file-input
+                  width="450"
+                  accept="image/*"
+                  label="Clique para selecionar ou arraste a imagem"
+                  variant="solo"
+                  density="compact"
+                  bg-color="grey-lighten-5"
+                  prepend-icon="mdi-camera"
+                  :loading="isImgUploading"
+                  :disabled="isImgUploading"
+                  @update:model-value="onFileSelected(field.key, $event)"
+                ></v-file-input>
+              </template>
+
               <v-text-field
                 v-else
                 v-model="formData[field.key]"
@@ -122,6 +144,8 @@
   </v-dialog>
 </template>
 <script>
+  import { uploadFile } from '@/services/storageService';
+
   /**
    * Cria um formulário dinâmico, baseado em um objeto de configuração, que permite
    * executar uma ação (Cadastrar/Editar) para uma entidade do sistema.
@@ -162,6 +186,7 @@
   data() {
     return {
       isEdit: null,
+      isImgUploading: false,
       formData: {}
     }
   },
@@ -210,6 +235,7 @@
   },
   methods: {
     close() {
+      // @todo remove possíveis imagens que foram carregadas para a núvem.
       this.isOpen = false;
     },
     /**
@@ -234,14 +260,31 @@
     },
     /**
      * 
+     * @param key 
+     * @param file 
      */
-    getRequiRules(field) {
-      const rules = [];
-      if (field.required) {
-        rules.push(v => !!v || `${field.label} é obrigatório`);
+    async onFileSelected(key, file) {
+      if (!file) return;
+
+      try {
+        this.isImgUploading = true;
+        const url = await uploadFile(file, this.entity.toLowerCase());
+        this.formData[key] = url;
+
+        this.$store.dispatch('ui/notify', {
+          message: 'Imagem carregada com sucesso!',
+          color: 'success'
+        }, { root: true });
+
+      } catch (error) {
+        console.error("Erro no upload:", error);
+        this.$store.dispatch('ui/notify', {
+          message: 'Falha ao carregar a imagem selecionada.',
+          color: 'error'
+        }, { root: true });
+      } finally {
+        this.isImgUploading = false;
       }
-      // Você pode adicionar mais regras aqui (ex: tamanho mínimo, e-mail, etc)
-      return rules;
     },
     async save() {
       const { valid } = await this.$refs.form.validate();
