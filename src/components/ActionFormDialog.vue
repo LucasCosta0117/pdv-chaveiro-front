@@ -237,7 +237,8 @@
   },
   methods: {
     /**
-     * Reseta as variáveis e fecha o dialog.
+     * Reseta o estado interno do formulário, limpa referências de imagens 
+     * temporárias e fecha o dialog.
      */
     close() {
       this.isEdit = null;
@@ -246,7 +247,9 @@
       this.isOpen = false;
     },
     /**
-     * Cancela a ação atual e remove possíveis imagens que foram enviadas para a store.
+     * Cancela a operação atual. 
+     * Caso uma imagem tenha sido enviada para a nuvem durante a sessão mas não confirmada via salvamento,
+     * o método tenta removê-la para evitar arquivos órfãos na núvem.
      */
     async cancel() {
       try {
@@ -261,8 +264,10 @@
       }
     },
     /**
-     * Trata a entrada de campos do tipo 'currency'.
-     * Garante que seja sempre positivo e no máximo 2 casas decimais.
+     * Intercepta e formata a entrada de campos monetários.
+     * Garante valores positivos e limita a precisão para duas casas decimais.
+     * @param {string} key - A chave do campo no objeto formData.
+     * @param {number} value - O valor numérico inserido no input.
      */
     handleCurrencyInput(key, value) {
       if (value === null || value === undefined) return;
@@ -271,8 +276,10 @@
       this.formData[key] = newValue;
     },
     /**
-     * Trata a entrada de campos do tipo 'qtd'.
-     * Garante que seja sempre inteiro, positivo e no mínimo 1.
+     * Intercepta e formata a entrada de campos de quantidade.
+     * Garante números inteiros, positivos e um valor mínimo de 1.
+     * @param {string} key - A chave do campo no objeto formData.
+     * @param {number} value - O valor numérico inserido no input.
      */
     handleQtdInput(key, value) {
       if (value === null || value === undefined) return;
@@ -281,9 +288,12 @@
       this.formData[key] = newValue;
     },
     /**
-     * 
-     * @param key 
-     * @param file 
+     * Gerencia o upload de arquivos de imagem para o Firebase Storage.
+     * Atualiza o formData com a URL pública de retorno e rastreia o upload para 
+     * possíveis exclusões em caso de cancelamento.
+     * @async
+     * @param {string} key - A chave do campo de imagem no objeto formData.
+     * @param {File} file - O arquivo binário selecionado pelo usuário.
      */
     async onFileSelected(key, file) {
       if (!file) return;
@@ -308,6 +318,10 @@
         this.isImgUploading = false;
       }
     },
+    /**
+     * Valida os campos obrigatórios e as regras de negócio do formulário.
+     * Se válido, prossegue com a persistência dos dados (Cadastro ou Edição).
+     */
     async save() {
       const { valid } = await this.$refs.form.validate();
 
