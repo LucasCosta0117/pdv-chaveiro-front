@@ -85,14 +85,11 @@
 
               <template v-else-if="field.type === 'image'">
                 <v-img
-                  :src="formData[field.key]"
-                  width="450"
-                  height="250"
-                  class="mb-2 rounded border"
+                  :src="formData[field.key] || noImagePlaceholder"
+                  class="mb-2 rounded border img-thumb"
                   cover
                 ></v-img>
                 <v-file-input
-                  width="450"
                   accept="image/*"
                   label="Clique para selecionar ou arraste a imagem"
                   variant="solo"
@@ -145,6 +142,7 @@
 </template>
 <script>
   import { uploadFile, deleteFile } from '@/services/storageService';
+  import noImagePlaceholder from '@/assets/utils/no-image.webp';
 
   /**
    * Cria um formulário dinâmico, baseado em um objeto de configuração, que permite
@@ -188,6 +186,7 @@
       isEdit: null,
       isImgUploading: false,
       imgUploaded: null,
+      noImagePlaceholder,
       formData: {}
     }
   },
@@ -297,7 +296,6 @@
           message: 'Imagem carregada com sucesso!',
           color: 'success'
         }, { root: true });
-
       } catch (error) {
         console.error("Erro no upload:", error);
         this.$store.dispatch('ui/notify', {
@@ -329,6 +327,9 @@
 }
 </script>
 <style scoped>
+.img-thumb {
+  height: 200px;
+}
 
 /* Breakpoint MD (960px - 1279px) ou superior */
 @media (min-width: 960px) {
@@ -337,6 +338,9 @@
   }
   .form-container {
     width: 60%;
+  }
+  .img-thumb {
+    height: 350px;
   }
 }
 </style>
