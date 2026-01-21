@@ -56,6 +56,31 @@ export default {
       } finally {
         dispatch('ui/stopLoading', null, { root: true });
       }
+    },
+    async save({ commit, dispatch }, newItem) {
+      try {
+        dispatch('ui/startLoading', null, { root: true });
+
+        const response = await api.post('/product/save', newItem);
+        await dispatch('fetchAll');
+
+        dispatch('ui/notify', {
+          message: 'Produto registrado com sucesso!',
+          color: 'success'
+        }, { root: true });
+
+        return true;
+      } catch (error) {
+        console.error('Erro ao salvar um novo produto: ', error);
+        dispatch('ui/notify', {
+          message: 'Erro ao tentar registrar este Produto',
+          color: error
+        },{ root: true });
+
+        return false;
+      } finally {
+        dispatch('ui/stopLoading', null, { root: true });
+      }
     }
   }
 }

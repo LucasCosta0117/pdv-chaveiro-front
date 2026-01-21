@@ -34,13 +34,13 @@ export default {
         dispatch('ui/stopLoading', null, { root: true });
       }
     },
-    async save({ commit, dispatch }, newSale) {
+    async save({ commit, dispatch }, newItem) {
       try {
         dispatch('ui/startLoading', null, { root: true });
 
-        newSale.sellerName = setSeller();
+        newItem.sellerName = setSeller();
 
-        const response = await api.post('/sale/save', newSale);
+        const response = await api.post('/sale/save', newItem);
         await dispatch('fetchAll');
 
         dispatch('ui/notify', {

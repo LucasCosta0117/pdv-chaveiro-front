@@ -313,7 +313,7 @@
       try {
         this.isImgUploading = true;
         const optimizedFile = await compressImage(file);
-        const url = await uploadFile(optimizedFile, this.entity.toLowerCase());
+        const url = await uploadFile(optimizedFile, this.entity);
         this.formData[key] = url;
         this.imgUploaded = url;
 
@@ -346,11 +346,9 @@
         return;
       }
 
-      console.log('Salvou: ', this.formData);
-      // const actionPath = (this.isEdit) ? `${this.formData.entity}/edit` : `${this.formData.entity}/save`; //@todo corrigir este else
-      // const wasSaved = await this.$store.dispatch(actionPath, this.this.formData);
-      // if (wasSaved) this.close();
-      this.close();
+      const actionPath = (this.isEdit) ? `${this.entity}/edit` : `${this.entity}/save`;
+      const wasSaved = await this.$store.dispatch(actionPath, this.formData);
+      if (wasSaved) this.close();
     }
   }
 }
