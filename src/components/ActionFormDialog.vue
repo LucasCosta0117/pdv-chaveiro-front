@@ -146,7 +146,7 @@
   </v-dialog>
 </template>
 <script>
-  import { uploadFile, deleteFile } from '@/services/storageService';
+  import { uploadFile, deleteFile, compressImage } from '@/services/storageService';
   import noImagePlaceholder from '@/assets/utils/no-image.webp';
 
   /**
@@ -312,7 +312,8 @@
 
       try {
         this.isImgUploading = true;
-        const url = await uploadFile(file, this.entity.toLowerCase());
+        const optimizedFile = await compressImage(file);
+        const url = await uploadFile(optimizedFile, this.entity.toLowerCase());
         this.formData[key] = url;
         this.imgUploaded = url;
 
