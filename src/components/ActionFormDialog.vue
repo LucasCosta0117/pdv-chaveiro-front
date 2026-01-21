@@ -100,6 +100,9 @@
                   prepend-icon="mdi-camera"
                   :loading="isImgUploading"
                   :disabled="isImgUploading"
+                  :rules="[
+                    v => (!field.required || !!v) || `${field.label} é obrigatório`
+                  ]"
                   @update:model-value="onFileSelected(field.key, $event)"
                 ></v-file-input>
               </template>
@@ -297,6 +300,15 @@
      */
     async onFileSelected(key, file) {
       if (!file) return;
+
+      if (file.size > 5 * 1024 * 1024) {
+        this.$store.dispatch('ui/notify', { 
+          message: 'Imagem muito grande! O arquivo deve ser menor que 5MB.', 
+          color: 'error'
+        }, { root: true });
+
+        return;
+      }
 
       try {
         this.isImgUploading = true;
