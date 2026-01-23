@@ -97,7 +97,6 @@ export default {
 .products-table-container {
   border-radius: 0.5rem;
   min-height: 25rem;
-  max-height: 35rem;
 }
 .products-table-container :deep(thead th) {
   background-color: rgb(var(--v-theme-roxo_w1));
@@ -107,7 +106,7 @@ export default {
 /* Breakpoint LG (1280px) ou superior */
 @media (min-width: 1280px) {
   .products-table-container {
-    height: 35rem;
+    height: 40.1rem;
   }
 }
 </style>
