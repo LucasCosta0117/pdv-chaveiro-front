@@ -346,9 +346,54 @@
         return;
       }
 
-      const actionPath = (this.isEdit) ? `${this.entity}/edit` : `${this.entity}/save`;
+      if (this.isEdit && !this.verifyChanges()) {
+        this.$store.dispatch('ui/notify', {
+          message: 'Nenhum dos campos desse registro foi alterado.',
+          color: 'warning'
+        }, { root: true });
+        return;
+      }
+
+      const actionPath = (this.isEdit) ? `${this.entity}/update` : `${this.entity}/save`;
       const wasSaved = await this.$store.dispatch(actionPath, this.formData);
-      if (wasSaved) this.close();
+      if (wasSaved) {
+        if (this.isEdit) {
+          await this.cleanupOldImages();
+        }
+        this.close();
+      }
+    },
+    /**
+     * Compara os dados iniciais com os dados atuais do formulário para verificar se houve alteração.
+     * @returns {boolean} 'True' se houver pelo menos uma diferença, 'False' caso contrário.
+     */
+    verifyChanges() {
+      return Object.keys(this.initialData).some(key => {
+        const originalValue = this.initialData[key] ?? '';
+        const currentValue = this.formData[key] ?? '';
+
+        return originalValue !== currentValue;
+      });
+    },
+    /**
+     * Localiza campos do tipo 'image' na configuração, e, caso o valor tenha sido 
+     * alterado durante a edição, remove a imagem antiga da Storage em núvem.
+     */
+    async cleanupOldImages() {
+      const imageFields = this.config.filter(field => field.type === 'image');
+
+      for (const field of imageFields) {
+        const oldUrl = this.initialData[field.key];
+        const newUrl = this.formData[field.key];
+
+        if (oldUrl && oldUrl !== newUrl) {
+          try {
+            await deleteFile(oldUrl);
+          } catch (error) {
+            console.error(`Edição de ${this.entity}. Falha ao remover imagem antiga do campo ${field.key}:`, error);
+          }
+        }
+      }
     }
   }
 }

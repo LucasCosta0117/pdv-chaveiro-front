@@ -105,7 +105,9 @@ export default {
         { title: 'Produtos', value: 'products' },
         { title: 'Serviços', value: 'jobs' }
       ],
+      // Flag para controle do dialog de inserção de novos registros
       showActionForm: false,
+      // Configuração para os campos do formulário de inserção
       actionFormConfig: []
     }
   },

@@ -61,6 +61,33 @@ export default {
         dispatch('ui/stopLoading', null, { root: true });
       }
     },
+    async update({ commit, dispatch }, editedItem) {
+      try {
+        dispatch('ui/startLoading', null, { root: true });
+
+        const response = await api.put(`/sale/update/${editedItem.id}`, editedItem);
+        
+        await dispatch('fetchAll');
+
+        dispatch('ui/notify', {
+          message: 'Venda atualizada com sucesso!',
+          color: 'success'
+        }, { root: true });
+
+        return true;
+      } catch (error) {
+        console.error('Erro ao editar a venda: ', error);
+        
+        dispatch('ui/notify', {
+          message: 'Erro ao tentar atualizar esta Venda.',
+          color: 'error'
+        }, { root: true });
+
+        return false;
+      } finally {
+        dispatch('ui/stopLoading', null, { root: true });
+      }
+    },
     async delete({ commit, dispatch }, id) {
       try {
         dispatch('ui/startLoading', null, { root: true });

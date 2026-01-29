@@ -38,7 +38,7 @@
                         <b>{{ subField.text }}: </b>
                         <span v-if="subField.type === 'currency'">{{ $formatCurrency(subValue[subField.key]) }}</span>
                         <span v-else-if="subField.type === 'date'">{{ $formatDateTime(subValue[subField.key]) }}</span>
-                        <span v-else-if="subField.type === 'bool'">{{ subValue[subField.key] == true ? 'Sim': 'Não'}}</span>
+                        <span v-else-if="subField.type === 'bool'">{{ subValue[subField.key] == true ? label.typeBoolYes : label.typeBoolNo }}</span>
                         <span v-else>{{ subValue[subField.key]}}</span>
                       </template>
                     </p>
@@ -56,17 +56,17 @@
           prepend-icon="mdi-pencil" 
           color="roxo_w2" 
           variant="flat" 
-          @click=""
+          @click="showActionForm = true"
         >
-          Editar
+          {{ label.btnEdit }}
         </v-btn>
-        <v-btn 
+        <v-btn
           prepend-icon="mdi-delete" 
           color="vermelho_w1"
           variant="flat"
           @click="msgConfirm = true"
         >
-          Excluir
+          {{ label.btnDelete}}
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -74,10 +74,17 @@
       v-model:showModal="msgConfirm"
       @confirm="deleteItem"
     ></confirm-dialog>
+    <ActionFormDialog
+      v-model:showModal="showActionForm"
+      :entity="selectedItem.entity"
+      :config="actionFormConfig"
+      :initialData="selectedItem"
+    />
   </v-dialog>
 </template>
 
 <script>
+import ActionFormDialog from './ActionFormDialog.vue';
 import ConfirmDialog from './ConfirmDialog.vue';
 
 /**
@@ -88,10 +95,21 @@ export default {
   name: 'DetailsDialog',
   components: {
     ConfirmDialog,
+    ActionFormDialog
   },
   data() {
     return{
+      // Flag para controle do dialog de confirmação da exclusão do registro
       msgConfirm: false,
+      // Textos para uso nos elementos do template
+      label: {
+        btnEdit: 'Editar',
+        btnDelete: 'Excluir',
+        typeBoolYes: 'Sim',
+        typeBoolNo: 'Não'
+      },
+      // Flag para controle do dialog de inserção de novos registros
+      showActionForm: false
     }
   },
   props: {
@@ -130,6 +148,35 @@ export default {
       },
       set(val) {
         this.$emit('update:showModal', val);
+      }
+    },
+    /**
+     * Configuração para os campos do formulário de edição.
+     */
+    actionFormConfig() {
+      if (this.selectedItem.entity === 'products') {
+        return [
+          { label: 'Nome do Produto', key: 'name', required: true },
+          { label: 'Foto', key: 'imgUrl', type: 'image' },
+          { label: 'Preço', key: 'price', type: 'currency', cols: 6, required: true },
+          { label: 'Quantide em Estoque', key: 'stock', type: 'qtd', cols: 6, required: true },
+          { label: 'Marca', key: 'brand' },
+          { label: 'Código', key: 'code' },
+          { label: 'Departamento', key: 'department', type: 'select', cols: 4, options: ['Vitrine', 'Insumo'] },
+          { label: 'Categoria', key: 'category', type: 'select', cols: 4 },
+          { label: 'Subcategoria', key: 'subcategory', type: 'select', cols: 4 },
+          { label: 'À venda?', key: 'canSale', type: 'bool', cols: 6 },
+          { label: 'Disponível?', key: 'isActive', type: 'bool', cols: 6 }
+        ];
+      } else {
+        return [
+          { label: 'Nome do Serviço', key: 'name', required: true},
+          { label: 'Código', key: 'code' },
+          { label: 'Preço', key: 'price', type: 'currency', cols: 6, required: true },
+          { label: 'Disponível', key: 'isActive', type: 'bool', cols: 6 },
+          { label: 'Categoria', key: 'category', type: 'select', cols: 6 },
+          { label: 'Subcategoria', key: 'subcategory', type: 'select', cols: 6 }
+        ];
       }
     }
   },

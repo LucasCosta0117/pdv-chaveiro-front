@@ -81,6 +81,33 @@ export default {
       } finally {
         dispatch('ui/stopLoading', null, { root: true });
       }
+    },
+    async update({ commit, dispatch }, editedItem) {
+      try {
+        dispatch('ui/startLoading', null, { root: true });
+
+        const response = await api.put(`/product/update/${editedItem.id}`, editedItem);
+        
+        await dispatch('fetchAll');
+
+        dispatch('ui/notify', {
+          message: 'Produto atualizado com sucesso!',
+          color: 'success'
+        }, { root: true });
+
+        return true;
+      } catch (error) {
+        console.error('Erro ao editar o produto: ', error);
+        
+        dispatch('ui/notify', {
+          message: 'Erro ao tentar atualizar este Produto.',
+          color: 'error'
+        }, { root: true });
+
+        return false;
+      } finally {
+        dispatch('ui/stopLoading', null, { root: true });
+      }
     }
   }
 }
