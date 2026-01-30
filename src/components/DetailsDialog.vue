@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="isOpen" max-width="600px">
+  <v-dialog v-model="isOpen" max-width="600px" v-if="selectedItem">
     <v-card>
       <v-card-title class="bg-roxo_w1 font-weight-bold d-flex justify-space-between align-center">
         <span>
