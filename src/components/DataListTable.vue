@@ -30,7 +30,8 @@
     <DetailsDialog
       v-if="selectedItem"
       v-model:showModal="dialog"
-      :selectedItem="selectedItem"
+      :selectedItemId="selectedItem.id"
+      :entity="selectedItem.entity"
       :details="details"
     />
   </div>
