@@ -23,9 +23,10 @@
                 v-if="field.type === 'currency'"
                 v-model.number="formData[field.key]"
                 type="number"
-                variant="solo"
+                :readonly="field.readonly"
+                :variant="field.readonly ? 'flat' : 'solo'"
                 density="compact"
-                bg-color="grey-lighten-5"
+                :bg-color="field.readonly ? 'roxo_w3' : 'grey-lighten-5'"
                 prefix="R$"
                 min="0"
                 step="0.01"
@@ -40,9 +41,10 @@
                 v-else-if="field.type === 'qtd'"
                 v-model.number="formData[field.key]"
                 type="number"
-                variant="solo"
+                :readonly="field.readonly"
+                :variant="field.readonly ? 'flat' : 'solo'"
                 density="compact"
-                bg-color="grey-lighten-5"
+                :bg-color="field.readonly ? 'roxo_w3' : 'grey-lighten-5'"
                 min="1"
                 step="1"
                 :rules="[
@@ -59,9 +61,10 @@
                 clearable
                 :items="field.options"
                 :list-props="{ bgColor: 'roxo_w3' }"
-                variant="solo"
+                :readonly="field.readonly"
+                :variant="field.readonly ? 'flat' : 'solo'"
                 density="compact"
-                bg-color="grey-lighten-5"
+                :bg-color="field.readonly ? 'roxo_w3' : 'grey-lighten-5'"
                 :rules="[
                   v => (!field.required || !!v) || `${field.label} é obrigatório`
                 ]"
@@ -74,9 +77,10 @@
                 item-title="texto"
                 item-value="valor"
                 :list-props="{ bgColor: 'roxo_w3' }"
-                variant="solo"
+                :readonly="field.readonly"
+                :variant="field.readonly ? 'flat' : 'solo'"
                 density="compact"
-                bg-color="grey-lighten-5"
+                :bg-color="field.readonly ? 'roxo_w3' : 'grey-lighten-5'"
                 :rules="[
                   v => (!field.required || !!v) || `${field.label} é obrigatório`
                 ]"
@@ -91,9 +95,10 @@
                 <v-file-input
                   accept="image/*"
                   label="Clique para selecionar ou arraste a imagem"
-                  variant="solo"
+                  :readonly="field.readonly"
+                  :variant="field.readonly ? 'flat' : 'solo'"
                   density="compact"
-                  bg-color="grey-lighten-5"
+                  :bg-color="field.readonly ? 'roxo_w3' : 'grey-lighten-5'"
                   prepend-icon="mdi-camera"
                   :loading="isImgUploading"
                   :disabled="isImgUploading"
@@ -108,9 +113,10 @@
                 v-else-if="field.type === 'date'"
                 v-model="formData[field.key]"
                 type="datetime-local"
-                variant="solo"
+                :readonly="field.readonly"
+                :variant="field.readonly ? 'flat' : 'solo'"
                 density="compact"
-                bg-color="grey-lighten-5"
+                :bg-color="field.readonly ? 'roxo_w3' : 'grey-lighten-5'"
                 :rules="[
                   v => (!field.required || !!v) || `${field.label} é obrigatório`
                 ]"
@@ -119,9 +125,10 @@
               <v-text-field
                 v-else
                 v-model="formData[field.key]"
-                variant="solo"
+                :readonly="field.readonly"
+                :variant="field.readonly ? 'flat' : 'solo'"
                 density="compact"
-                bg-color="grey-lighten-5"
+                :bg-color="field.readonly ? 'roxo_w3' : 'grey-lighten-5'"
                 :rules="[
                   v => (!field.required || !!v) || `${field.label} é obrigatório`
                 ]"

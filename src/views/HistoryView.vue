@@ -76,7 +76,7 @@ export default {
       { title: 'Data Venda', key: 'createdAt', type: 'date' },
       { title: 'Total Pago', key: 'total', type: 'currency'},
       { title: 'Vendedor', key: 'sellerName'},
-      { title: 'Status Pagamento', key: 'paymentStatus'}
+      { title: 'Status', key: 'status'}
     ];
     this.tableDetails = {
       header: {
@@ -84,12 +84,12 @@ export default {
         imgKey: ''
       },
       fields: [
-        { text: 'Data Venda', key: 'createdAt', type: 'date' },
         { text: 'Vendedor', key: 'sellerName'},
+        { text: 'Data da Venda', key: 'createdAt', type: 'date' },
+        { text: 'Status', key: 'status'},
         { text: 'Subtotal', key: 'subtotal', type: 'currency' },
         { text: 'Descontos', key: 'totalDiscount', type: 'currency' },
         { text: 'Total Pago', key: 'total', type: 'currency'},
-        { text: 'Status Pagamento', key: 'paymentStatus'},
         { text: 'Nota Fiscal', key: 'fiscalNumber' },
         { text: 'Produtos/Serviços', key: 'items', type: 'list', 
           subFields: [

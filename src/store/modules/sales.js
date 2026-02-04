@@ -137,16 +137,15 @@ function setSeller() {
 function normalizedSale(data) {
   if (!data || !Array.isArray(data)) return [];
 
-  const paymentStatusMap = {
-    'PAID': 'Pago',
-    'PENDING': 'Pendente',
-    'CANCELED': 'Cancelado',
-    'REFUNDED': 'Reembolsado'
+  const saleStatusMap = {
+    'COMPLETED': 'Concluída',
+    'CANCELED': 'Cancelada',
+    'REFUNDED': 'Reembolsada'
   };
 
   return data.map(item => ({
     ...item,
     entity: 'sales',
-    paymentStatus: paymentStatusMap[item.paymentStatus] || item.paymentStatus,
+    status: saleStatusMap[item.status] || item.status,
   }));
 }

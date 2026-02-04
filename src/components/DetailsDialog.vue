@@ -196,20 +196,11 @@ export default {
           ];
         case 'sales':
           return [
-            { label: 'Vendedor', key: 'sellerName', required: true},
-            { label: 'Subtotal', key: 'subtotal', type: 'currency', type: 'currency', cols: 4 },
-            { label: 'Descontos', key: 'totalDiscount', type: 'currency', type: 'currency', type: 'currency', cols: 4  },
-            { label: 'Total Pago', key: 'total', type: 'currency', required: true, type: 'currency', type: 'currency', cols: 4  },
-            { label: 'Status Pagamento', key: 'paymentStatus', required: true, type: 'select',
-              options: [
-                { texto: 'Pago', valor: 'PAID' }, 
-                { texto: 'Pendente', valor: 'PENDING' },
-                { texto: 'Cancelado', valor: 'CANCELED' },
-                { texto: 'Reembolsado', valor: 'REFUNDED' }
-              ],
-              cols: 4
-            },
-            { label: 'Nota Fiscal', key: 'fiscalNumber' },
+            { label: 'Vendedor', key: 'sellerName', readonly: true },
+            { label: 'Subtotal', key: 'subtotal', type: 'currency', type: 'currency', cols: 4, readonly: true },
+            { label: 'Descontos', key: 'totalDiscount', type: 'currency', type: 'currency', type: 'currency', cols: 4, readonly: true  },
+            { label: 'Total Pago', key: 'total', type: 'currency', type: 'currency', type: 'currency', cols: 4, readonly: true  },
+            { label: 'Nota Fiscal', key: 'fiscalNumber', readonly: true },
             { label: 'Produtos/Serviços', key: 'items', type: 'list', 
               subFields: [
                 { label: 'Item', key: 'itemName'},
@@ -222,6 +213,13 @@ export default {
               subFields: [
                 { label: 'Método', key: 'method'},
                 { label: 'Subtotal', key: 'amount', type: 'currency' }
+              ]
+            },
+            { label: 'Status', key: 'status', type: 'select',
+              options: [
+                { texto: 'Concluída', valor: 'COMPLETED' }, 
+                { texto: 'Cancelada', valor: 'CANCELED' },
+                { texto: 'Reembolsada', valor: 'REFUNDED' }
               ]
             }
           ];
