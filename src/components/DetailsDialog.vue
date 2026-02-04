@@ -58,7 +58,7 @@
           variant="flat" 
           @click="showActionForm = true"
         >
-          {{ label.btnEdit }}
+          {{ actionLabel.edit }}
         </v-btn>
         <v-btn
           prepend-icon="mdi-delete" 
@@ -66,7 +66,7 @@
           variant="flat"
           @click="msgConfirm = true"
         >
-          {{ label.btnDelete}}
+          {{ actionLabel.delete}}
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -103,8 +103,6 @@ export default {
       msgConfirm: false,
       // Textos para uso nos elementos do template
       label: {
-        btnEdit: 'Editar',
-        btnDelete: 'Excluir',
         typeBoolYes: 'Sim',
         typeBoolNo: 'Não'
       },
@@ -169,29 +167,95 @@ export default {
      * Configuração para os campos do formulário de edição.
      */
     actionFormConfig() {
-      if (this.selectedItem.entity === 'products') {
-        return [
-          { label: 'Nome do Produto', key: 'name', required: true },
-          { label: 'Foto', key: 'imgUrl', type: 'image' },
-          { label: 'Preço', key: 'price', type: 'currency', cols: 6, required: true },
-          { label: 'Quantide em Estoque', key: 'stock', type: 'qtd', cols: 6, required: true },
-          { label: 'Marca', key: 'brand' },
-          { label: 'Código', key: 'code' },
-          { label: 'Departamento', key: 'department', type: 'select', cols: 4, options: ['Vitrine', 'Insumo'] },
-          { label: 'Categoria', key: 'category', type: 'select', cols: 4 },
-          { label: 'Subcategoria', key: 'subcategory', type: 'select', cols: 4 },
-          { label: 'À venda?', key: 'canSale', type: 'bool', cols: 6 },
-          { label: 'Disponível?', key: 'isActive', type: 'bool', cols: 6 }
-        ];
+      switch (this.selectedItem.entity) {
+        case 'products':
+          return [
+            { label: 'Nome do Produto', key: 'name', required: true },
+            { label: 'Foto', key: 'imgUrl', type: 'image' },
+            { label: 'Preço', key: 'price', type: 'currency', cols: 6 },
+            { label: 'Quantide em Estoque', key: 'stock', type: 'qtd', cols: 6 },
+            { label: 'Marca', key: 'brand' },
+            { label: 'Código', key: 'code' },
+            { label: 'Departamento', key: 'department', type: 'combobox', cols: 4, options: ['Vitrine', 'Insumo'] },
+            { label: 'Categoria', key: 'category', type: 'combobox', cols: 4 },
+            { label: 'Subcategoria', key: 'subcategory', type: 'combobox', cols: 4 },
+            { label: 'À venda?', key: 'canSale', type: 'select',
+              options: [
+                { texto: 'Sim', valor: true }, 
+                { texto: 'Não', valor: false }
+              ],
+              cols: 6
+            },
+            { label: 'Disponível?', key: 'isActive', type: 'select',
+              options: [
+                { texto: 'Sim', valor: true }, 
+                { texto: 'Não', valor: false }
+              ],
+              cols: 6
+            }
+          ];
+        case 'sales':
+          return [
+            { label: 'Vendedor', key: 'sellerName', required: true},
+            { label: 'Subtotal', key: 'subtotal', type: 'currency', type: 'currency', cols: 4 },
+            { label: 'Descontos', key: 'totalDiscount', type: 'currency', type: 'currency', type: 'currency', cols: 4  },
+            { label: 'Total Pago', key: 'total', type: 'currency', required: true, type: 'currency', type: 'currency', cols: 4  },
+            { label: 'Status Pagamento', key: 'paymentStatus', required: true, type: 'select',
+              options: [
+                { texto: 'Pago', valor: 'PAID' }, 
+                { texto: 'Pendente', valor: 'PENDING' },
+                { texto: 'Cancelado', valor: 'CANCELED' },
+                { texto: 'Reembolsado', valor: 'REFUNDED' }
+              ],
+              cols: 4
+            },
+            { label: 'Nota Fiscal', key: 'fiscalNumber' },
+            { label: 'Produtos/Serviços', key: 'items', type: 'list', 
+              subFields: [
+                { label: 'Item', key: 'itemName'},
+                { label: 'Valor', key: 'unitPrice', type: 'currency' },
+                { label: 'Desconto', key: 'discount', type: 'currency' },
+                { label: 'Qtd', key: 'quantity'}
+              ]
+            },
+            { label: 'Pagamento', key: 'payments', type: 'list', 
+              subFields: [
+                { label: 'Método', key: 'method'},
+                { label: 'Subtotal', key: 'amount', type: 'currency' }
+              ]
+            }
+          ];
+        case 'jobs':
+          return [
+            { label: 'Nome do Serviço', key: 'name', required: true},
+            { label: 'Código', key: 'code' },
+            { label: 'Preço', key: 'price', type: 'currency', cols: 6, required: true },
+            { label: 'Disponível', key: 'isActive', type: 'select',
+              options: [
+                { texto: 'Sim', valor: true }, 
+                { texto: 'Não', valor: false }
+              ],
+              cols: 6
+            },
+            { label: 'Categoria', key: 'category', type: 'combobox', cols: 6 },
+            { label: 'Subcategoria', key: 'subcategory', type: 'combobox', cols: 6 }
+          ];
+      }
+    },
+    /**
+     * Define os textos do botão de ação baseado na entidade atual.
+     */
+    actionLabel() {
+      if (this.entity === 'sales') {
+        return {
+          edit: 'Editar',
+          delete: 'Cancelar Venda',
+        };
       } else {
-        return [
-          { label: 'Nome do Serviço', key: 'name', required: true},
-          { label: 'Código', key: 'code' },
-          { label: 'Preço', key: 'price', type: 'currency', cols: 6, required: true },
-          { label: 'Disponível', key: 'isActive', type: 'bool', cols: 6 },
-          { label: 'Categoria', key: 'category', type: 'select', cols: 6 },
-          { label: 'Subcategoria', key: 'subcategory', type: 'select', cols: 6 }
-        ];
+        return {
+          edit: 'Editar',
+          delete: 'Excluir',
+        };
       }
     }
   },

@@ -54,7 +54,7 @@
               ></v-text-field>
 
               <v-combobox
-                v-else-if="field.type === 'select'"
+                v-else-if="field.type === 'combobox'"
                 v-model="formData[field.key]"
                 clearable
                 :items="field.options"
@@ -68,12 +68,9 @@
               ></v-combobox>
 
               <v-select
-                v-else-if="field.type === 'bool'"
+                v-else-if="field.type === 'select'"
                 v-model="formData[field.key]"
-                :items="[
-                  { texto: 'Sim', valor: true },
-                  { texto: 'Não', valor: false }
-                ]"
+                :items="field.options"
                 item-title="texto"
                 item-value="valor"
                 :list-props="{ bgColor: 'roxo_w3' }"
@@ -106,6 +103,18 @@
                   @update:model-value="onFileSelected(field.key, $event)"
                 ></v-file-input>
               </template>
+
+              <v-text-field
+                v-else-if="field.type === 'date'"
+                v-model="formData[field.key]"
+                type="datetime-local"
+                variant="solo"
+                density="compact"
+                bg-color="grey-lighten-5"
+                :rules="[
+                  v => (!field.required || !!v) || `${field.label} é obrigatório`
+                ]"
+              ></v-text-field>
 
               <v-text-field
                 v-else
@@ -232,6 +241,14 @@
           }
         });
       }
+
+      // Converte a data do banco para o formato do input (YYYY-MM-DDTHH:mm)
+      this.config.forEach(field => {
+        if (field.type === 'date' && data[field.key]) {
+          const date = new Date(data[field.key]);
+          data[field.key] = date.toISOString().slice(0, 16); 
+        }
+      });
 
       this.formData = data;
       this.isEdit = !isNew;
