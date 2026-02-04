@@ -23,9 +23,9 @@
                 v-if="field.type === 'currency'"
                 v-model.number="formData[field.key]"
                 type="number"
-                :readonly="field.readonly"
-                :variant="field.readonly ? 'flat' : 'solo'"
+                variant="solo"
                 density="compact"
+                :readonly="field.readonly"
                 :bg-color="field.readonly ? 'roxo_w3' : 'grey-lighten-5'"
                 prefix="R$"
                 min="0"
@@ -41,9 +41,9 @@
                 v-else-if="field.type === 'qtd'"
                 v-model.number="formData[field.key]"
                 type="number"
-                :readonly="field.readonly"
-                :variant="field.readonly ? 'flat' : 'solo'"
+                variant="solo"
                 density="compact"
+                :readonly="field.readonly"
                 :bg-color="field.readonly ? 'roxo_w3' : 'grey-lighten-5'"
                 min="1"
                 step="1"
@@ -61,9 +61,9 @@
                 clearable
                 :items="field.options"
                 :list-props="{ bgColor: 'roxo_w3' }"
-                :readonly="field.readonly"
-                :variant="field.readonly ? 'flat' : 'solo'"
+                variant="solo"
                 density="compact"
+                :readonly="field.readonly"
                 :bg-color="field.readonly ? 'roxo_w3' : 'grey-lighten-5'"
                 :rules="[
                   v => (!field.required || !!v) || `${field.label} é obrigatório`
@@ -77,9 +77,9 @@
                 item-title="texto"
                 item-value="valor"
                 :list-props="{ bgColor: 'roxo_w3' }"
-                :readonly="field.readonly"
-                :variant="field.readonly ? 'flat' : 'solo'"
+                variant="solo"
                 density="compact"
+                :readonly="field.readonly"
                 :bg-color="field.readonly ? 'roxo_w3' : 'grey-lighten-5'"
                 :rules="[
                   v => (!field.required || !!v) || `${field.label} é obrigatório`
@@ -95,9 +95,9 @@
                 <v-file-input
                   accept="image/*"
                   label="Clique para selecionar ou arraste a imagem"
-                  :readonly="field.readonly"
-                  :variant="field.readonly ? 'flat' : 'solo'"
+                  variant="solo"
                   density="compact"
+                  :readonly="field.readonly"
                   :bg-color="field.readonly ? 'roxo_w3' : 'grey-lighten-5'"
                   prepend-icon="mdi-camera"
                   :loading="isImgUploading"
@@ -113,21 +113,45 @@
                 v-else-if="field.type === 'date'"
                 v-model="formData[field.key]"
                 type="datetime-local"
-                :readonly="field.readonly"
-                :variant="field.readonly ? 'flat' : 'solo'"
+                variant="solo"
                 density="compact"
+                :readonly="field.readonly"
                 :bg-color="field.readonly ? 'roxo_w3' : 'grey-lighten-5'"
                 :rules="[
                   v => (!field.required || !!v) || `${field.label} é obrigatório`
                 ]"
               ></v-text-field>
 
+              <v-autocomplete
+                v-else-if="field.type === 'multiselect'"
+                v-model="formData[field.key]"
+                :items="formData[field.key] || []" 
+                :item-title="field.options['title']" 
+                :item-value="field.options['value']"
+                multiple
+                chips
+                return-object 
+                variant="solo"
+                density="compact"
+                :readonly="field.readonly"
+                :bg-color="field.readonly ? 'roxo_w3' : 'grey-lighten-5'"
+                :rules="[
+                  v => (!field.required || (v && v.length > 0)) || `${field.label} é obrigatório`
+                ]"
+              >
+                <template v-slot:no-data>
+                  <v-list-item>
+                    <v-list-item-title>Nenhum item encontrado</v-list-item-title>
+                  </v-list-item>
+                </template>
+              </v-autocomplete>
+
               <v-text-field
                 v-else
                 v-model="formData[field.key]"
-                :readonly="field.readonly"
-                :variant="field.readonly ? 'flat' : 'solo'"
+                variant="solo"
                 density="compact"
+                :readonly="field.readonly"
                 :bg-color="field.readonly ? 'roxo_w3' : 'grey-lighten-5'"
                 :rules="[
                   v => (!field.required || !!v) || `${field.label} é obrigatório`
@@ -259,6 +283,7 @@
 
       this.formData = data;
       this.isEdit = !isNew;
+      console.log('data', data);
     }
   }
   },

@@ -201,20 +201,8 @@ export default {
             { label: 'Descontos', key: 'totalDiscount', type: 'currency', type: 'currency', type: 'currency', cols: 4, readonly: true  },
             { label: 'Total Pago', key: 'total', type: 'currency', type: 'currency', type: 'currency', cols: 4, readonly: true  },
             { label: 'Nota Fiscal', key: 'fiscalNumber', readonly: true },
-            { label: 'Produtos/Serviços', key: 'items', type: 'list', 
-              subFields: [
-                { label: 'Item', key: 'itemName'},
-                { label: 'Valor', key: 'unitPrice', type: 'currency' },
-                { label: 'Desconto', key: 'discount', type: 'currency' },
-                { label: 'Qtd', key: 'quantity'}
-              ]
-            },
-            { label: 'Pagamento', key: 'payments', type: 'list', 
-              subFields: [
-                { label: 'Método', key: 'method'},
-                { label: 'Subtotal', key: 'amount', type: 'currency' }
-              ]
-            },
+            { label: 'Produtos/Serviços', key: 'items', type: 'multiselect', options: { title: 'itemName', value: 'id' }, readonly: true },
+            { label: 'Pagamento', key: 'payments', type: 'multiselect', options: { title: 'method', value: 'id' }, readonly: true },
             { label: 'Status', key: 'status', type: 'select',
               options: [
                 { texto: 'Concluída', valor: 'COMPLETED' }, 
