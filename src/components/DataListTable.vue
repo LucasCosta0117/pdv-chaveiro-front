@@ -5,11 +5,42 @@
       hover
       class="products-table-container border-thin"
       :headers="headers"
-      :items="items"
+      :items="filteredItems"
       :items-per-page="10"
       :search="search"
       @click:row="openDialog"
     >
+      <template v-for="header in headers" :key="header.key" #[`header.${header.key}`]="{ column }">
+        <div class="d-flex align-center">
+          <span class="font-weight-bold">{{ column.title }}</span>
+          
+          <v-menu :close-on-content-click="false" location="bottom">
+            <template v-slot:activator="{ props }">
+              <v-btn
+                :icon="columnFilters[column.key] ? 'mdi-filter-remove' : 'mdi-filter'"
+                variant="text"
+                size="x-small"
+                v-bind="props"
+                :class="{ 'text-black': columnFilters[column.key], 'text-white': !columnFilters[column.key] }"
+              ></v-btn>
+            </template>
+
+            <v-card min-width="200" class="pa-2">
+              <v-text-field
+                v-model="columnFilters[column.key]"
+                :label="`Filtrar ${column.title}`"
+                variant="underlined"
+                density="compact"
+                hide-details
+                clearable
+                prepend-inner-icon="mdi-magnify"
+                autofocus
+              ></v-text-field>
+            </v-card>
+          </v-menu>
+        </div>
+      </template>
+
       <template v-for="header in headers" :key="header.key" #[`item.${header.key}`]="{ value, column }">
         <!-- Formatação para coluna monetária -->
         <template v-if="column.type === 'currency'">
@@ -74,7 +105,34 @@ export default {
       // Controla a visibilidade do diálogo de detalhes (DetailsDialog).
       dialog: false,
       // Armazena o item selecionado quando uma linha da tabela é clicada.
-      selectedItem: null
+      selectedItem: null,
+      // Objeto que guardará os termos de busca de cada coluna.
+      columnFilters: {}
+    }
+  },
+  computed: {
+    /**
+     * Propriedade computada que filtra a lista original baseada nos filtros de coluna.
+     */
+    filteredItems() {
+      const activeFilters = Object.keys(this.columnFilters).filter(key => !!this.columnFilters[key]);
+
+      if (activeFilters.length === 0) {
+        return this.items;
+      }
+
+      return this.items.filter(item => {
+        for (const key of activeFilters) {
+          const filterText = this.columnFilters[key].toLowerCase();
+          
+          const cellValue = String(item[key] || '').toLowerCase();
+
+          if (!cellValue.includes(filterText)) {
+            return false;
+          }
+        }
+        return true;
+      });
     }
   },
   methods: {
@@ -102,6 +160,10 @@ export default {
 .products-table-container :deep(thead th) {
   background-color: rgb(var(--v-theme-roxo_w1));
   color: white;
+  white-space: nowrap;
+}
+.products-table-container :deep(.v-btn--icon) {
+  margin-left: 0.5rem;
 }
 
 /* Breakpoint LG (1280px) ou superior */
