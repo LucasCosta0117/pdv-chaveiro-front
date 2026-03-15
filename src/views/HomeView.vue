@@ -165,7 +165,7 @@ export default defineComponent({
        * Define os dados para montagem da tabela de vendas recentes. 
        */
       recentSalesHeaders: [
-        { title: 'Hora', key: 'createdAt' },
+        { title: 'Hora', key: 'createdAt', sortable: false },
         { title: 'Vendedor', key: 'sellerName', sortable: false },
         { title: 'Status', key: 'status', sortable: false },
         { title: 'Valor', key: 'total', align: 'end', sortable: false }
@@ -233,7 +233,6 @@ export default defineComponent({
     recentSales() {
       return [...this.salesList]
         .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-        .reverse()
         .slice(0, 10);
     },
     /**
