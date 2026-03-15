@@ -283,7 +283,6 @@
 
       this.formData = data;
       this.isEdit = !isNew;
-      console.log('data', data);
     }
   }
   },
@@ -306,7 +305,6 @@
     async cancel() {
       try {
         if (this.imgUploaded) {
-          console.log('Removendo imagem órfã: ', this.imgUploaded);
           await deleteFile(this.imgUploaded);
         }
       } catch (error) {

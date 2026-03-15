@@ -285,8 +285,6 @@ export default defineComponent({
         'Reembolsada': 'info'
       };
 
-      console.log('status', status)
-
       return colors[status] || 'roxo_w3';
     }
   },
