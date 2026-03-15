@@ -40,7 +40,7 @@ export default {
 
         newItem.sellerName = setSeller();
 
-        await api.post('/sale/saves', newItem);
+        await api.post('/sale/save', newItem);
         await dispatch('fetchAll');
 
         dispatch('ui/notify', {
