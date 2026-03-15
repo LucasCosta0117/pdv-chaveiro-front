@@ -3,7 +3,7 @@
     <v-row class="mb-4">
       <v-col cols="12">
         <h1 class="text-h4 font-weight-bold text-grey-darken-3">
-          {{ saudacao }}, Lucas! 👋
+          {{ greeting }} 👋
         </h1>
         <p class="text-subtitle-1 text-grey-darken-1">
           Aqui está o resumo do seu caixa e estoque de hoje.
@@ -18,7 +18,7 @@
             <div>
               <div class="text-overline text-grey-darken-1 mb-1">Vendas Hoje</div>
               <div class="text-h4 font-weight-black text-success">
-                {{ $formatCurrency(resumo.vendasHoje) }}
+                {{ $formatCurrency(summaryTheDay.todaySales) }}
               </div>
             </div>
             <v-avatar color="success-lighten-4" size="56">
@@ -34,7 +34,7 @@
             <div>
               <div class="text-overline text-grey-darken-1 mb-1">Atendimentos</div>
               <div class="text-h4 font-weight-black text-primary">
-                {{ resumo.qtdAtendimentos }}
+                {{ summaryTheDay.todayTransactions }}
               </div>
             </div>
             <v-avatar color="primary-lighten-4" size="56">
@@ -50,7 +50,7 @@
             <div>
               <div class="text-overline text-grey-darken-1 mb-1">Ticket Médio</div>
               <div class="text-h4 font-weight-black text-info">
-                {{ $formatCurrency(resumo.ticketMedio) }}
+                {{ $formatCurrency(summaryTheDay.averageTicket) }}
               </div>
             </div>
             <v-avatar color="info-lighten-4" size="56">
@@ -68,23 +68,27 @@
             <v-icon color="grey-darken-2" class="mr-2">mdi-history</v-icon>
             Últimas Vendas
             <v-spacer></v-spacer>
-            <v-btn variant="text" color="primary" size="small" @click="irParaHistorico">
+            <v-btn variant="text" color="primary" size="small" @click="goToHistory">
               Ver Histórico Completo
             </v-btn>
           </v-card-title>
           
           <v-data-table
-            :headers="headersRecentes"
-            :items="vendasRecentes"
+            :headers="recentSalesHeaders"
+            :items="recentSales"
             :items-per-page="5"
             density="comfortable"
             hide-default-footer
           >
+            <template #[`item.createdAt`]="{ value }">
+              {{ $formatDateTime(value) }}
+            </template>
             <template #[`item.status`]="{ value }">
               <v-chip
-                :color="value === 'Concluída' ? 'success' : 'warning'"
+                :color="getStatusColor(value)"
                 size="small"
                 variant="flat"
+                class="font-weight-medium"
               >
                 {{ value }}
               </v-chip>
@@ -97,21 +101,23 @@
       </v-col>
 
       <v-col cols="12" md="4" class="d-flex flex-column gap-4">
-        
         <v-card elevation="2" class="rounded-lg mb-4">
           <v-card-title class="pa-4 border-b">
             <v-icon color="grey-darken-2" class="mr-2">mdi-lightning-bolt</v-icon>
             Ações Rápidas
           </v-card-title>
           <v-card-text class="pa-4">
-            <v-btn block color="primary" size="large" class="mb-3" prepend-icon="mdi-cart-plus" @click="irParaCaixa">
+            <v-btn block color="primary" size="large" class="mb-3" prepend-icon="mdi-cart-plus" @click="goToPos">
               Nova Venda / Caixa
             </v-btn>
-            <v-btn block color="secondary" size="large" class="mb-3" prepend-icon="mdi-plus-box" @click="irParaCatalogo">
+            <v-btn block color="secondary" size="large" class="mb-3" prepend-icon="mdi-plus-box" @click="goToCatalog">
               Cadastrar Produto
             </v-btn>
-            <v-btn block color="secondary" size="large" class="mb-3" prepend-icon="mdi-plus-box" @click="irParaCatalogo">
-              Cadastrar Produto
+            <v-btn block color="roxo_w1" size="large" class="mb-3" prepend-icon="mdi-plus-box" @click="goToCatalog">
+              Cadastrar Serviço
+            </v-btn>
+            <v-btn disabled block color="cinza_w1" size="large" class="mb-3" prepend-icon="mdi-chart-bar" @click="goToReport">
+              Acessar Relatórios
             </v-btn>
           </v-card-text>
         </v-card>
@@ -122,20 +128,20 @@
             Estoque Baixo
           </v-card-title>
           <v-list lines="two" class="pa-0">
-            <template v-for="(item, index) in estoqueBaixo" :key="item.id">
+            <template v-for="(product, index) in lowStockProducts" :key="product.id">
               <v-list-item>
                 <template v-slot:prepend>
                   <v-avatar color="error-lighten-4" size="40">
-                    <span class="text-error font-weight-bold">{{ item.stock }}</span>
+                    <span class="text-error font-weight-bold">{{ product.stock }}</span>
                   </v-avatar>
                 </template>
-                <v-list-item-title class="font-weight-medium">{{ item.name }}</v-list-item-title>
-                <v-list-item-subtitle>Restam apenas {{ item.stock }} unidades</v-list-item-subtitle>
+                <v-list-item-title class="font-weight-medium">{{ product.name }}</v-list-item-title>
+                <v-list-item-subtitle>Restam apenas {{ product.stock }} unidades</v-list-item-subtitle>
               </v-list-item>
-              <v-divider v-if="index < estoqueBaixo.length - 1"></v-divider>
+              <v-divider v-if="index < lowStockProducts.length - 1"></v-divider>
             </template>
             
-            <v-list-item v-if="estoqueBaixo.length === 0">
+            <v-list-item v-if="lowStockProducts.length === 0">
               <v-list-item-title class="text-grey text-center my-4">
                 Tudo certo com o estoque! 🎉
               </v-list-item-title>
@@ -155,67 +161,147 @@ export default defineComponent({
   name: 'HomeView',
   data() {
     return {
-      // Dados simulados para você ver o layout funcionando
-      resumo: {
-        vendasHoje: 1450.75,
-        qtdAtendimentos: 12,
-        ticketMedio: 120.89
-      },
-      headersRecentes: [
-        { title: 'Hora', key: 'hora', sortable: false },
-        { title: 'Cliente/Vendedor', key: 'sellerName', sortable: false },
+      /**
+       * Define os dados para montagem da tabela de vendas recentes. 
+       */
+      recentSalesHeaders: [
+        { title: 'Hora', key: 'createdAt' },
+        { title: 'Vendedor', key: 'sellerName', sortable: false },
         { title: 'Status', key: 'status', sortable: false },
         { title: 'Valor', key: 'total', align: 'end', sortable: false }
-      ],
-      vendasRecentes: [
-        { id: 1, hora: '10:45', sellerName: 'Lucas Costa', status: 'Concluída', total: 89.90 },
-        { id: 2, hora: '10:12', sellerName: 'Lucas Costa', status: 'Concluída', total: 250.00 },
-        { id: 3, hora: '09:30', sellerName: 'Maria Silva', status: 'Pendente', total: 45.50 },
-        { id: 4, hora: '09:05', sellerName: 'Lucas Costa', status: 'Concluída', total: 15.00 },
-      ],
-      estoqueBaixo: [
-        { id: 101, name: 'Controle Remoto PPA', stock: 2 },
-        { id: 102, name: 'Chave Pado Lado Direito', stock: 5 },
-        { id: 103, name: 'Alicate Profissional 777', stock: 1 }
       ]
     }
   },
   computed: {
-    // Retorna "Bom dia", "Boa tarde" ou "Boa noite" dinamicamente
-    saudacao() {
-      const hora = new Date().getHours();
-      if (hora >= 5 && hora < 12) return 'Bom dia';
-      if (hora >= 12 && hora < 18) return 'Boa tarde';
-      return 'Boa noite';
+    /**
+     * Lógica para montagem da saudação dinâmica.
+     */
+    greeting() {
+      let greetingTerm = 'Bom dia';
+      const currentHour = new Date().getHours();
+      if (currentHour >= 12 && currentHour < 18) greetingTerm =  'Boa tarde';
+      if (currentHour >= 18 && currentHour < 5) greetingTerm = 'Boa noite';
+
+      return `${greetingTerm}, ${this.userName}!`;
+    },
+    /**
+     * Nome do usuário para uso na saudação
+     */
+    userName() {
+      //@todo substituir pelo nome do usuário no futuro.
+      return 'Chaveiro Santiago';
+    },
+    /**
+     * Retorna o total de vendas salvo na store.
+     */
+    salesList() {
+      return this.$store.state.sales.items || [];
+    },
+    /**
+     * Retorna a lista de produtos salvo na store.
+     */
+    productsList() {
+      return this.$store.state.products.items || [];
+    },
+    /**
+     * Apresenta a lista de vendas filtradas pelo dia atual.
+     */
+    todaySalesList() {
+      const todayString = new Date().toISOString().split('T')[0];
+      
+      return this.salesList.filter(sale => {
+        return sale.createdAt && sale.createdAt.startsWith(todayString);
+      });
+    },
+    /**
+     * Define os valores para os cards de Métricas Rápidas.
+     */
+    summaryTheDay() {
+      const todaySales = this.todaySalesList.reduce((acc, sale) => acc + (sale.total || 0), 0);
+      const todayTransactions = this.todaySalesList.length;
+      const averageTicket = todayTransactions > 0 ? (todaySales / todayTransactions) : 0;
+
+      return {
+        todaySales,
+        todayTransactions,
+        averageTicket
+      };
+    },
+    /**
+     * Retorna a lista com os dados das últimas 10 vendas.
+     */
+    recentSales() {
+      return [...this.salesList]
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        .reverse()
+        .slice(0, 10);
+    },
+    /**
+     * Lista os produtos com baixa quantidade no estoque.
+     */
+    lowStockProducts() {
+      const stockThreshold = 5;
+
+      return this.productsList
+        .filter(product => product.stock !== undefined && product.stock <= stockThreshold)
+        .sort((a, b) => a.stock - b.stock)
+        .slice(0, 5);
     }
   },
   methods: {
-    irParaCaixa() {
+    /**
+     * Navega para a página de Vendas/Caixa
+     */
+    goToPos() {
       this.$router.push({ name: 'sales' });
     },
-    irParaCatalogo() {
+    /**
+     * Navega para a página de Cadastro de Produtos
+     */
+    goToCatalog() {
       this.$router.push({ name: 'inventory' });
     },
-    irParaHistorico() {
+    /**
+     * Navega para a página de Histórico de Vendas
+     */
+    goToHistory() {
       this.$router.push({ name: 'history' });
+    },
+    /**
+     * Navega para a página de Relatórios
+     */
+    goToReport() {
+      //@todo Quando criar a página de relatórios
+      this.$router.push({ name: '' });
+    },
+    /**
+     * Retorna a cor do Vuetify correspondente ao status da venda.
+     */
+    getStatusColor(status) {
+      const colors = {
+        'Concluída': 'success',
+        'Pendente': 'warning',
+        'Cancelada': 'error',
+        'Reembolsada': 'info'
+      };
+
+      console.log('status', status)
+
+      return colors[status] || 'roxo_w3';
     }
+  },
+  mounted() {
+    // Opcional: Garantir que os dados estão atualizados ao carregar a Home
+    this.$store.dispatch('sales/fetchAll');
+    this.$store.dispatch('products/fetchAll');
   }
 });
 </script>
-
 <style scoped>
-/* Adicionando bordas coloridas nos cards superiores para destaque visual */
 .border-l-4 {
   border-left: 4px solid !important;
 }
-.border-success {
-  border-left-color: rgb(var(--v-theme-success)) !important; 
-}
-.border-primary {
-  border-left-color: 
-  rgb(var(--v-theme-primary)) !important; 
-}
-.border-info {
-  border-left-color: rgb(var(--v-theme-info)) !important; 
-}
+.border-success { border-left-color: rgb(var(--v-theme-success)) !important; }
+.border-primary { border-left-color: rgb(var(--v-theme-primary)) !important; }
+.border-info { border-left-color: rgb(var(--v-theme-info)) !important; }
 </style>
