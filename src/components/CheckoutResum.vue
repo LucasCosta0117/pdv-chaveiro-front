@@ -130,40 +130,34 @@ export default {
     }
   },
   computed: {
-    // Permite armazenar/manipular todas as informações de uma nova venda antes de finaliza-la.
-    newSale: {
-      get() {
-        const saleValue = {};
+    /**
+     * Armazena/Manipula o estado atual de uma nova venda
+     * com base nos itens do carrinho e opções de pagamento.
+     */
+    newSale() {
+      const subtotal = parseFloat(this.checkoutItems.reduce(
+        (acc, item) => acc + (item.quantity * item.price), 0
+      ).toFixed(2));
 
-        saleValue.subtotal = parseFloat(this.checkoutItems.reduce(
-          (accumulator, item) => accumulator + (item.quantity * item.price),
-          0
-        ).toFixed(2));
+      const discounts = parseFloat(this.checkoutItems.reduce(
+        (acc, item) => acc + (item.discount || 0), 0
+      ).toFixed(2));
 
-        saleValue.discounts = parseFloat(this.checkoutItems.reduce(
-          (accumulator, item) => {
-            const discountValue = item.discount || 0;
-            return accumulator + discountValue;
-          }, 0).toFixed(2));
+      const total = parseFloat((subtotal - discounts).toFixed(2));
 
-        saleValue.total = parseFloat((saleValue.subtotal - saleValue.discounts).toFixed(2));
+      const payment = this.paymentOptions
+        .filter(p => p.amount > 0)
+        .map(p => ({
+          method: p.text,
+          amount: p.amount
+        }));
 
-        saleValue.payment = this.paymentOptions
-          .filter( payment => payment.amount > 0)
-          .map( p => (
-            {
-              method: p.text,
-              amount: p.amount
-            }
-          ));
-
-        this.$emit('update:saleResum', saleValue);
-
-        return saleValue;
-      },
-      set(value) {
-        this.$emit('update:saleResum', value);
-      }
+      return {
+        subtotal,
+        discounts,
+        total,
+        payment
+      };
     }
   },
   watch: {
@@ -177,6 +171,16 @@ export default {
         if (newItems.length === 0) {
           this.resetPaymentOptions();
         }
+      }
+    },
+    /**
+     * Observa as mudanças no cálculo da venda e avisa o "componente Pai".
+     */
+    newSale: {
+      deep: true,
+      immediate: true,
+      handler(newValue) {
+        this.$emit('update:saleResum', newValue);
       }
     }
   },
