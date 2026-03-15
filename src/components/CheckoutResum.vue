@@ -166,6 +166,20 @@ export default {
       }
     }
   },
+  watch: {
+    /**
+     * Observa mudanças no array de itens do carrinho.
+     * Se o carrinho for esvaziado pelo componente pai, reseta os pagamentos locais.
+     */
+    checkoutItems: {
+      deep: true,
+      handler(newItems) {
+        if (newItems.length === 0) {
+          this.resetPaymentOptions();
+        }
+      }
+    }
+  },
   methods: {
     /**
      * Habilita uma das opções do método de pagamento dentre as disponíveis.
@@ -206,6 +220,18 @@ export default {
     clearPaymentAmount(payment) {
       payment.amount = 0;
       this.updatePaymentAmount(payment);
+    },
+    /**
+     * Restaura as opções de pagamento para o estado inicial.
+     */
+    resetPaymentOptions() {
+      this.paymentOptions = [
+        { text: 'PIX', icon: 'mdi-qrcode', enabled: false, amount: 0 },
+        { text: 'Dinheiro', icon: 'mdi-cash-multiple', enabled: false, amount: 0 },
+        { text: 'Débito', icon: 'mdi-credit-card', enabled: false, amount: 0 },
+        { text: 'Crédito', icon: 'mdi-credit-card-outline', enabled: false, amount: 0 },
+        { text: 'Pendente', icon: 'mdi-alert-box', enabled: false, amount: 0 }
+      ];
     },
   }
 }
