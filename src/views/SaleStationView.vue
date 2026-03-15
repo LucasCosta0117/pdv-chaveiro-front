@@ -148,7 +148,7 @@ export default {
       this.saleResum.items = this.checkoutItems.map(item => {
         return {
           id: item.id,
-          type: (item.stock) ? 'product' : 'job', // @todo trocar item.stock por item.entity
+          entity: item.entity,
           quantity: item.quantity,
           unit_price: item.price,
           discount: item.discount
@@ -161,6 +161,12 @@ export default {
         this.$store.dispatch('ui/notify',  { message: verifyPaidMsg, color: 'error' }, { root: true } );
         return;
       };
+
+      const hasStatusPending = this.saleResum.payment.some(
+        (item) => item.method === 'Pendente'
+      );
+
+      this.saleResum.status = hasStatusPending ? 'PENDING' : 'COMPLETED';
 
       const hasSaveSale = await this.$store.dispatch('sales/save', this.saleResum);
 

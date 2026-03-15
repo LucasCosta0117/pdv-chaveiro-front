@@ -40,7 +40,7 @@ export default {
 
         newItem.sellerName = setSeller();
 
-        const response = await api.post('/sale/save', newItem);
+        await api.post('/sale/saves', newItem);
         await dispatch('fetchAll');
 
         dispatch('ui/notify', {
@@ -65,8 +65,7 @@ export default {
       try {
         dispatch('ui/startLoading', null, { root: true });
 
-        const response = await api.put(`/sale/update/${editedItem.id}`, editedItem);
-        
+        await api.put(`/sale/update/${editedItem.id}`, editedItem);
         await dispatch('fetchAll');
 
         dispatch('ui/notify', {
@@ -139,6 +138,7 @@ function normalizedSale(data) {
 
   const saleStatusMap = {
     'COMPLETED': 'Concluída',
+    'PENDING': 'Pendente',
     'CANCELED': 'Cancelada',
     'REFUNDED': 'Reembolsada'
   };

@@ -65,15 +65,16 @@
     <v-row>
       <v-col>Pagamento</v-col>
     </v-row>
-    <v-row  
+    <v-row
       v-for="(payment, index) in paymentOptions" 
       :key="index"
       class="d-flex"
+      :class="{ 'pt-4': payment.text == 'Pendente' }"
     >
       <v-col cols="6" sm="9" md="5" class="pb-1 pt-0" @click="togglePayment(index)">
         <v-btn
           :prepend-icon="payment.icon"
-          color="verde_w1"
+          :color="payment.text == 'Pendente' ? 'warning' : 'verde_w1'"
           class="justify-start"
           :disabled="!payment.enabled"
           width="130"
@@ -123,7 +124,8 @@ export default {
         { text: 'PIX', icon: 'mdi-qrcode', enabled: false, amount: 0 },
         { text: 'Dinheiro', icon: 'mdi-cash-multiple', enabled: false, amount: 0 },
         { text: 'Débito', icon: 'mdi-credit-card', enabled: false, amount: 0 },
-        { text: 'Crédito', icon: 'mdi-credit-card-outline', enabled: false, amount: 0 }
+        { text: 'Crédito', icon: 'mdi-credit-card-outline', enabled: false, amount: 0 },
+        { text: 'Pendente', icon: 'mdi-alert-box', enabled: false, amount: 0 }
       ]
     }
   },
