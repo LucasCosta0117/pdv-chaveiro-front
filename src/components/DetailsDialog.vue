@@ -169,6 +169,11 @@ export default {
     actionFormConfig() {
       switch (this.selectedItem.entity) {
         case 'products':
+          const products = this.$store.state.products.items || [];
+          const productsDepartmentOpts = [...new Set(products.map(p => p.department).filter(Boolean))].sort();
+          const productsCategoryOpts = [...new Set(products.map(p => p.category).filter(Boolean))].sort();
+          const productsSubcategoryOpts = [...new Set(products.map(p => p.subcategory).filter(Boolean))].sort();
+
           return [
             { label: 'Nome do Produto', key: 'name', required: true },
             { label: 'Foto', key: 'imgUrl', type: 'image' },
@@ -176,18 +181,18 @@ export default {
             { label: 'Quantide em Estoque', key: 'stock', type: 'qtd', cols: 6 },
             { label: 'Marca', key: 'brand' },
             { label: 'Código', key: 'code' },
-            { label: 'Departamento', key: 'department', type: 'combobox', cols: 4, options: ['Vitrine', 'Insumo'] },
-            { label: 'Categoria', key: 'category', type: 'combobox', cols: 4 },
-            { label: 'Subcategoria', key: 'subcategory', type: 'combobox', cols: 4 },
+            { label: 'Departamento', key: 'department', type: 'combobox', cols: 4, listOptions: productsDepartmentOpts },
+            { label: 'Categoria', key: 'category', type: 'combobox', cols: 4, listOptions: productsCategoryOpts },
+            { label: 'Subcategoria', key: 'subcategory', type: 'combobox', cols: 4, listOptions: productsSubcategoryOpts },
             { label: 'À venda?', key: 'canSale', type: 'select',
-              options: [
+              listOptions: [
                 { texto: 'Sim', valor: true }, 
                 { texto: 'Não', valor: false }
               ],
               cols: 6
             },
             { label: 'Disponível?', key: 'isActive', type: 'select',
-              options: [
+              listOptions: [
                 { texto: 'Sim', valor: true }, 
                 { texto: 'Não', valor: false }
               ],
@@ -195,36 +200,53 @@ export default {
             }
           ];
         case 'sales':
+          //@todo precisa melhorar a lógica para edição dos campos "Pagamento" e "Status", 
+          // o "status" não está persistindo e "Pagamento" não assume o valor em forma de objeto como numa venda nova.
+          const notEditable = (this.selectedItem.status == 'Pendente') ? false : true;
+
           return [
             { label: 'Vendedor', key: 'sellerName', readonly: true },
             { label: 'Subtotal', key: 'subtotal', type: 'currency', type: 'currency', cols: 4, readonly: true },
             { label: 'Descontos', key: 'totalDiscount', type: 'currency', type: 'currency', type: 'currency', cols: 4, readonly: true  },
             { label: 'Total Pago', key: 'total', type: 'currency', type: 'currency', type: 'currency', cols: 4, readonly: true  },
-            { label: 'Nota Fiscal', key: 'fiscalNumber', readonly: true },
+            { label: 'Número da Nota Fiscal', key: 'fiscalNumber', readonly: notEditable },
+            { label: 'Observação da Nota Fiscal', key: 'fiscalNotes', readonly: notEditable },
             { label: 'Produtos/Serviços', key: 'items', type: 'multiselect', options: { title: 'itemName', value: 'id' }, readonly: true },
-            { label: 'Pagamento', key: 'payments', type: 'multiselect', options: { title: 'method', value: 'id' }, readonly: true },
+            { label: 'Pagamento', key: 'payments', type: 'multiselect', options: { title: 'method', value: 'id' }, readonly: notEditable, 
+              listOptions: [
+                  'Pix',
+                  'Dinheiro',
+                  'Crédito',
+                  'Débido',
+                  'Pendente'
+                ]
+            },
             { label: 'Status', key: 'status', type: 'select',
-              options: [
-                { texto: 'Concluída', valor: 'COMPLETED' }, 
+              listOptions: [
+                { texto: 'Concluída', valor: 'COMPLETED' },
                 { texto: 'Cancelada', valor: 'CANCELED' },
                 { texto: 'Reembolsada', valor: 'REFUNDED' }
               ]
             }
           ];
         case 'jobs':
+          const jobs = this.$store.state.jos.items || [];
+          const jobsCategoryOpts = [...new Set(jobs.map(p => p.category).filter(Boolean))].sort();
+          const jobsSubcategoryOpts = [...new Set(jobs.map(p => p.subcategory).filter(Boolean))].sort();
+
           return [
             { label: 'Nome do Serviço', key: 'name', required: true},
             { label: 'Código', key: 'code' },
             { label: 'Preço', key: 'price', type: 'currency', cols: 6, required: true },
             { label: 'Disponível', key: 'isActive', type: 'select',
-              options: [
+              listOptions: [
                 { texto: 'Sim', valor: true }, 
                 { texto: 'Não', valor: false }
               ],
               cols: 6
             },
-            { label: 'Categoria', key: 'category', type: 'combobox', cols: 6 },
-            { label: 'Subcategoria', key: 'subcategory', type: 'combobox', cols: 6 }
+            { label: 'Categoria', key: 'category', type: 'combobox', cols: 6, listOptions: jobsCategoryOpts },
+            { label: 'Subcategoria', key: 'subcategory', type: 'combobox', cols: 6, listOptions: jobsSubcategoryOpts }
           ];
       }
     },

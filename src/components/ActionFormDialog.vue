@@ -59,7 +59,7 @@
                 v-else-if="field.type === 'combobox'"
                 v-model="formData[field.key]"
                 clearable
-                :items="field.options"
+                :items="field.listOptions"
                 :list-props="{ bgColor: 'roxo_w3' }"
                 variant="solo"
                 density="compact"
@@ -73,7 +73,7 @@
               <v-select
                 v-else-if="field.type === 'select'"
                 v-model="formData[field.key]"
-                :items="field.options"
+                :items="field.listOptions"
                 item-title="texto"
                 item-value="valor"
                 :list-props="{ bgColor: 'roxo_w3' }"
@@ -85,6 +85,31 @@
                   v => (!field.required || !!v) || `${field.label} é obrigatório`
                 ]"
               ></v-select>
+
+              <v-autocomplete
+                v-else-if="field.type === 'multiselect'"
+                v-model="formData[field.key]"
+                :items="(field.readonly) ? formData[field.key] : field.listOptions" 
+                :item-title="field.options['title']"
+                :item-value="field.options['value']"
+                multiple
+                chips
+                :clearable="(field.readonly) ? false : true"
+                return-object 
+                variant="solo"
+                density="compact"
+                :readonly="field.readonly"
+                :bg-color="field.readonly ? 'roxo_w3' : 'grey-lighten-5'"
+                :rules="[
+                  v => (!field.required || (v && v.length > 0)) || `${field.label} é obrigatório`
+                ]"
+              >
+                <template v-slot:no-data>
+                  <v-list-item>
+                    <v-list-item-title>Nenhum item encontrado</v-list-item-title>
+                  </v-list-item>
+                </template>
+              </v-autocomplete>
 
               <template v-else-if="field.type === 'image'">
                 <v-img
@@ -121,30 +146,6 @@
                   v => (!field.required || !!v) || `${field.label} é obrigatório`
                 ]"
               ></v-text-field>
-
-              <v-autocomplete
-                v-else-if="field.type === 'multiselect'"
-                v-model="formData[field.key]"
-                :items="formData[field.key] || []" 
-                :item-title="field.options['title']" 
-                :item-value="field.options['value']"
-                multiple
-                chips
-                return-object 
-                variant="solo"
-                density="compact"
-                :readonly="field.readonly"
-                :bg-color="field.readonly ? 'roxo_w3' : 'grey-lighten-5'"
-                :rules="[
-                  v => (!field.required || (v && v.length > 0)) || `${field.label} é obrigatório`
-                ]"
-              >
-                <template v-slot:no-data>
-                  <v-list-item>
-                    <v-list-item-title>Nenhum item encontrado</v-list-item-title>
-                  </v-list-item>
-                </template>
-              </v-autocomplete>
 
               <v-text-field
                 v-else
