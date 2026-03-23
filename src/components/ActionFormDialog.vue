@@ -59,7 +59,7 @@
                 v-else-if="field.type === 'combobox'"
                 v-model="formData[field.key]"
                 clearable
-                :items="field.listOptions"
+                :items="field.optionsList"
                 :list-props="{ bgColor: 'roxo_w3' }"
                 variant="solo"
                 density="compact"
@@ -73,7 +73,7 @@
               <v-select
                 v-else-if="field.type === 'select'"
                 v-model="formData[field.key]"
-                :items="field.listOptions"
+                :items="field.optionsList"
                 item-title="texto"
                 item-value="valor"
                 :list-props="{ bgColor: 'roxo_w3' }"
@@ -89,7 +89,7 @@
               <v-autocomplete
                 v-else-if="field.type === 'multiselect'"
                 v-model="formData[field.key]"
-                :items="(field.readonly) ? formData[field.key] : field.listOptions" 
+                :items="(field.readonly) ? formData[field.key] : field.optionsList" 
                 :item-title="field.options['title']"
                 :item-value="field.options['value']"
                 multiple

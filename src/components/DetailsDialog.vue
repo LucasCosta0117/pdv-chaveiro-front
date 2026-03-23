@@ -181,18 +181,18 @@ export default {
             { label: 'Quantide em Estoque', key: 'stock', type: 'qtd', cols: 6 },
             { label: 'Marca', key: 'brand' },
             { label: 'Código', key: 'code' },
-            { label: 'Departamento', key: 'department', type: 'combobox', cols: 4, listOptions: productsDepartmentOpts },
-            { label: 'Categoria', key: 'category', type: 'combobox', cols: 4, listOptions: productsCategoryOpts },
-            { label: 'Subcategoria', key: 'subcategory', type: 'combobox', cols: 4, listOptions: productsSubcategoryOpts },
+            { label: 'Departamento', key: 'department', type: 'combobox', cols: 4, optionsList: productsDepartmentOpts },
+            { label: 'Categoria', key: 'category', type: 'combobox', cols: 4, optionsList: productsCategoryOpts },
+            { label: 'Subcategoria', key: 'subcategory', type: 'combobox', cols: 4, optionsList: productsSubcategoryOpts },
             { label: 'À venda?', key: 'canSale', type: 'select',
-              listOptions: [
+              optionsList: [
                 { texto: 'Sim', valor: true }, 
                 { texto: 'Não', valor: false }
               ],
               cols: 6
             },
             { label: 'Disponível?', key: 'isActive', type: 'select',
-              listOptions: [
+              optionsList: [
                 { texto: 'Sim', valor: true }, 
                 { texto: 'Não', valor: false }
               ],
@@ -213,7 +213,7 @@ export default {
             { label: 'Observação da Nota Fiscal', key: 'fiscalNotes', readonly: notEditable },
             { label: 'Produtos/Serviços', key: 'items', type: 'multiselect', options: { title: 'itemName', value: 'id' }, readonly: true },
             { label: 'Pagamento', key: 'payments', type: 'multiselect', options: { title: 'method', value: 'id' }, readonly: notEditable, 
-              listOptions: [
+              optionsList: [
                   'Pix',
                   'Dinheiro',
                   'Crédito',
@@ -222,7 +222,7 @@ export default {
                 ]
             },
             { label: 'Status', key: 'status', type: 'select',
-              listOptions: [
+              optionsList: [
                 { texto: 'Concluída', valor: 'COMPLETED' },
                 { texto: 'Cancelada', valor: 'CANCELED' },
                 { texto: 'Reembolsada', valor: 'REFUNDED' }
@@ -239,14 +239,14 @@ export default {
             { label: 'Código', key: 'code' },
             { label: 'Preço', key: 'price', type: 'currency', cols: 6, required: true },
             { label: 'Disponível', key: 'isActive', type: 'select',
-              listOptions: [
+              optionsList: [
                 { texto: 'Sim', valor: true }, 
                 { texto: 'Não', valor: false }
               ],
               cols: 6
             },
-            { label: 'Categoria', key: 'category', type: 'combobox', cols: 6, listOptions: jobsCategoryOpts },
-            { label: 'Subcategoria', key: 'subcategory', type: 'combobox', cols: 6, listOptions: jobsSubcategoryOpts }
+            { label: 'Categoria', key: 'category', type: 'combobox', cols: 6, optionsList: jobsCategoryOpts },
+            { label: 'Subcategoria', key: 'subcategory', type: 'combobox', cols: 6, optionsList: jobsSubcategoryOpts }
           ];
       }
     },
