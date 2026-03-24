@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../../api/axios';
 
 /**
  * Módulo Vuex responsável pela Autenticação e Perfil do Usuário.
@@ -27,9 +27,6 @@ export default {
     SET_TOKEN(state, token) {
       state.token = token;
       localStorage.setItem('izi_token', token);
-      
-      // Injeta o token como padrão no Axios para as próximas requisições
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     },
 
     /**
@@ -48,9 +45,6 @@ export default {
       state.user = null;
       localStorage.removeItem('izi_token');
       localStorage.removeItem('izi_user');
-      
-      // Remove o token padrão do Axios
-      delete axios.defaults.headers.common['Authorization'];
     }
   },
   actions: {
@@ -59,7 +53,7 @@ export default {
      * @param {Object} credentials Objeto contendo { email, password }
      */
     async login({ commit, dispatch }, credentials) {
-      const response = await axios.post('/api/auth/login', credentials);
+      const response = await api.post('/api/auth/login', credentials);
       const token = response.data.token;
       commit('SET_TOKEN', token);
       await dispatch('fetchUserProfile');
@@ -69,7 +63,7 @@ export default {
      * Busca os dados do usuário autenticado
      */
     async fetchUserProfile({ commit }) {
-      const response = await axios.get('/api/users/me');
+      const response = await api.get('/api/users/me');
       commit('SET_USER', response.data);
     },
 
