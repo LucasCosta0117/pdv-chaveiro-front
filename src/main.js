@@ -17,6 +17,8 @@ app.config.globalProperties.$api = api;
 app.config.globalProperties.$formatCurrency = formatCurrency;
 app.config.globalProperties.$formatDateTime = formatDateTime;
 
+store.dispatch('auth/initializeAuth');
+
 app.use(router)
   .use(store)
   .use(vuetify)
