@@ -21,6 +21,7 @@
                 variant="outlined"
                 autocomplete="username"
                 required
+                @keyup.enter="handleLogin"
               ></v-text-field>
 
               <v-text-field
@@ -36,6 +37,7 @@
                 autocomplete="current-password"
                 required
                 @click:append-inner="showPassword = !showPassword"
+                @keyup.enter="handleLogin"
               ></v-text-field>
 
               <v-alert
