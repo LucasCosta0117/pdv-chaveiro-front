@@ -1,4 +1,5 @@
 <template>
+  <!-- NavBar Mobile -->
   <v-app-bar
     app
     flat
@@ -52,6 +53,7 @@
     </template>
   </v-navigation-drawer>
 
+  <!-- Navbar Desktop -->
   <v-navigation-drawer
     v-if="!isMobile && isAuthenticated"
     class="light-purple-bg"
