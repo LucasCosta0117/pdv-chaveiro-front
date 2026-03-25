@@ -53,7 +53,7 @@ export default {
      * @param {Object} credentials Objeto contendo { email, password }
      */
     async login({ commit, dispatch }, credentials) {
-      const response = await api.post('/api/auth/login', credentials);
+      const response = await api.post('/auth/login', credentials);
       const token = response.data.token;
       commit('SET_TOKEN', token);
       await dispatch('fetchUserProfile');
@@ -63,7 +63,7 @@ export default {
      * Busca os dados do usuário autenticado
      */
     async fetchUserProfile({ commit }) {
-      const response = await api.get('/api/users/me');
+      const response = await api.get('/users/me');
       commit('SET_USER', response.data);
     },
 
