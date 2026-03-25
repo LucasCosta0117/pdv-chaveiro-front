@@ -26,12 +26,14 @@
                 label="Senha"
                 name="password"
                 prepend-inner-icon="mdi-lock"
-                type="password"
+                :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="showPassword ? 'text' : 'password'"
                 v-model="credentials.password"
                 :rules="rules.password"
                 variant="outlined"
                 class="mt-2"
                 required
+                @click:append-inner="showPassword = !showPassword"
               ></v-text-field>
 
               <v-alert
@@ -92,7 +94,8 @@ export default {
         password: [
           v => !!v || 'A senha é obrigatória.'
         ]
-      }
+      },
+      showPassword: false
     };
   },
   methods: {
