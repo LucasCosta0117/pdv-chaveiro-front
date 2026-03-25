@@ -1,11 +1,10 @@
 <template>
-  <!-- NavBar Mobile -->
   <v-app-bar
     app
     flat
     height="80"
     class="light-purple-bg"
-    v-if="isMobile"
+    v-if="isMobile && isAuthenticated"
   >
     <router-link to="/">
       <div class="navbar-logo-img"></div>
@@ -13,11 +12,11 @@
     <v-spacer></v-spacer>
     <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
   </v-app-bar>
-  <!-- Drawer Mobile -->
+
   <v-navigation-drawer
     v-model="drawer"
     class="light-purple-bg"
-    v-if="isMobile"
+    v-if="isMobile && isAuthenticated"
     temporary
   >
     <v-list>
@@ -36,11 +35,25 @@
         </v-list-item-title>
       </v-list-item>
     </v-list>
+
+    <template v-slot:append>
+      <v-divider></v-divider>
+      <v-list class="pa-4">
+        <v-list-item class="px-0 mb-2">
+          <v-list-item-title class="font-weight-bold text-truncate">
+            <v-icon start>mdi-account-circle</v-icon>
+            {{ userName }}
+          </v-list-item-title>
+        </v-list-item>
+        <v-btn block color="error" variant="tonal" @click="handleLogout" prepend-icon="mdi-logout">
+          Sair
+        </v-btn>
+      </v-list>
+    </template>
   </v-navigation-drawer>
 
-  <!-- Navbar Desktop -->
   <v-navigation-drawer
-    v-if="!isMobile"
+    v-if="!isMobile && isAuthenticated"
     class="light-purple-bg"
     permanent
   >
@@ -62,11 +75,31 @@
         </v-list-item-title>
       </v-list-item>
     </v-list>
+
+    <template v-slot:append>
+      <div class="pa-4">
+        <v-list-item class="px-0 mb-2">
+          <v-list-item-title class="font-weight-bold text-truncate">
+            <v-icon start>mdi-account-circle</v-icon>
+            {{ userName }}
+          </v-list-item-title>
+        </v-list-item>
+        <v-btn block color="error" variant="tonal" @click="handleLogout" prepend-icon="mdi-logout">
+          Sair
+        </v-btn>
+      </div>
+    </template>
   </v-navigation-drawer>
 </template>
+
 <script>
+import { mapGetters, mapActions } from 'vuex';
+
 /**
  * Barra de navegação (superior e lateral) da aplicação.
+ * Integração com Vuex para controle de exibição por autenticação e gestão de sessão.
+ * @author Lucas Costa
+ * @version 1.1.0
  */
 export default {
   name: 'NavBar',
@@ -84,12 +117,22 @@ export default {
     }
   },
   computed: {
+    // Mapeia os estados do módulo 'auth' do Vuex
+    ...mapGetters('auth', ['isAuthenticated', 'currentUser']),
+
     /**
-     * Verifica o tamanho atual da tela do dispositivo para definir qual barra de navefação renderizar.
+     * Verifica o tamanho atual da tela do dispositivo para definir qual barra de navegação renderizar.
      */
     isMobile() {
       return this.windowWidth <= 960;
     },
+
+    /**
+     * Retorna o nome do utilizador autenticado de forma segura.
+     */
+    userName() {
+      return this.currentUser ? this.currentUser.name : 'Carregando...';
+    }
   },
   mounted() {
     this.handleResize();
@@ -99,11 +142,23 @@ export default {
     window.removeEventListener('resize', this.handleResize);
   },
   methods: {
+    // Traz a action de logout configurada no Vuex
+    ...mapActions('auth', ['logout']),
+
     /**
      * Garante a reatividade da barra de navegação através do evento de resize
      */
     handleResize() {
       this.windowWidth = window.innerWidth;
+    },
+
+    /**
+     * Executa o processo de logout e redireciona para a tela de login.
+     */
+    handleLogout() {
+      this.logout();
+      this.drawer = false; // Fecha o menu no mobile por precaução
+      this.$router.push({ name: 'login' });
     }
   }
 }
