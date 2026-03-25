@@ -19,6 +19,7 @@
                 v-model="credentials.email"
                 :rules="rules.email"
                 variant="outlined"
+                autocomplete="username"
                 required
               ></v-text-field>
 
@@ -32,6 +33,7 @@
                 :rules="rules.password"
                 variant="outlined"
                 class="mt-2"
+                autocomplete="current-password"
                 required
                 @click:append-inner="showPassword = !showPassword"
               ></v-text-field>
