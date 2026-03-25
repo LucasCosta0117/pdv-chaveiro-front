@@ -116,16 +116,16 @@ export default {
 }
 
 /**
- *  Define o nome do vendedor com base no  Nome e Sobrenome do usuário loggado, 
+ *  Define o nome do vendedor com base no  Nome do usuário loggado, 
  * 
  * @returns  Vendedor que realizou a venda. 
  */
 function setSeller() {
-  //@todobuscar da store a partir do user conectado.
-  return 'Lucas Costa';
+  const userLogged = rootGetters['auth/currentUser'];
+  const sellerName = userLogged ? userLogged.name : 'Vendedor Desconhecido';
+  
+  return sellerName;
 }
-
-// No final do seu arquivo de Store (Sale)
 
 /**
  * Normaliza os dados brutos vindos do Back-end.

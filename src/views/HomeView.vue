@@ -156,6 +156,7 @@
 
 <script>
 import { defineComponent } from 'vue';
+import { mapGetters } from 'vuex';
 
 export default defineComponent({
   name: 'HomeView',
@@ -173,6 +174,8 @@ export default defineComponent({
     }
   },
   computed: {
+    // Mapeia os estados do módulo 'auth' do Vuex
+    ...mapGetters('auth', ['currentUser']),
     /**
      * Lógica para montagem da saudação dinâmica.
      */
@@ -188,8 +191,7 @@ export default defineComponent({
      * Nome do usuário para uso na saudação
      */
     userName() {
-      //@todo substituir pelo nome do usuário no futuro.
-      return 'Chaveiro Santiago';
+      return this.currentUser ? this.currentUser.name : 'Carregando...';
     },
     /**
      * Retorna o total de vendas salvo na store.
