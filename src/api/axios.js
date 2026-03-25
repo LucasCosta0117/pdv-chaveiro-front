@@ -19,7 +19,6 @@ const api = axios.create({
  */
 api.interceptors.request.use(
   (config) => {
-    // Busca o token fresquinho direto do cofre do Vuex
     const token = store.getters['auth/userToken'];
     
     if (token) {
@@ -35,23 +34,16 @@ api.interceptors.request.use(
 
 /**
  * Interceptor de Resposta (Chegada)
- * Trata o erro 401 (Token Expirado) de forma global.
+ * Trata o erro 401 e 403 (Token Expirado e Token Invalido) de forma global.
  */
 api.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
-    // Se o Java atirou um erro 401 (Token expirado ou inválido)
-    if (error.response && error.response.status === 401) {
-      console.warn('Sessão expirada ou não autorizada. Redirecionando para o login...');
-      
-      // Limpa o cofre
+    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
       store.dispatch('auth/logout');
-      
-      // Redireciona o usuário para a tela de Login
-      // ATENÇÃO: Confirme se no seu router.js o nome da rota de login é 'Login' (com L maiúsculo ou minúsculo)
-      router.push({ name: 'Login' });
+      router.push({ name: 'login' });
     }
     
     return Promise.reject(error);
