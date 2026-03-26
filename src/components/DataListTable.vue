@@ -61,8 +61,7 @@
     <DetailsDialog
       v-if="selectedItem"
       v-model:showModal="dialog"
-      :selectedItemId="selectedItem.id"
-      :entity="selectedItem.entity"
+      :selectedItem="selectedItem"
       :details="details"
     />
   </div>

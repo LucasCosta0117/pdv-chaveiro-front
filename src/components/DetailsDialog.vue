@@ -120,18 +120,12 @@ export default {
       default: false
     },
     /**
-     * ID do item 'clickado'.
+     * Dados do item 'clickado' na tabela de registro.
      */
-    selectedItemId: {
-      type: String,
-      required: true
-    },
-    /**
-     * Nome da entidade/module do item 'clickado'.
-     */
-    entity: {
-      type: String,
-      required: true
+    selectedItem: {
+      type: Object,
+      required: true,
+      default: () => ({})
     },
     /**
      * Definição a cerca das informações à serem exibidas.
@@ -153,15 +147,6 @@ export default {
       set(val) {
         this.$emit('update:showModal', val);
       }
-    },
-    /**
-     * Busca as informações do item clickado diretamente diretamente da Store de forma dinâmica,
-     * reagindo a qualquer mudança no estado da entidade definida e garantindo que se mantenha atualizado.
-     */
-    selectedItem() {
-      if (!this.entity || !this.selectedItemId) return null;
-
-      return this.$store.state[this.entity].items.find(item => item.id === this.selectedItemId) || null;
     },
     /**
      * Configuração para os campos do formulário de edição.
