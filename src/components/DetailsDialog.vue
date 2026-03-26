@@ -230,7 +230,7 @@ export default {
             }
           ];
         case 'jobs':
-          const jobs = this.$store.state.jos.items || [];
+          const jobs = this.$store.state.jobs.items || [];
           const jobsCategoryOpts = [...new Set(jobs.map(p => p.category).filter(Boolean))].sort();
           const jobsSubcategoryOpts = [...new Set(jobs.map(p => p.subcategory).filter(Boolean))].sort();
 
