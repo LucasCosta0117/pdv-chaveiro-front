@@ -3,7 +3,7 @@
     <v-card>
       <v-card-title class="bg-roxo_w1 font-weight-bold d-flex justify-space-between align-center">
         <span>
-          {{ selectedItem[details.header?.titleKey] }}
+          {{ updatedItem[details.header?.titleKey] }}
         </span>
         <v-btn
           icon="mdi-close"
@@ -16,7 +16,7 @@
         <v-row>
           <v-col cols="12" sm="6" v-if="details.header.imgKey">
             <v-img
-              :src="selectedItem[details.header?.imgKey]"
+              :src="updatedItem[details.header?.imgKey]"
               aspect-ratio="1"
               class="rounded-lg elevation-1"
               contain
@@ -26,13 +26,13 @@
 
           <v-col cols="12" :sm="details.header.imgKey ? 6 : 12">
             <div v-for="value in details.fields" :key="value.key">
-              <p v-if="value?.type === 'currency'"><strong>{{ value.text }}: </strong>{{ $formatCurrency(selectedItem[value.key]) }}</p>
-              <p v-else-if="value?.type === 'date'"><strong>{{ value.text }}: </strong>{{ $formatDateTime(selectedItem[value.key]) }}</p>
-              <p v-else-if="value?.type === 'bool'"><strong>{{ value.text }}: </strong>{{ selectedItem[value.key] == true ? 'Sim': 'Não'}}</p>
+              <p v-if="value?.type === 'currency'"><strong>{{ value.text }}: </strong>{{ $formatCurrency(updatedItem[value.key]) }}</p>
+              <p v-else-if="value?.type === 'date'"><strong>{{ value.text }}: </strong>{{ $formatDateTime(updatedItem[value.key]) }}</p>
+              <p v-else-if="value?.type === 'bool'"><strong>{{ value.text }}: </strong>{{ updatedItem[value.key] == true ? 'Sim': 'Não'}}</p>
               <div v-else-if="value?.type === 'list'">
                 <strong>{{ value.text }}: </strong>
                 <ul>
-                  <li v-for="subValue in selectedItem[value.key]" :key="subValue" class="ml-8 mb-2">
+                  <li v-for="subValue in updatedItem[value.key]" :key="subValue" class="ml-8 mb-2">
                     <p v-for="(subField, index) in value.subFields" :key="index">
                       <template v-if="subValue[subField.key]">
                         <b>{{ subField.text }}: </b>
@@ -45,7 +45,7 @@
                   </li>
                 </ul>
               </div>
-              <p v-else><strong>{{ value.text }}: </strong>{{ selectedItem[value.key] }}</p>
+              <p v-else><strong>{{ value.text }}: </strong>{{ updatedItem[value.key] }}</p>
             </div>
           </v-col>
         </v-row>
@@ -76,9 +76,9 @@
     ></confirm-dialog>
     <ActionFormDialog
       v-model:showModal="showActionForm"
-      :entity="selectedItem.entity"
+      :entity="updatedItem.entity"
       :config="actionFormConfig"
-      :initialData="selectedItem"
+      :initialData="updatedItem"
     />
   </v-dialog>
 </template>
@@ -147,6 +147,18 @@ export default {
       set(val) {
         this.$emit('update:showModal', val);
       }
+    },
+    /**
+     * Busca a versão mais atualizada do item diretamente do estado do Vuex.
+     * Isso garante que, após uma edição, o dialog exiba os valores atualizados.
+     */
+    updatedItem() {
+      const itemsList = this.$store.state[this.selectedItem.entity].items || [];
+      const currentItem = itemsList.find(item => item.id === this.selectedItem.id);
+
+      if (currentItem) return currentItem;
+      
+      return this.selectedItem;
     },
     /**
      * Configuração para os campos do formulário de edição.
