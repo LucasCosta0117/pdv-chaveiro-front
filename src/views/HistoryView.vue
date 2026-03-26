@@ -28,7 +28,7 @@
         <DataListTable
           :search="search"
           :headers="tableHeader"
-          :items="sales"
+          :items="sortedSales"
           :details="tableDetails"
         />
       </v-col>
@@ -63,6 +63,16 @@ export default {
   computed: {
     // Array de objetos contendo os dados a serem exibidos na tabela.
     ...mapGetters('sales', { sales: 'getItems' }),
+    /**
+     * Cria uma lista ordenada para a tabela. Garante a exibição das vendas mais recentes no topo.
+     */
+    sortedSales() {
+      if (!this.sales || this.sales.length === 0) return [];
+
+      return [...this.sales].sort((a, b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+    }
   },
   methods: {
     ...mapActions('sales', { fetchSales: 'fetchAll'}),
