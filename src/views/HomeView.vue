@@ -209,8 +209,13 @@ export default defineComponent({
      * Apresenta a lista de vendas filtradas pelo dia atual.
      */
     todaySalesList() {
-      const todayString = new Date().toISOString().split('T')[0];
-      
+      const today = new Date();
+      // Extrai os valores usando o fuso horário LOCAL
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      const todayString = `${year}-${month}-${day}`;
+
       return this.salesList.filter(sale => {
         return sale.createdAt && sale.createdAt.startsWith(todayString);
       });
