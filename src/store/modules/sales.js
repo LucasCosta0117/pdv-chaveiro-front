@@ -34,11 +34,12 @@ export default {
         dispatch('ui/stopLoading', null, { root: true });
       }
     },
-    async save({ commit, dispatch }, newItem) {
+    async save({ commit, dispatch, rootGetters }, newItem) {
       try {
         dispatch('ui/startLoading', null, { root: true });
 
-        newItem.sellerName = setSeller();
+        const userLogged = rootGetters['auth/currentUser'];
+        newItem.sellerName = userLogged ? userLogged.name : 'Desconhecido';
 
         await api.post('/sale/save', newItem);
         await dispatch('fetchAll');
@@ -113,18 +114,6 @@ export default {
       }
     }
   }
-}
-
-/**
- *  Define o nome do vendedor com base no  Nome do usuário loggado, 
- * 
- * @returns  Vendedor que realizou a venda. 
- */
-function setSeller() {
-  const userLogged = rootGetters['auth/currentUser'];
-  const sellerName = userLogged ? userLogged.name : 'Vendedor Desconhecido';
-  
-  return sellerName;
 }
 
 /**
