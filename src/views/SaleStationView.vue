@@ -6,6 +6,7 @@
       </v-col>
     </v-row>
     <v-row class="d-none">
+      <!-- @todo estudar melhor como aplicar essa feature. -->
       <v-col cols="12" class="d-flex">
         <h4 class="mr-2">Ações Rápidas</h4>
         <v-icon 
@@ -32,7 +33,7 @@
             v-model="selectedItem"
             v-model:search="search"
             :items="filteredItems"
-            item-title="name"
+            :item-title="formatItemTitle"
             label="Buscar Produto ou Serviço"
             density="compact"
             variant="outlined"
@@ -118,9 +119,15 @@ export default {
     // Array de Produtos/Serviços filtrado
     filteredItems() {
       if (!this.search) return []
-      return this.salesItems
-        .filter(item => item.name.toLowerCase()
-        .includes(this.search.toLowerCase()));
+
+      const term = this.search.toLowerCase();
+
+      return this.salesItems.filter(item => {
+        const matchName = item.name?.toLowerCase().includes(term);
+        const matchCode = item.code?.toLowerCase().includes(term);
+        // Se pelo menos UM deles for verdadeiro, o item aparece na lista
+        return matchName || matchCode;
+      });
     }
   },
   methods: {
@@ -191,6 +198,21 @@ export default {
       if (totalPaid !== this.saleResum.total) return msgFail2;
 
       return false;
+    },
+    /**
+     * Formata o texto exibido no Autocomplete para cada item pesquisado.
+     * @param {Object} item - O objeto do produto/serviço
+     * @returns {String} String formatada (ex: "Alicate Mondial | AM-777")
+     */
+    formatItemTitle(item) {
+      if (!item) return '';
+      
+      // Se o item tiver um código, concatena. Se não, retorna só o nome.
+      if (item.code) {
+        return `${item.name} (${item.code})`;
+      }
+      
+      return item.name;
     }
   },
   async created() {
