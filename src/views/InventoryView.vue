@@ -166,7 +166,6 @@ export default {
               { text: 'Departamento', key: 'department' },
               { text: 'Categoria', key: 'category' },
               { text: 'Subcategoria', key: 'subcategory' },
-              // { text: 'À venda', key: 'canSale', type: 'bool' },
               { text: 'Disponível', key: 'isActive', type: 'bool' }
             ]
           };
@@ -191,7 +190,6 @@ export default {
             { label: 'Departamento', key: 'department', type: 'combobox', cols: 4, optionsList: productsDepartmentOpts },
             { label: 'Categoria', key: 'category', type: 'combobox', cols: 4, optionsList: productsCategoryOpts },
             { label: 'Subcategoria', key: 'subcategory', type: 'combobox', cols: 4, optionsList: productsSubcategoryOpts }
-            // { label: 'À venda?', key: 'canSale', type: 'bool', cols: 6 },
           ];
 
           break;
