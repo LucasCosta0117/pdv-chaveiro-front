@@ -66,6 +66,15 @@ export default {
       try {
         dispatch('ui/startLoading', null, { root: true });
 
+        //@todo Talvez não realizar normalizedSale() no início e somente 'traduzir' os termos nos componentes.
+        const saleStatusMap = {
+          'Concluída': 'COMPLETED',
+          'Pendente': 'PENDING',
+          'Cancelada': 'CANCELED',
+          'Reembolsada': 'REFUNDED'
+        };
+        editedItem.status = saleStatusMap[editedItem.status] || editedItem.status;
+
         await api.put(`/sale/update/${editedItem.id}`, editedItem);
         await dispatch('fetchAll');
 

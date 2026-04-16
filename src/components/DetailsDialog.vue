@@ -239,6 +239,7 @@ export default {
             },
             { label: 'Status', key: 'status', type: 'select',
               optionsList: [
+                { texto: 'Pendente', valor: 'PENDING' },
                 { texto: 'Concluída', valor: 'COMPLETED' },
                 { texto: 'Cancelada', valor: 'CANCELED' },
                 { texto: 'Reembolsada', valor: 'REFUNDED' }
