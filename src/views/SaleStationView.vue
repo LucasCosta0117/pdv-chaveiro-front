@@ -139,7 +139,15 @@ export default {
     ...mapGetters('jobs', { jobs: 'getItems' }),
     // Array contendo os Produtos/Serviços a serem adicionados no checkout de vendas.
     salesItems() {
-      return [...this.products, ...this.jobs];
+      const activeProducts = this.products.filter( product => 
+        product.stock > 0 && 
+        product.isActive
+      );
+      const activeJobs = this.jobs.filter( job => 
+        job.isActive
+      );
+
+      return [...activeProducts, ...activeJobs];
     },
     // Array de Produtos/Serviços filtrado
     filteredItems() {
