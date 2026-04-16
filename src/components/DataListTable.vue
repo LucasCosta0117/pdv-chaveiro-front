@@ -53,7 +53,7 @@
         </template>
 
         <!-- Formatação para coluna status -->       
-        <template v-else-if="column.key === 'status'">
+        <template v-else-if="column.type === 'status'">
           <v-chip
             :color="getStatusColor(value)"
             size="small"

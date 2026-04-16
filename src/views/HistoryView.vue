@@ -86,7 +86,7 @@ export default {
       { title: 'Data Venda', key: 'createdAt', type: 'date' },
       { title: 'Total Pago', key: 'total', type: 'currency'},
       { title: 'Vendedor', key: 'sellerName'},
-      { title: 'Status', key: 'status'}
+      { title: 'Status', key: 'status', type: 'status'}
     ];
     this.tableDetails = {
       header: {
