@@ -205,6 +205,7 @@ export default {
       const hasSaveSale = await this.$store.dispatch('sales/save', this.saleResum);
 
       if (hasSaveSale) {
+        this.$store.dispatch('products/fetchAll');
         this.checkoutItems = [];
         this.checkoutNotes = {};
         this.saleResum = {};
