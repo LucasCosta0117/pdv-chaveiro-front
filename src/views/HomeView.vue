@@ -124,7 +124,9 @@
 
         <v-card elevation="2" class="rounded-lg flex-grow-1">
           <v-card-title class="pa-4 border-b text-error d-flex align-center">
-            <v-icon color="error" class="mr-2">mdi-alert-circle-outline</v-icon>
+            <v-icon color="error" class="mr-2" :class="{ 'icon-blink': lowStockProducts.length !== 0 }">
+              mdi-alert-circle-outline
+            </v-icon>
             Estoque Baixo
           </v-card-title>
           <v-list lines="two" class="pa-0">
@@ -308,4 +310,14 @@ export default defineComponent({
 .border-success { border-left-color: rgb(var(--v-theme-success)) !important; }
 .border-primary { border-left-color: rgb(var(--v-theme-primary)) !important; }
 .border-info { border-left-color: rgb(var(--v-theme-info)) !important; }
+
+.icon-blink {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
 </style>
