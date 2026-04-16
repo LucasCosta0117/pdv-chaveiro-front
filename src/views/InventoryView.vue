@@ -159,30 +159,39 @@ export default {
               imgKey: 'imgUrl'
             },
             fields: [
-              { text: 'Marca', key: 'brand' },
-              { text: 'Preço', key: 'price', type: 'currency' },
               { text: 'Código', key: 'code' },
+              { text: 'Preço', key: 'price', type: 'currency' },
+              { text: 'Estoque', key: 'stock' },
+              { text: 'Marca', key: 'brand' },
               { text: 'Departamento', key: 'department' },
               { text: 'Categoria', key: 'category' },
               { text: 'Subcategoria', key: 'subcategory' },
-              { text: 'Estoque', key: 'stock' },
-              { text: 'À venda', key: 'canSale', type: 'bool' },
+              // { text: 'À venda', key: 'canSale', type: 'bool' },
               { text: 'Disponível', key: 'isActive', type: 'bool' }
             ]
           };
 
+          const productsDepartmentOpts = [...new Set(this.products.map(p => p.department).filter(Boolean))].sort();
+          const productsCategoryOpts = [...new Set(this.products.map(p => p.category).filter(Boolean))].sort();
+          const productsSubcategoryOpts = [...new Set(this.products.map(p => p.subcategory).filter(Boolean))].sort();
           this.actionFormConfig = [
             { label: 'Nome do Produto', key: 'name', required: true },
-            { label: 'Foto', key: 'imgUrl', type: 'image' },
-            { label: 'Preço', key: 'price', type: 'currency', cols: 6, required: true },
-            { label: 'Quantide em Estoque', key: 'stock', type: 'qtd', cols: 6, required: true },
-            { label: 'Marca', key: 'brand' },
             { label: 'Código', key: 'code' },
-            { label: 'Departamento', key: 'department', type: 'select', cols: 4, options: ['Vitrine', 'Insumo'] },
-            { label: 'Categoria', key: 'category', type: 'select', cols: 4 },
-            { label: 'Subcategoria', key: 'subcategory', type: 'select', cols: 4 },
-            { label: 'À venda?', key: 'canSale', type: 'bool', cols: 6 },
-            { label: 'Disponível?', key: 'isActive', type: 'bool', cols: 6 }
+            { label: 'Foto', key: 'imgUrl', type: 'image' },
+            { label: 'Preço', key: 'price', type: 'currency', cols: 4 },
+            { label: 'Quantide em Estoque', key: 'stock', type: 'qtd', cols: 4 },
+            { label: 'Disponível?', key: 'isActive', type: 'select',
+              optionsList: [
+                { texto: 'Sim', valor: true }, 
+                { texto: 'Não', valor: false }
+              ],
+              cols: 4
+            },
+            { label: 'Marca', key: 'brand' },
+            { label: 'Departamento', key: 'department', type: 'combobox', cols: 4, optionsList: productsDepartmentOpts },
+            { label: 'Categoria', key: 'category', type: 'combobox', cols: 4, optionsList: productsCategoryOpts },
+            { label: 'Subcategoria', key: 'subcategory', type: 'combobox', cols: 4, optionsList: productsSubcategoryOpts }
+            // { label: 'À venda?', key: 'canSale', type: 'bool', cols: 6 },
           ];
 
           break;
@@ -207,13 +216,21 @@ export default {
             ]
           };
 
+          const jobsCategoryOpts = [...new Set(this.jobs.map(p => p.category).filter(Boolean))].sort();
+          const jobsSubcategoryOpts = [...new Set(this.jobs.map(p => p.subcategory).filter(Boolean))].sort();
           this.actionFormConfig = [
             { label: 'Nome do Serviço', key: 'name', required: true},
             { label: 'Código', key: 'code' },
-            { label: 'Preço', key: 'price', type: 'currency', cols: 6, required: true },
-            { label: 'Disponível', key: 'isActive', type: 'bool', cols: 6 },
-            { label: 'Categoria', key: 'category', type: 'select', cols: 6 },
-            { label: 'Subcategoria', key: 'subcategory', type: 'select', cols: 6 }
+            { label: 'Preço', key: 'price', type: 'currency', cols: 6 },
+            { label: 'Disponível', key: 'isActive', type: 'select',
+              optionsList: [
+                { texto: 'Sim', valor: true }, 
+                { texto: 'Não', valor: false }
+              ],
+              cols: 6
+            },
+            { label: 'Categoria', key: 'category', type: 'combobox', cols: 6 , optionsList: jobsCategoryOpts },
+            { label: 'Subcategoria', key: 'subcategory', type: 'combobox', cols: 6, optionsList: jobsSubcategoryOpts }
           ];
 
           break;

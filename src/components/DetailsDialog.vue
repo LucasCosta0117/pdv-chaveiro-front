@@ -173,28 +173,22 @@ export default {
 
           return [
             { label: 'Nome do Produto', key: 'name', required: true },
-            { label: 'Foto', key: 'imgUrl', type: 'image' },
-            { label: 'Preço', key: 'price', type: 'currency', cols: 6 },
-            { label: 'Quantide em Estoque', key: 'stock', type: 'qtd', cols: 6 },
-            { label: 'Marca', key: 'brand' },
             { label: 'Código', key: 'code' },
-            { label: 'Departamento', key: 'department', type: 'combobox', cols: 4, optionsList: productsDepartmentOpts },
-            { label: 'Categoria', key: 'category', type: 'combobox', cols: 4, optionsList: productsCategoryOpts },
-            { label: 'Subcategoria', key: 'subcategory', type: 'combobox', cols: 4, optionsList: productsSubcategoryOpts },
-            { label: 'À venda?', key: 'canSale', type: 'select',
-              optionsList: [
-                { texto: 'Sim', valor: true }, 
-                { texto: 'Não', valor: false }
-              ],
-              cols: 6
-            },
+            { label: 'Foto', key: 'imgUrl', type: 'image' },
+            { label: 'Preço', key: 'price', type: 'currency', cols: 4 },
+            { label: 'Quantide em Estoque', key: 'stock', type: 'qtd', cols: 4 },
             { label: 'Disponível?', key: 'isActive', type: 'select',
               optionsList: [
                 { texto: 'Sim', valor: true }, 
                 { texto: 'Não', valor: false }
               ],
-              cols: 6
-            }
+              cols: 4
+            },
+            { label: 'Marca', key: 'brand' },
+            
+            { label: 'Departamento', key: 'department', type: 'combobox', cols: 4, optionsList: productsDepartmentOpts },
+            { label: 'Categoria', key: 'category', type: 'combobox', cols: 4, optionsList: productsCategoryOpts },
+            { label: 'Subcategoria', key: 'subcategory', type: 'combobox', cols: 4, optionsList: productsSubcategoryOpts }
           ];
         case 'sales':
           //@todo precisa melhorar a lógica para edição dos campos "Pagamento" e "Status", 
@@ -234,7 +228,7 @@ export default {
           return [
             { label: 'Nome do Serviço', key: 'name', required: true},
             { label: 'Código', key: 'code' },
-            { label: 'Preço', key: 'price', type: 'currency', cols: 6, required: true },
+            { label: 'Preço', key: 'price', type: 'currency', cols: 6 },
             { label: 'Disponível', key: 'isActive', type: 'select',
               optionsList: [
                 { texto: 'Sim', valor: true }, 
