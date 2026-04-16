@@ -125,7 +125,7 @@ export default {
         { text: 'Dinheiro', icon: 'mdi-cash-multiple', enabled: false, amount: 0 },
         { text: 'Débito', icon: 'mdi-credit-card', enabled: false, amount: 0 },
         { text: 'Crédito', icon: 'mdi-credit-card-outline', enabled: false, amount: 0 },
-        // { text: 'Pendente', icon: 'mdi-alert-box', enabled: false, amount: 0 }
+        { text: 'Pendente', icon: 'mdi-alert-box', enabled: false, amount: 0 }
       ]
     }
   },
@@ -234,7 +234,7 @@ export default {
         { text: 'Dinheiro', icon: 'mdi-cash-multiple', enabled: false, amount: 0 },
         { text: 'Débito', icon: 'mdi-credit-card', enabled: false, amount: 0 },
         { text: 'Crédito', icon: 'mdi-credit-card-outline', enabled: false, amount: 0 },
-        // { text: 'Pendente', icon: 'mdi-alert-box', enabled: false, amount: 0 }
+        { text: 'Pendente', icon: 'mdi-alert-box', enabled: false, amount: 0 }
       ];
     },
   }
