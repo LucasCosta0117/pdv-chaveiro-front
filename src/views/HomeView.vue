@@ -297,7 +297,6 @@ export default defineComponent({
     }
   },
   mounted() {
-    // Opcional: Garantir que os dados estão atualizados ao carregar a Home
     this.$store.dispatch('sales/fetchAll');
     this.$store.dispatch('products/fetchAll');
   }
