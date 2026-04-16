@@ -52,6 +52,19 @@
           {{ $formatDateTime(value) }}
         </template>
 
+        <!-- Formatação para coluna status -->       
+        <template v-else-if="column.key === 'status'">
+          <v-chip
+            :color="getStatusColor(value)"
+            size="small"
+            variant="flat"
+            class="font-weight-medium"
+            label
+          >
+            {{ value }}
+          </v-chip> 
+        </template>
+
         <template v-else>
           {{ value }}
         </template>
@@ -147,6 +160,19 @@ export default {
     openDialog(_, { item }) {
       this.dialog = true
       this.selectedItem = item
+    },
+    /**
+     * Retorna a cor correspondente ao status.
+     */
+    getStatusColor(status) {
+      const colors = {
+        'Concluída': 'success',
+        'Pendente': 'warning',
+        'Cancelada': 'error',
+        'Reembolsada': 'info'
+      };
+
+      return colors[status] || 'roxo_w3';
     }
   }
 }

@@ -88,6 +88,7 @@
                 size="small"
                 variant="flat"
                 class="font-weight-medium"
+                label
               >
                 {{ value }}
               </v-chip>
