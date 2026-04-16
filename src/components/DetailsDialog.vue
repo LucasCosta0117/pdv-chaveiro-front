@@ -81,7 +81,7 @@
           :color="(selectedItem.entity === 'sales' && (selectedItem.status === 'Cancelada' || selectedItem.status === 'Reembolsada')) ? '' : 'roxo_w3'"
           variant="elevated"
           @click="showActionForm = true"
-          :disabled="(selectedItem.entity === 'sales' && (selectedItem.status === 'Cancelada' || selectedItem.status === 'Reemolsada')) ? true : false"
+          :disabled="(selectedItem.entity === 'sales' && (selectedItem.status === 'Cancelada' || selectedItem.status === 'Reembolsada')) ? true : false"
         >
           {{ actionLabel.edit }}
         </v-btn>
@@ -90,6 +90,7 @@
           color="vermelho_w1"
           variant="elevated"
           @click="msgConfirm = true"
+          :disabled="(selectedItem.entity === 'sales' && (selectedItem.status === 'Cancelada' || selectedItem.status === 'Reembolsada')) ? true : false"
         >
           {{ actionLabel.delete}}
         </v-btn>
