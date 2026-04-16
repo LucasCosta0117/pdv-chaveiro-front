@@ -76,7 +76,6 @@
           <v-data-table
             :headers="recentSalesHeaders"
             :items="recentSales"
-            :items-per-page="5"
             density="comfortable"
             hide-default-footer
           >
@@ -218,9 +217,7 @@ export default defineComponent({
       const day = String(today.getDate()).padStart(2, '0');
       const todayString = `${year}-${month}-${day}`;
 
-      return this.salesList.filter(sale => {
-        return sale.createdAt && sale.createdAt.startsWith(todayString);
-      });
+      return this.salesList.filter(sale => sale.createdAt && sale.createdAt.startsWith(todayString));
     },
     /**
      * Define os valores para os cards de Métricas Rápidas.
@@ -251,7 +248,11 @@ export default defineComponent({
       const stockThreshold = 5;
 
       return this.productsList
-        .filter(product => product.stock !== undefined && product.stock <= stockThreshold)
+        .filter(  product => 
+          product.stock !== undefined && 
+          product.stock !== 0 &&
+          product.stock <= stockThreshold
+        )
         .sort((a, b) => a.stock - b.stock)
         .slice(0, 5);
     }
