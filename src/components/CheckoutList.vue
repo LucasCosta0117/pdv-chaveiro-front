@@ -8,6 +8,7 @@
     hide-default-footer
     hide-no-data
     hover
+    :height="$vuetify.display.mdAndUp ? '320' : undefined"
   >
     <!-- Coluna: Nome -->
     <template #item.name="{ item }">
