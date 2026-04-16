@@ -2,9 +2,33 @@
   <v-dialog v-model="isOpen" max-width="600px" v-if="selectedItem">
     <v-card>
       <v-card-title class="bg-roxo_w1 font-weight-bold d-flex justify-space-between align-center">
-        <span>
-          {{ updatedItem[details.header?.titleKey] }}
-        </span>
+        <v-row v-if="selectedItem.entity === 'sales'" class="d-flex justify-space-between align-center">
+          <v-col cols="8">
+            <p>
+              {{ updatedItem[details.header?.titleKey] }}
+            </p>
+            <sub>
+              {{ $formatDateTime(updatedItem['createdAt']) }}
+            </sub>
+          </v-col>
+          <v-col cols="4" class="d-flex justify-end">
+            <v-chip
+              :color="getStatusColor(updatedItem['status'])"
+              variant="flat"
+              class="font-weight-medium"
+              label
+            >
+              {{ updatedItem['status'] }}
+            </v-chip>
+          </v-col>
+        </v-row>
+        <v-row v-else>
+          <v-col cols="12">
+            <span>
+              {{ updatedItem[details.header?.titleKey] }}
+            </span>
+          </v-col>
+        </v-row>
         <v-btn
           icon="mdi-close"
           variant="text"
@@ -54,16 +78,17 @@
       <v-card-actions class="d-flex justify-space-evenly mb-2">
         <v-btn 
           prepend-icon="mdi-pencil" 
-          color="roxo_w2" 
-          variant="flat" 
+          :color="(selectedItem.entity === 'sales' && (selectedItem.status === 'Cancelada' || selectedItem.status === 'Reembolsada')) ? '' : 'roxo_w3'"
+          variant="elevated"
           @click="showActionForm = true"
+          :disabled="(selectedItem.entity === 'sales' && (selectedItem.status === 'Cancelada' || selectedItem.status === 'Reemolsada')) ? true : false"
         >
           {{ actionLabel.edit }}
         </v-btn>
         <v-btn
           prepend-icon="mdi-delete" 
           color="vermelho_w1"
-          variant="flat"
+          variant="elevated"
           @click="msgConfirm = true"
         >
           {{ actionLabel.delete}}
@@ -245,7 +270,7 @@ export default {
      * Define os textos do botão de ação baseado na entidade atual.
      */
     actionLabel() {
-      if (this.entity === 'sales') {
+      if (this.selectedItem.entity === 'sales') {
         return {
           edit: 'Editar',
           delete: 'Cancelar Venda',
@@ -263,6 +288,19 @@ export default {
       const actionPath = `${this.selectedItem.entity}/delete`;
       const wasDeleted = await this.$store.dispatch(actionPath, this.selectedItem.id);
       if (wasDeleted) this.isOpen = false;
+    },
+    /**
+     * Retorna a cor correspondente ao status.
+     */
+    getStatusColor(status) {
+      const colors = {
+        'Concluída': 'success',
+        'Pendente': 'warning',
+        'Cancelada': 'error',
+        'Reembolsada': 'info'
+      };
+
+      return colors[status] || 'roxo_w3';
     }
   }
 }

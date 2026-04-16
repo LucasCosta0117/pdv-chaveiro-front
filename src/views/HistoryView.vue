@@ -95,8 +95,6 @@ export default {
       },
       fields: [
         { text: 'Vendedor', key: 'sellerName'},
-        { text: 'Data da Venda', key: 'createdAt', type: 'date' },
-        { text: 'Status', key: 'status'},
         { text: 'Subtotal', key: 'subtotal', type: 'currency' },
         { text: 'Descontos', key: 'totalDiscount', type: 'currency' },
         { text: 'Total Pago', key: 'total', type: 'currency'},
