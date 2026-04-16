@@ -200,8 +200,8 @@ export default {
             { label: 'Subtotal', key: 'subtotal', type: 'currency', type: 'currency', cols: 4, readonly: true },
             { label: 'Descontos', key: 'totalDiscount', type: 'currency', type: 'currency', type: 'currency', cols: 4, readonly: true  },
             { label: 'Total Pago', key: 'total', type: 'currency', type: 'currency', type: 'currency', cols: 4, readonly: true  },
-            { label: 'Número da Nota Fiscal', key: 'fiscalNumber', readonly: notEditable },
-            { label: 'Observação da Nota Fiscal', key: 'fiscalNotes', readonly: notEditable },
+            { label: 'Núm. Nota Fiscal', key: 'fiscalNumber', readonly: notEditable },
+            { label: 'Observação', key: 'saleNotes', readonly: notEditable },
             { label: 'Produtos/Serviços', key: 'items', type: 'multiselect', options: { title: 'itemName', value: 'id' }, readonly: true },
             { label: 'Pagamento', key: 'payments', type: 'multiselect', options: { title: 'method', value: 'id' }, readonly: notEditable, 
               optionsList: [

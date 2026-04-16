@@ -100,7 +100,8 @@ export default {
         { text: 'Subtotal', key: 'subtotal', type: 'currency' },
         { text: 'Descontos', key: 'totalDiscount', type: 'currency' },
         { text: 'Total Pago', key: 'total', type: 'currency'},
-        { text: 'Nota Fiscal', key: 'fiscalNumber' },
+        { text: 'Núm. Nota Fiscal', key: 'fiscalNumber' },
+        { text: 'Observação', key: 'saleNotes' },
         { text: 'Produtos/Serviços', key: 'items', type: 'list', 
           subFields: [
             { text: 'Item', key: 'itemName'},
