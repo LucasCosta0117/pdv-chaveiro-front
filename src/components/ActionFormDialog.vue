@@ -114,7 +114,9 @@
               <template v-else-if="field.type === 'image'">
                 <v-img
                   :src="formData[field.key] || noImagePlaceholder"
-                  class="mb-2 rounded border img-thumb"
+                  class="mb-2 rounded border"
+                  aspect-ratio="16/9"
+                  max-width="500"
                   cover
                 ></v-img>
                 <v-file-input
@@ -447,10 +449,6 @@
 }
 </script>
 <style scoped>
-.img-thumb {
-  height: 200px;
-}
-
 /* Breakpoint MD (960px - 1279px) ou superior */
 @media (min-width: 960px) {
   .action-form-dialog-container {
@@ -458,9 +456,6 @@
   }
   .form-container {
     width: 80%;
-  }
-  .img-thumb {
-    height: 350px;
   }
 }
 </style>

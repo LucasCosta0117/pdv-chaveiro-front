@@ -41,10 +41,9 @@
           <v-col cols="12" sm="6" v-if="details.header.imgKey">
             <v-img
               :src="updatedItem[details.header?.imgKey]"
-              aspect-ratio="1"
               class="rounded-lg elevation-1"
-              contain
-              height="180"
+              height="190"
+              cover
             />
           </v-col>
 
