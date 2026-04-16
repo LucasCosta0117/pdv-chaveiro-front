@@ -60,6 +60,27 @@
             v-model:checkout-items="checkoutItems"
           />
         </div>
+        <div class="mt-6">
+          <div>
+            <v-text-field
+              v-model="checkoutNotes.fiscalNumber"
+              label="Núm. Nota Fiscal"
+              type="number"
+              control-variant="hidden"
+              variant="outlined"
+              density="comfortable"
+              color="roxo_w1"
+            ></v-text-field>
+
+            <v-textarea
+              v-model="checkoutNotes.saleNotes"
+              label="Observações"
+              variant="outlined"
+              density="comfortable"
+              color="roxo_w1"
+            ></v-textarea>
+          </div>
+        </div>
       </v-col>
       <v-col cols="12" md="4">
         <div>
@@ -106,6 +127,10 @@ export default {
       selectedItem: null,
       search: '',
       checkoutItems: [],
+      checkoutNotes: {
+        fiscalNumber: null,
+        saleNotes: null
+      },
       saleResum: {}
     }
   },
@@ -174,11 +199,14 @@ export default {
       );
 
       this.saleResum.status = hasStatusPending ? 'PENDING' : 'COMPLETED';
+      this.saleResum.fiscalNumber = this.checkoutNotes.fiscalNumber;
+      this.saleResum.saleNotes = this.checkoutNotes.saleNotes;
 
       const hasSaveSale = await this.$store.dispatch('sales/save', this.saleResum);
 
       if (hasSaveSale) {
         this.checkoutItems = [];
+        this.checkoutNotes = {};
         this.saleResum = {};
       }
     },
@@ -226,4 +254,8 @@ export default {
 }
 </script>
 <style scoped>
+:deep(.v-field__outline) {
+  --v-field-border-opacity: 0.5;
+  color: rgb(var(--v-theme-cinza_w2));
+}
 </style>
