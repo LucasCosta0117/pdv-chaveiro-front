@@ -2,7 +2,7 @@
   <v-dialog v-model="isOpen" max-width="600px" v-if="selectedItem">
     <v-card>
       <v-card-title class="bg-roxo_w1 font-weight-bold d-flex justify-space-between align-center">
-        <v-row v-if="selectedItem.entity === 'sales'" class="d-flex justify-space-between align-center">
+        <v-row v-if="updatedItem.entity === 'sales'" class="d-flex justify-space-between align-center">
           <v-col cols="8">
             <p>
               {{ updatedItem[details.header?.titleKey] }}
@@ -77,10 +77,10 @@
       <v-card-actions class="d-flex justify-space-evenly mb-2">
         <v-btn 
           prepend-icon="mdi-pencil" 
-          :color="(selectedItem.entity === 'sales' && (selectedItem.status === 'Cancelada' || selectedItem.status === 'Reembolsada')) ? '' : 'roxo_w3'"
+          :color="(updatedItem.entity === 'sales' && (updatedItem.status === 'Cancelada' || updatedItem.status === 'Reembolsada')) ? '' : 'roxo_w3'"
           variant="elevated"
           @click="showActionForm = true"
-          :disabled="(selectedItem.entity === 'sales' && (selectedItem.status === 'Cancelada' || selectedItem.status === 'Reembolsada')) ? true : false"
+          :disabled="(updatedItem.entity === 'sales' && (updatedItem.status === 'Cancelada' || updatedItem.status === 'Reembolsada')) ? true : false"
         >
           {{ actionLabel.edit }}
         </v-btn>
@@ -89,7 +89,7 @@
           color="vermelho_w1"
           variant="elevated"
           @click="msgConfirm = true"
-          :disabled="(selectedItem.entity === 'sales' && (selectedItem.status === 'Cancelada' || selectedItem.status === 'Reembolsada')) ? true : false"
+          :disabled="(updatedItem.entity === 'sales' && (updatedItem.status === 'Cancelada' || updatedItem.status === 'Reembolsada')) ? true : false"
         >
           {{ actionLabel.delete}}
         </v-btn>
